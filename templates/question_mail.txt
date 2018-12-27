@@ -1,0 +1,6 @@
+Hello {{ question_user }},
+
+Your question is successfully uploaded to our website,
+
+Thanks and Regards,
+PUZZLES

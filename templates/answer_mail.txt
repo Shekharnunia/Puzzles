@@ -1,0 +1,7 @@
+Hello {{ question_user }},
+
+{{ answer_user }} just post a answer for your question.
+Hopefully you got your Answer
+
+Thanks and Regards,
+PUZZLES

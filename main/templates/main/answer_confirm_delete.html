@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block head %}
+	<title>Delete</title>
+{% endblock %}
+
+{% block breadcrumb %}
+	<li class="breadcrumb-item active"><a href="{% url 'main:home' %}">Home</a></li>
+	<li class="breadcrumb-item active"><a href="{{ answer.question_a.get_absolute_url }}">{{ answer.question_a.topic }}</a></li>
+	<li class="breadcrumb-item active">Delete Answer</li>
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="container">
+	<h1>Delete Answer</h1>
+	<br>
+	<form method="POST">
+		{% csrf_token %}
+		<h2>Are you sure you want to delete the post</h2>
+		<button class="btn btn-primary btn-outline-danger" type="submit">Yes, Delete</button>
+		<a class="btn btn-outline-secondary" href="{{ answer.question_a.get_absolute_url }}">Cancel</a>
+	</form>
+</div><br><br>	
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block head %}
+	<title>edit</title>
+{% endblock %}
+
+{% block stylesheet %}
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+{% endblock stylesheet %}
+
+{% block breadcrumb %}
+	<li class="breadcrumb-item active"><a href="{% url 'main:home' %}">Home</a></li>
+	<li class="breadcrumb-item active"><a href="{{ answer.question_a.get_absolute_url }}">{{ answer.question_a.topic }}</a></li>
+	<li class="breadcrumb-item active">Edit Answer</li>
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="container">
+	<h1>Edit Page</h1>
+	<br>
+	<div style="padding: 20px; border: solid black 1px;">
+		<h3 class="selectable" style="overflow-wrap: break-word;">Topic : <a href="{% url 'main:question' answer.question_a.pk %}">{{ answer.question_a.get_topic_as_markdown }}</h3></a><hr>
+		<h4 class="selectable" style="overflow-wrap: break-word;">Question : {{ answer.question_a.get_question_as_markdown }}</h4>
+		</div><br>
+	<form method="POST">
+		{% csrf_token %}
+		{% include 'includes/form.html' %}
+		<button class="btn btn-primary btn-outline-primary" type="submit">Save changes</button>
+		<a class="btn btn-outline-secondary" href="{{ answer.question_a.get_absolute_url }}">Cancel</a>
+		
+	</form>
+</div><br><br>	
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script>
+	var simplemde = new SimpleMDE();
+</script>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+
+{% block head %}
+	<title>PUZZLES</title>
+{% endblock head %}
+
+{% block breadcrumb %}
+	<li class="breadcrumb-item active">PUZZLES</li>
+{% endblock %}
+	
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-10">
+			
+			<form class="form-inline my-2 my-lg-0">
+				<input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search" value="{{ request.GET.q }}">
+				<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+			</form>		
+			<br>
+			{% for question in questions %}
+			<div class="container border border-dark" >
+				<br>
+				<h3 class="selectable" style="overflow-wrap: break-word;"><a href="{{ question.get_absolute_url }}" target="_blank">{{ question.get_topic_as_markdown|capfirst|linebreaks }}</a></h3>
+
+				<hr>
+				<div class="container">
+					<blockquote class="blockquote selectable" style="overflow-wrap: break-word;">
+						<p class="mb-0"> <p>{{ question.get_question_as_markdown|capfirst|linebreaks|truncatewords:20 }}</p></p>
+					</blockquote>
+					<blockquote class="blockquote text-right">
+						<footer class="blockquote-footer">
+							<cite title="Source Title">
+								<a href="{% url 'account:profile' question.created_by.username %}" target="_blank">{{ question.created_by|title }}</a><br>
+								
+								<p>Upload : {{ question.created_at|naturaltime }}</p>
+							</cite>
+						</footer>
+					</blockquote>
+				</div>
+			</div><br>
+			{% endfor %}
+
+			{% if questions.has_other_pages %}
+				<nav aria-label="Page navigation example">
+				<ul class="pagination">
+				{% if questions.has_previous %}
+					<li class="page-item"><a class="page-link" href="?page={{ questions.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" >&laquo;</a></li>
+				{% else %}
+					<li class="page-item" class="disabled"><span class="page-link">&laquo;</span></li>
+				{% endif %}
+				{% for i in questions.paginator.page_range %}
+					{% if questions.number == i %}
+					<li class="page-item" class="active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+					{% else %}
+					<li class="page-item"><a class="page-link" href="?page={{ i }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ i }}</a></li>
+					{% endif %}
+				{% endfor %}
+				{% if questions.has_next %}
+					<li class="page-item"><a class="page-link" href="?page={{ questions.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&raquo;</a></li>
+				{% else %}
+					<li class="page-item" class="disabled"><span class="page-link">&raquo;</span></li>
+				{% endif %}
+				</ul>
+			</nav>
+			{% endif %}
+
+			<div class="col-xs-12 col-sm-4 col-md-4" id="id_newsletter">
+				<h5>Sign-Up For Our Newsletter</h5>
+				<div class="container">
+					<form method="POST" novalidate>
+						{% csrf_token %}
+						{% include 'includes/form.html' %}
+						<button type="submit" class="btn btn-success">Submit</button>
+					</form> 
+				</div>
+			</div>
+			<br>
+		</div>
+		<div class="col-sm-2">
+			<a class="btn btn-outline-secondary"  style="position: fixed;" role="button" href="{% url 'main:ask_question' %}">Ask Your Questions</a>
+
+		</div>
+	</div>
+</div>
+{% endblock content %}

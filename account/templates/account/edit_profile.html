@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block head %}
+	<title>Edit Profile</title>
+{% endblock head %}
+
+{% block breadcrumb %}
+	<li class="breadcrumb-item active"><a href="{% url 'account:profile' user.username %}">Profile</a></li>
+	<li class="breadcrumb-item active">Edit Profile</li>
+{% endblock %}
+
+{% block content %}
+	<div class="container">
+		<form method="post" novalidate>
+			{% csrf_token %}
+			{% include 'includes/form.html' %}
+			<a class="btn btn-outline-success btn-sm" href="{% url 'account:change_password' %}">Change Password</a>
+			<br><br>
+			<button class="btn btn-outline-success" type="submit">Save Changes</button>
+			<a class="btn btn-outline-success" href="{% url 'account:profile' user.username %}">Cancel</a>
+		</form>	
+	</div>
+{% endblock content %}

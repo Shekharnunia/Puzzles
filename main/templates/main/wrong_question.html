@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Question Problem</title>
+{% endblock head %}
+
+{% block breadcrumb %}
+	<li class="breadcrumb-item active"><a href="{% url 'main:ask_question' %}">Home</a></li>
+	<li class="breadcrumb-item active">Question Problem</li>
+{% endblock %}
+
+{% block content %}
+
+	<div class="container">
+		<div style="margin-top: 30px;">
+			<div class="alert alert-danger" role="alert">
+			<h3>Predefined Topic OR Wrong Question</h3>
+			</div>
+			<a href="{% url 'main:ask_question' %}">Ask Question Again</a>
+		</div>
+	</div>
+		
+{% endblock content %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+	{% load static %}
+	<link href="https://fonts.googleapis.com/css?family=Peralta" rel="stylesheet"> 
+	<link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <h1 class="text-center logo my-4">
+      <a style="color: black;" href="{% url 'main:home' %}">PUZZLES</a>
+    </h1>
+    {% block content %}
+    {% endblock %}
+  </div>
+{% endblock %}

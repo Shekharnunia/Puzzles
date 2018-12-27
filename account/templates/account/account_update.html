@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block head %}
+<title>Update info</title>
+{% endblock %}
+
+{% block stylesheet %}
+	<!-- {% include 'material/includes/material_css.html' %} -->
+{% endblock stylesheet %}
+
+{% block breadcrumb %}
+	<li class="breadcrumb-item active"><a href="{% url 'account:profile' user.username %}">Profile</a></li>
+	<li class="breadcrumb-item active">Update Profile</li>
+{% endblock %}
+
+{% block content %}
+<div class="container"  style="margin-top: 30px; margin-bottom: 30px;">
+	<div class="col s12 m8 offset-m2">
+		<h2 class="flow-text">Update your information</h2>
+		<form action="." method="POST" class="padding" enctype="multipart/form-data">
+			{% csrf_token %}
+			{% include 'includes/form.html' %}
+			<div class="divider"></div>
+			{{ formset.management_form|crispy }}
+			{{ formset|crispy }}
+			<br>
+			<button type="submit" class="btn-floating btn-primary btn-large waves-light waves-effect"><i class="large material-icons">Save</i></button>
+			<a href="#" onclick="window.history.back(); return false;" title="Cancel" class="btn-floating waves-effect waves-light red"><i class="material-icons">Back</i></a>
+		</form>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+	<!-- {% include 'material/includes/material_js.html' %} -->
+{% endblock %}
