@@ -28,10 +28,12 @@ class Question(models.Model):
     def get_question_as_markdown(self):
         return mark_safe(markdown(self.question, safe_mode='escape'))
 
+
+
 class Answer(models.Model):
     question_a = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
     answer = models.TextField(max_length=1500,blank=False)
-    answer_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='answers')
+    answer_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='answer')
     answers_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     answer_views = models.PositiveIntegerField(default=0)

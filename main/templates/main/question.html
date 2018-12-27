@@ -14,7 +14,7 @@
 
 {% block breadcrumb %}
 <li class="breadcrumb-item active"><a href="{% url 'main:home' %}">Home</a></li>
-<li class="breadcrumb-item active">{{ question.topic.get_topic_as_markdown|capfirst }}</li>
+<li class="breadcrumb-item active">{{ question.topic|capfirst }}</li>
 {% endblock %}
 
 {% block content %}
@@ -36,10 +36,11 @@
 								<cite title="Source Title">
 									<a href="{% url 'account:profile' question.created_by.username %}">{{ question.created_by.username|capfirst }}</a><br>
 									{% if question.created_at == question.updated_at %}
-									Upload : {{ question.created_at|naturaltime }}<br>
+										Upload : {{ question.created_at|naturaltime }}<br>
 									{% else %}
-									Upload : {{ question.created_at|naturaltime }}<br>
-									Updated : {{ question.updated_at|naturaltime }}<br>
+										Upload : {{ question.created_at|naturaltime }}<br>
+										Updated : {{ question.updated_at|naturaltime }}<br>
+										 {{ question.answers.count }} Answers <br>
 									{% endif %}
 								</cite>
 							</footer>
@@ -50,8 +51,8 @@
 				{% if question.created_by == user %}
 				<!-- Model for deleting question -->
 				<div class="pull-right">
-					<a class="btn btn-outline-secondary btn-sm" role="button" href="{% url 'main:edit_question' question.pk %}"><i class="far fa-edit"> Edit</i></a>
-					&ensp;
+					<a class="btn btn-outline-secondary btn-sm mr-4" role="button" href="{% url 'main:edit_question' question.pk %}"><i class="far fa-edit"> Edit</i></a>
+
 
 					<!-- Button trigger modal -->
 					<button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#deletequestionModal"><i class="fas fa-trash-alt"> Delete</i></button>
@@ -93,7 +94,7 @@
 
 			{% if answer.answer_by == user  %}
 			<div class="pull-right">
-				<a class="btn btn-outline-secondary btn-sm" href="{% url 'main:edit_answer' answer.pk %}"><i class="far fa-edit"> Edit</i></a>&ensp;
+				<a class="btn btn-outline-secondary btn-sm mr-4" href="{% url 'main:edit_answer' answer.pk %}"><i class="far fa-edit"> Edit</i></a>
 
 				<a class="btn btn-outline-secondary btn-sm" href="{% url 'main:delete_answer' answer.pk %}"><i class="fas fa-trash-alt"> Delete</i></a>&ensp;
 			</div><br><br>
@@ -148,10 +149,10 @@
 	}
 <!--
 </script>
-<!--<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 <script>
 	var simplemde = new SimpleMDE();
-</script> -->
+</script> 
 {% endblock %}
 
 

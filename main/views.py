@@ -122,7 +122,7 @@ class CreateQuestionView(CreateView):
 def question(request, pk):
     form = AnswerForm(request.POST)
     question = get_object_or_404(Question, pk=pk)
-    # question.question_views += 1
+    #answer_count = question.answers.count
 
     answer = Answer.objects.filter(question_a=question)
     if request.method == 'POST':
