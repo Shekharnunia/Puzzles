@@ -37,9 +37,12 @@
 						<footer class="blockquote-footer">
 							<cite title="Source Title">
 								<a href="{% url 'account:profile' question.created_by.username %}" target="_blank">{{ question.created_by|title }}</a><br>
-								
+
+
+
 								<p>Upload : {{ question.created_at|naturaltime }}</p>
-                                                                {{ question.answers.count }} Answers
+                                                                {{ question.answers.count }} Answers <br>
+                                                                <a href="{{ question.get_absolute_url }}#disqus_thread" target="_blank">Post a Comment</a>
 							</cite>
 						</footer>
 					</blockquote>
@@ -96,3 +99,7 @@
 	</div>
 </div>
 {% endblock content %}
+
+{% block javascript %}<script id="dsq-count-scr" src="//http-127-0-0-1-8000-gv7aevam3r.disqus.com/count.js" async></script>{% endblock %}
+
+
