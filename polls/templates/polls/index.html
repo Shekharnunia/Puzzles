@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "polls/polls_base.html" %}
 
 {% block head %}
 <title>Polls</title>
@@ -9,18 +9,16 @@
 {% endblock %}
 
 {% block content %}
-
 	<div class="container mt-4 mb-4">
 		{% if latest_question_list %}
 		    
 		    {% for question in latest_question_list %}
-			<a class="btn btn-primary" href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
+			<a class="btn btn-link" href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
 		    {% endfor %}
 		    
 		{% else %}
 		    <p>No polls are available.</p>
-		{% endif %}	
+		{% endif %}		
+		<a class="btn btn-link" href="{% url 'polls:create' %}">Create</a>
 	</div>
-	
 {% endblock %}
-

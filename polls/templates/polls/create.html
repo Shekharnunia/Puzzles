@@ -1,0 +1,37 @@
+{% extends "polls/polls_base.html" %}
+
+{% block head %}
+<title>Create Poll</title>
+{% endblock %}
+
+{% block stylesheet %}
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+{% endblock stylesheet %}
+
+{% block breadcrumb %}
+	<li class="breadcrumb-item active"><a href="{% url 'polls:poll' %}">Home</a></li>
+	<li class="breadcrumb-item active">Create Your Poll</li>
+{% endblock %}
+
+{% block content %}
+
+	<div class="container"  style="margin-top: 30px;">
+		<form method="POST" novalidate>
+			{% csrf_token %}
+			{% include 'includes/form.html' %}
+			<button type="submit" class="btn btn-success">Submit</button>
+		</form> 
+		<br>
+	</div>
+	
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<!--<script>
+	var simplemde = new SimpleMDE();
+</script>--> 
+<script>
+var simplemde = new SimpleMDE({ element: document.getElementById("id_question_text") });
+</script>
+{% endblock %}

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "polls/polls_base.html" %}
 
 {% block head %}
 <title>Polls Results</title>
@@ -16,13 +16,17 @@
 
         <table class="table">
             <thead>
-                 <td><strong>Choice</strong</td>
-                 <td><strong>Votes</strong></td>
+                <tr>
+                    <th scope="col">Choice</th>
+                    <th scope="col">Votes</th>
+                </tr>
             </thead>
 	    {% for choice in question.choice_set.all %}
             <thead>
-                 <td>{{ choice.choice_text }}</td>
-                 <td>{{ choice.votes }} vote{{ choice.votes|pluralize }}</td>
+                 <tr>
+                     <td>{{ choice.choice_text }}</td>
+                     <td>{{ choice.votes }} vote{{ choice.votes|pluralize }}</td>
+                 </tr>
             </thead>
        	    {% endfor %}
         </table>

@@ -41,7 +41,7 @@
 
 
 								<p>Upload : {{ question.created_at|naturaltime }}</p>
-                                                                {{ question.answers.count }} Answers <br>
+                                                                {{ question.answers.count }} Answer{{ question.answers.count|pluralize }} <br>
                                                                 <a href="{{ question.get_absolute_url }}#disqus_thread" target="_blank">Post a Comment</a>
 							</cite>
 						</footer>
@@ -75,7 +75,7 @@
 			{% endif %}
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-10 col-lg-8" id="id_newsletter">
-					<div class="card"  style="background:#09e8e0;">
+					<div class="card"  style="background:#3C3C45; color:white;">
 					  <div class="card-body">
 
 						<h5>Sign-Up For Our Newsletter</h5>
@@ -93,7 +93,7 @@
 			<br>
 		</div>
 		<div class="col-sm-2">
-			<a class="btn btn-outline-secondary"  style="position: fixed;" role="button" href="{% url 'main:ask_question' %}">Ask Your Questions</a>
+			<a class="btn btn-outline-secondary position-sticky" role="button" href="{% url 'main:ask_question' %}">Ask Your Questions</a>
 
 		</div>
 	</div>
