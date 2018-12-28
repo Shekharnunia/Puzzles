@@ -10,15 +10,29 @@
 
 {% block content %}
 	<div class="container mt-4 mb-4">
+		<a class="btn btn-primary mb-3" href="{% url 'polls:create' %}">Create</a><br>
 		{% if latest_question_list %}
-		    
-		    {% for question in latest_question_list %}
-			<a class="btn btn-link" href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
-		    {% endfor %}
+
+			<table class="table">
+			    <thead>
+				<tr>
+                                    <th scope="">Polls</th>
+				</tr>
+			    </thead>
+                            {% for question in latest_question_list %}
+			    <tbody>
+				 <tr>
+                                     <th scope="">
+                                         <a class="btn btn-link" href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></th>
+			             <th>
+				 </tr>
+			    </tbody>
+   		             {% endfor %}
+			</table>
+
 		    
 		{% else %}
 		    <p>No polls are available.</p>
 		{% endif %}		
-		<a class="btn btn-link" href="{% url 'polls:create' %}">Create</a>
 	</div>
 {% endblock %}

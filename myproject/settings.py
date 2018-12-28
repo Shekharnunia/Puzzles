@@ -59,7 +59,7 @@ INSTALLED_APPS = [
 
     'polls',
 
-
+    'blog',
 
 ]
 
