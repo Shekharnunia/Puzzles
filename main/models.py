@@ -14,7 +14,6 @@ class Question(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
     question_views = models.PositiveIntegerField(default=0)
-    question_answered = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.topic
