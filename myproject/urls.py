@@ -8,7 +8,7 @@ from account import views as core_views
 
 urlpatterns = [
     path('polls/', include('polls.urls')),
-#    path('blog/', include('blog.urls')),
+    path('blog/', include('blog.urls')),
     url(r'',include('main.urls',namespace='main')),
     url(r'account/',include('account.urls',namespace='account')),
 
