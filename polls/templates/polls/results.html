@@ -1,9 +1,33 @@
-<h1>{{ question.question_text }}</h1>
+{% extends "base.html" %}
 
-<ul>
-{% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
-{% endfor %}
-</ul>
+{% block head %}
+<title>Polls Results</title>
+{% endblock %}
 
-<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
+{% block breadcrumb %}
+<li class="breadcrumb-item active"><a href="{% url 'polls:poll' %}">Polls</a></li>
+<li class="breadcrumb-item active"><a href="{% url 'polls:detail' question.pk %}">{{ question.question_text }}</a></li>
+<li class="breadcrumb-item active">Results</li>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-4">
+	<h2>Topic : {{ question.question_text }}</h2>
+
+        <table class="table">
+            <thead>
+                 <td><strong>Choice</strong</td>
+                 <td><strong>Votes</strong></td>
+            </thead>
+	    {% for choice in question.choice_set.all %}
+            <thead>
+                 <td>{{ choice.choice_text }}</td>
+                 <td>{{ choice.votes }} vote{{ choice.votes|pluralize }}</td>
+            </thead>
+       	    {% endfor %}
+        </table>
+
+	<a  class="btn btn-outline-secondary" href="{% url 'polls:detail' question.id %}">Vote again?</a>
+</div>
+{% endblock %}
+

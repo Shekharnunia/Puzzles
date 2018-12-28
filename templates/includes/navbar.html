@@ -6,7 +6,11 @@
 		</button>
 		<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
 			{% if user.is_authenticated %}
+                                
 			<ul class="navbar-nav ">
+                                <li class="nav-item">
+					<a class="nav-link" href="{% url 'polls:poll' %}">Polls</i></a>
+				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"> {{ request.user.username|title }}</i></a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
