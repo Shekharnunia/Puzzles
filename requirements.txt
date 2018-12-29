@@ -1,7 +1,7 @@
 certifi==2018.11.29
 chardet==3.0.4
 defusedxml==0.5.0
-Django==2.1
+Django==2.1.2
 django-appconf==1.0.2
 django-crispy-forms==1.7.2
 django-material==1.2.5
@@ -16,6 +16,7 @@ PyJWT==1.7.0
 python-decouple==3.1
 python3-openid==3.1.0
 pytz==2018.5
+requests==2.21.0
 requests-oauthlib==1.0.0
 six==1.11.0
 social-auth-app-django==3.1.0
