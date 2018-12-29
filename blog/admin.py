@@ -16,7 +16,7 @@ class PostAdmin(admin.ModelAdmin):
     ]
     inlines = [CommentInline]
 
-    list_display = ('title','description', 'author', 'published_date', 'draft', 'was_published_recently')
+    list_display = ('title','description', 'author', 'published_date', 'draft')
 
 admin.site.register(Post, PostAdmin)
 
