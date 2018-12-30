@@ -15,6 +15,9 @@ class Question(models.Model):
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
     question_views = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        ordering = ("-pk",)
+
     def __str__(self):
         return self.topic
 

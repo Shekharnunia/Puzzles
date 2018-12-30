@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block head %}
 	<title>edit</title>
 {% endblock %}
 
 {% block stylesheet %}
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+	<link rel="stylesheet" href="{% static 'css/simplemde.min.css' %}">
 {% endblock stylesheet %}
 
 {% block breadcrumb %}
@@ -23,14 +23,14 @@
 	<form method="POST">
 		{% csrf_token %}
 		{% include 'includes/form.html' %}
-		<button class="btn btn-primary btn-outline-primary" type="submit">Save changes</button>
+		<button class="btn btn-outline-primary" type="submit">Save changes</button>
 		<a class="btn btn-outline-secondary" href="{{ question.get_absolute_url }}">Cancel</a>
 	</form>
 </div><br><br>	
 {% endblock %}
 
 {% block javascript %}
-<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script src="{% static 'js/simplemde.min.js' %}"></script>
 <script>
 	var simplemde = new SimpleMDE();
 </script>

@@ -76,7 +76,6 @@ def questionlistview(request):
 
 class QuestionListView(ListView):
     model = Question
-    queryset = Question.objects.all().order_by('-pk')
     paginate_by = 10
     template_name = 'main/home.html'
     context_object_name = 'questions'
@@ -87,7 +86,12 @@ class QuestionListView(ListView):
         except:
             name = ''
         if (name != ''):
-            object_list = self.model.objects.filter(name__icontains = q)
+            object_list = self.model.objects.filter(
+                    Q(topic__icontains=name)|
+                    Q(question__icontains=name)|
+                    Q(created_by__username__icontains=name) 
+                    ).distinct()
+
         else:
             object_list = self.model.objects.all()
         return object_list

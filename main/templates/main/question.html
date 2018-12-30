@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% load humanize %}
 
 {% block head %}
@@ -8,7 +8,7 @@
 
 
 {% block stylesheet %}
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+	<link rel="stylesheet" href="{% static 'css/simplemde.min.css' %}">
 {% endblock stylesheet %}
 
 {% block breadcrumb %}
@@ -27,7 +27,7 @@
 				<div class="container" style="border:1px solid black;"><br>
 					<h3 class="selectable">{{ question.get_topic_as_markdown|capfirst|linebreaks }}</h3><hr>
 					<div class="container">
-						<blockquote class="blockquote selectable" style="overflow: scroll;">
+						<blockquote class="blockquote selectable" style="overflow-y: scroll;">
 							<p class="mb-0">{{ question.get_question_as_markdown|capfirst }}</p>
 						</blockquote>
 						<blockquote class="blockquote text-right">
@@ -40,7 +40,7 @@
 										Upload : {{ question.created_at|naturaltime }}<br>
 										Updated : {{ question.updated_at|naturaltime }}<br>
 										 {{ question.answers.count }} Answers <br>
-                                                                                 <a href="{{ question.get_absolute_url }}#disqus_thread">Comments</a>
+
 
 									{% endif %}
 								</cite>
@@ -84,7 +84,7 @@
 			{% for answer in answers %}
 			<div class="container" style="border:1px solid black;">
 				<div class="container"><br>
-					<blockquote class="blockquote selectable" style="overflow: scroll;">
+					<blockquote class="blockquote selectable" style="overflow-y: scroll;">
 						<p class="mb-0">{{ answer.get_answer_as_markdown|capfirst }}</p>
 					</blockquote>
 					<blockquote class="blockquote text-right">
@@ -109,27 +109,6 @@
 				{% include 'includes/form.html' %}
 				<button class="btn btn-outline-primary" type="submit">Submit</button>
 			</form>
-<div id="disqus_thread"></div>
-<script>
-
-/**
-*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-/*
-var disqus_config = function () {
-this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-};
-*/
-(function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-s.src = 'https://http-127-0-0-1-8000-gv7aevam3r.disqus.com/embed.js';
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-                            
 		</div>
 
 
@@ -171,7 +150,7 @@ s.setAttribute('data-timestamp', +new Date());
 	}
 <!--
 </script>
-<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script src="{% static 'js/simplemde.min.js' %}"></script>
 <script>
 	var simplemde = new SimpleMDE();
 </script> 

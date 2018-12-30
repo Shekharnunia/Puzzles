@@ -24,7 +24,7 @@
 				<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
 			</form>		
 			<br>
-			{% for question in questions %}
+			{% for question in object_list %}
 			<div class="container border border-dark" >
 				<br>
 				<h3 class="selectable" style="overflow-wrap: break-word;"><a href="{{ question.get_absolute_url }}" target="_blank">{{ question.get_topic_as_markdown|capfirst|linebreaks }}</a></h3>
@@ -42,13 +42,14 @@
 
 								<p>Upload : {{ question.created_at|naturaltime }}</p>
                                                                 {{ question.answers.count }} Answer{{ question.answers.count|pluralize }} <br>
-                                                                <a href="{{ question.get_absolute_url }}#disqus_thread" target="_blank">Post a Comment</a>
 							</cite>
 						</footer>
 					</blockquote>
 				</div>
 			</div><br>
 			{% endfor %}
+
+{% include 'includes/pagination.html' %}
 
 			{% if questions.has_other_pages %}
 				<nav aria-label="Page navigation example">

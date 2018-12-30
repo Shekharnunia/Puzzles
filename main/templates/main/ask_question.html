@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block head %}
 <title>Ask Your Questions</title>
 {% endblock %}
 
 {% block stylesheet %}
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+	<link rel="stylesheet" href="{% static 'css/simplemde.min.css' %}">
 {% endblock stylesheet %}
 
 {% block breadcrumb %}

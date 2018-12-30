@@ -4,7 +4,7 @@ from main import views
 
 app_name = 'main'
 urlpatterns = [	   
-    url(r'^$', views.questionlistview,name='home'),
+    url(r'^$', views.QuestionListView.as_view(),name='home'),
     url(r'^ask-question/$', views.CreateQuestionView.as_view(), name='ask_question'),
     url(r'^privacy-policy/$', views.privacy_policy, name='privacy_policy'),
     url(r'^term-and-conditions/$', views.term_and_conditions, name='term_and_conditions'),
