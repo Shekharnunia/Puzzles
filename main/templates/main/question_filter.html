@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mb-4">
+	<div class="row">
+		<div class="col-md-8 offset-md-2">
+			<div class="card">
+			  <div class="card-body">
+				<h2>Search on the basis of these fields</h2>
+				<form action="" method="get">
+				{{ filter.form|crispy }}
+				<input class="btn btn-primary" type="submit" />
+			    </form>
+			  </div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<div class="row">
+	  <table class="table table-bordered col-md-10 offset-md-1">
+	    <thead>
+	      <tr>
+		<th>Topic</th>
+		<th>Questions</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      {% for user in filter.qs %}
+		<tr>
+		  <td>{{ user.topic }}</td>
+		  <td>{{ user.question }}</td>
+		</tr>
+	      {% empty %}
+		<tr>
+		  <td colspan="5">No data</td>
+		</tr>
+	      {% endfor %}
+	    </tbody>
+	  </table>
+	</div>
+</div>
+{% endblock %}

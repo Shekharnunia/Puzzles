@@ -20,7 +20,7 @@ from django.utils import timezone
 from django.views.generic import UpdateView, ListView, CreateView, DeleteView
 
 
-from main.models import Question, Answer, ContactUs, NewsLetter
+from main.models import Question, Answer, ContactUs, NewsLetter, QuestionFilter
 from main.forms import QuestionForm, AnswerForm, NewsLetterForm
 
 # This is the format of sending email
@@ -80,21 +80,26 @@ class QuestionListView(ListView):
     template_name = 'main/home.html'
     context_object_name = 'questions'
 
-    def get_queryset(self):
-        try:
-            name = self.kwargs['q']
-        except:
-            name = ''
-        if (name != ''):
-            object_list = self.model.objects.filter(
-                    Q(topic__icontains=name)|
-                    Q(question__icontains=name)|
-                    Q(created_by__username__icontains=name) 
-                    ).distinct()
+#    def get_queryset(self):
+#        try:
+#            name = self.kwargs['q']
+#        except:
+#            name = ''
+#        if (name != ''):
+#            object_list = self.model.objects.filter(
+#                    Q(topic__icontains=name)|
+#                    Q(question__icontains=name)|
+#                    Q(created_by__username__icontains=name) 
+#                    ).distinct()
 
-        else:
-            object_list = self.model.objects.all()
-        return object_list
+#        else:
+#            object_list = self.model.objects.all()
+#        return object_list
+
+
+def question_list(request):
+    f = QuestionFilter(request.GET, queryset=Question.objects.all())
+    return render(request, 'main/search.html', {'filter': f})
 
 
 @method_decorator(login_required, name='dispatch')

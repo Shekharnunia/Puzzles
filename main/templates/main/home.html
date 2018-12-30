@@ -24,7 +24,7 @@
 				<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
 			</form>		
 			<br>
-			{% for question in object_list %}
+			{% for question in questions %}
 			<div class="container border border-dark" >
 				<br>
 				<h3 class="selectable" style="overflow-wrap: break-word;"><a href="{{ question.get_absolute_url }}" target="_blank">{{ question.get_topic_as_markdown|capfirst|linebreaks }}</a></h3>
@@ -49,31 +49,67 @@
 			</div><br>
 			{% endfor %}
 
-{% include 'includes/pagination.html' %}
-
 			{% if questions.has_other_pages %}
-				<nav aria-label="Page navigation example">
-				<ul class="pagination">
-				{% if questions.has_previous %}
-					<li class="page-item"><a class="page-link" href="?page={{ questions.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" >&laquo;</a></li>
-				{% else %}
-					<li class="page-item" class="disabled"><span class="page-link">&laquo;</span></li>
-				{% endif %}
-				{% for i in questions.paginator.page_range %}
-					{% if questions.number == i %}
-					<li class="page-item" class="active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
-					{% else %}
-					<li class="page-item"><a class="page-link" href="?page={{ i }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ i }}</a></li>
-					{% endif %}
-				{% endfor %}
-				{% if questions.has_next %}
-					<li class="page-item"><a class="page-link" href="?page={{ questions.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&raquo;</a></li>
-				{% else %}
-					<li class="page-item" class="disabled"><span class="page-link">&raquo;</span></li>
-				{% endif %}
-				</ul>
-			</nav>
-			{% endif %}
+                        <nav aria-label="Topics pagination" class="mb-4">
+                            <ul class="pagination">
+                              {% if questions.number > 1 %}
+                                <li class="page-item">
+                                  <a class="page-link" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">First</a>
+                                </li>
+                              {% else %}
+                                <li class="page-item disabled">
+                                  <span class="page-link">First</span>
+                                </li>
+                              {% endif %}
+                        
+                              {% if questions.has_previous %}
+                                <li class="page-item">
+                                  <a class="page-link" href="?page={{ questions.previous_page_number }}{% if request.GET.q %} &q={{ request.GET.q }}{% endif %}">Previous</a>
+                                </li>
+                              {% else %}
+                                <li class="page-item disabled">
+                                  <span class="page-link">Previous</span>
+                                </li>
+                              {% endif %}
+                        
+                              {% for page_num in questions.paginator.page_range %}
+                                {% if questions.number == page_num %}
+                                  <li class="page-item active">
+                                    <span class="page-link">
+                                      {{ page_num }}
+                                      <span class="sr-only">(current)</span>
+                                    </span>
+                                  </li>
+                                {% elif page_num > questions.number|add:'-3' and page_num < questions.number|add:'3' %}
+                                  <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ page_num }}</a>
+                                  </li>
+                                {% endif %}
+                              {% endfor %}
+
+                              {% if questions.has_next %}
+                                <li class="page-item">
+                                  <a class="page-link" href="?page={{ question.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a>
+                                </li>
+                              {% else %}
+                                <li class="page-item disabled">
+                                  <span class="page-link">Next</span>
+                                </li>
+                              {% endif %}
+                        
+                              {% if questions.number != questions.paginator.num_pages %}
+                                <li class="page-item">
+                                  <a class="page-link" href="?page={{ questions.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Last</a>
+                                </li>
+                              {% else %}
+                                <li class="page-item disabled">
+                                  <span class="page-link">Last</span>
+                                </li>
+                              {% endif %}
+                            </ul>
+                          </nav>
+                        {% endif %}
+
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-10 col-lg-8" id="id_newsletter">
 					<div class="card"  style="background:#3C3C45; color:white;">

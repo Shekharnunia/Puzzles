@@ -6,6 +6,8 @@ from django.db import models
 
 from django.utils.html import mark_safe
 from markdown import markdown
+import django_filters
+
 
 class Question(models.Model):
     topic = models.CharField(max_length=300,unique=True)
@@ -63,3 +65,18 @@ class NewsLetter(models.Model):
 
     def __str__(self):
         return self.email
+
+
+
+
+class QuestionFilter(django_filters.FilterSet):
+    class Meta:
+        model = Question
+        fields = {
+            'topic': ['icontains', ],
+            'question': ['icontains', ],
+        }
+
+
+
+

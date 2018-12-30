@@ -65,7 +65,7 @@ INSTALLED_APPS = [
 
 
     'django_comments',
-
+    'django_filters',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
