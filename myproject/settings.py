@@ -41,29 +41,36 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    
-    'widget_tweaks',
-
-    'material',
+    'django.contrib.humanize',
+    'django.contrib.sites', 
 
     'main',
-    
-    'account',
-    
-    'django.contrib.humanize',
-
-    'social_django',
-
-    'crispy_forms',
 
     'polls',
 
     'blog',
 
+    'account',
+
+
+
+    'widget_tweaks',
+
+    'material',
+
+    'social_django',
+
+    'crispy_forms',
+
+
+
+    'django_comments',
+
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
