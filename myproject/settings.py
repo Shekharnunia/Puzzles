@@ -61,7 +61,6 @@ INSTALLED_APPS = [
 
     'material',
 
-    'social_django',
 
     'crispy_forms',
 
@@ -84,7 +83,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -102,25 +100,10 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
 
                 'django.template.context_processors.media', # <-add from tutorial reference
-
-                'social_django.context_processors.backends',  
-                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
-
-AUTHENTICATION_BACKENDS = (
-    'social_core.backends.github.GithubOAuth2',
-    'social_core.backends.twitter.TwitterOAuth',
-    'social_core.backends.facebook.FacebookOAuth2',
-
-    # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-    # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
-
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
@@ -191,14 +174,6 @@ LOGIN_URL = 'account:login'
 LOGIN_REDIRECT_URL = 'main:home'
 LOGOUT_REDIRECT_URL = 'account:login'
 
-
-SOCIAL_AUTH_GITHUB_KEY = config('SOCIAL_AUTH_GITHUB_KEY')
-SOCIAL_AUTH_GITHUB_SECRET = config('SOCIAL_AUTH_GITHUB_SECRET')
-
-
-SOCIAL_AUTH_LOGIN_ERROR_URL = 'settings'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'settings'
-SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
 
 # EMAIL_HOST = 'localhost'

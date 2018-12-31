@@ -23,10 +23,6 @@
                     {% include 'includes/form.html' %}
                     <button type="submit" class="btn btn-outline-primary btn-block">Log in</button>
                   </form>
-                  <hr>
-                  <div class="text-center">
-                    <a class="btn btn-primary text-center" style="background-color: grey; " href="{% url 'social:begin' 'github' %}"><i class="fab fa-github"></i> Login with GitHub</a>
-                  </div>
             </div>
             <div class="card-footer text-muted text-center">
               No Account? Register <a href="{% url 'account:register' %}">Sign up</a>
