@@ -36,7 +36,7 @@
 					<blockquote class="blockquote text-right">
 						<footer class="blockquote-footer">
 							<cite title="Source Title">
-								<a href="#" target="_blank">{{ question.created_by|title }}</a><br>
+								<a href="{% url 'account:profile' question.created_by.username %}" target="_blank">{{ question.created_by|title }}</a><br>
 
 
 

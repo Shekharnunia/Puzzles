@@ -114,16 +114,16 @@ class CreateQuestionView(CreateView):
         new_question.save()
         messages.success(self.request, 'Question successfully created')
 
-#        subject = 'Thank you for posting question to Website'
-#        email_from = 'settings.EMAIL_HOST_USER'
-#        recipient_list = [self.request.user.email,]
+        subject = 'Thank you for posting question to Website'
+        email_from = 'settings.EMAIL_HOST_USER'
+        recipient_list = [self.request.user.email,]
 
         context = {
                 'question_user': new_question.created_by,
                 'link': new_question.get_absolute_url()
             }
-#        context_message = get_template('question_mail.txt').render(context)
-#        send_mail( subject, context_message, email_from, recipient_list, fail_silently = True )
+        context_message = get_template('question_mail.txt').render(context)
+        send_mail( subject, context_message, email_from, recipient_list, fail_silently = True )
         return redirect('main:home')
         # return redirect(new_question.get_absolute_url())
 
@@ -142,16 +142,16 @@ def question(request, pk):
             answer = form.save()
             messages.success(request, 'Answer successfully submitted')
 
-#            subject = 'There is a Answer uploaded for your Question'
-#            email_from = 'settings.EMAIL_HOST_USER'
-#            recipient_list = [question.created_by.email,]
+            subject = 'There is a Answer uploaded for your Question'
+            email_from = 'settings.EMAIL_HOST_USER'
+            recipient_list = [question.created_by.email,]
 
             context = {
                 'question_user': question.created_by,
                 'answer_user': request.user,
             }
-#            context_message = get_template('answer_mail.txt').render(context)
-#            send_mail( subject, context_message, email_from, recipient_list, fail_silently = True )
+            context_message = get_template('answer_mail.txt').render(context)
+            send_mail( subject, context_message, email_from, recipient_list, fail_silently = True )
             return redirect(answer.get_absolute_url())
         else:
             messages.warning(request, 'Login first')
@@ -279,22 +279,22 @@ class ContactUs(CreateView):
 
 
 	# one mail for website admins
-#        subject_for_admin = 'Some is trying to contact to your website'
-#        email_from = 'settings.EMAIL_HOST_USER'
-#        recipient_list_for_admin = [settings.EMAIL_HOST_USER,]
-#        context_message_for_admin = contact_us.message
-#        send_mail( subject_for_admin, context_message_for_admin, email_from, recipient_list_for_admin, fail_silently = True )
+        subject_for_admin = 'Some is trying to contact to your website'
+        email_from = 'settings.EMAIL_HOST_USER'
+        recipient_list_for_admin = [settings.EMAIL_HOST_USER,]
+        context_message_for_admin = contact_us.message
+        send_mail( subject_for_admin, context_message_for_admin, email_from, recipient_list_for_admin, fail_silently = True )
 
 
 	# one mail for uploader
-#        subject = 'We got your email'
-#        recipient_list = [contact_us.email,]
-#        context_message = 'We will get your message and we will try to get back to you as fast as possible' 
+        subject = 'We got your email'
+        recipient_list = [contact_us.email,]
+        context_message = 'We will get your message and we will try to get back to you as fast as possible' 
  #       send_mail( subject, context_message, email_from, recipient_list, fail_silently = True )
 
-#        message1 = (subject_for_admin, context_message_for_admin, email_from, recipient_list_for_admin)
-#        message2 = (subject, context_message, email_from, recipient_list)
-#        send_mass_mail((message1, message2),  fail_silently = True)
+        message1 = (subject_for_admin, context_message_for_admin, email_from, recipient_list_for_admin)
+        message2 = (subject, context_message, email_from, recipient_list)
+        send_mass_mail((message1, message2),  fail_silently = True)
 
 
 
