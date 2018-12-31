@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block breadcrumb %}
-      <li class="breadcrumb-item"><a href="{% url 'main:home' %}">{% trans 'Home' %}</a></li>
+      <li class="breadcrumb-item"><a href="#">{% trans 'Home' %}</a></li>
       <li class="breadcrumb-item"><a href="{% url 'blog:drafts' %}">{% trans 'Drafts' %}</a></li>
       <li class="breadcrumb-item active" aria-current="page">{% trans 'Update an article' %}</li>
 {% endblock %}

@@ -26,6 +26,15 @@ def create_profile(sender, **kwargs):
         user_profile.save()
 post_save.connect(create_profile, sender=User)
 
+
+
+
+
+
+
+
+
+
 # class UserProfile(models.Model):
 #     user = models.OneToOneField(User, on_delete=models.CASCADE)
 #     description = models.CharField(max_length=100, default='', blank=True)
