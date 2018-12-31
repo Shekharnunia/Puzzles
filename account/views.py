@@ -24,11 +24,6 @@ from django.contrib.auth import(authenticate,get_user_model,login,logout)
 
 from django.contrib import messages
 
-from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
-from social_django.models import UserSocialAuth
-
-
 
 
 def register(request):

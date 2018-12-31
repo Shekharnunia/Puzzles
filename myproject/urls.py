@@ -4,13 +4,13 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.contrib import admin
 
-from account import views as core_views
+#from account import views as core_views
 
 urlpatterns = [
     path('polls/', include('polls.urls')),
     path('blog/', include('blog.urls')),
     url(r'',include('main.urls',namespace='main')),
-    url(r'account/',include('account.urls',namespace='account')),
+#    url(r'account/',include('account.urls',namespace='account')),
 
 
 

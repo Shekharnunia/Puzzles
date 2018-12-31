@@ -33,7 +33,7 @@
 						<blockquote class="blockquote text-right">
 							<footer class="blockquote-footer">
 								<cite title="Source Title">
-									<a href="{% url 'account:profile' question.created_by.username %}">{{ question.created_by.username|capfirst }}</a><br>
+									<a href="#">{{ question.created_by.username|capfirst }}</a><br>
 									{% if question.created_at == question.updated_at %}
 										Upload : {{ question.created_at|naturaltime }}<br>
 									{% else %}
@@ -88,7 +88,7 @@
 						<p class="mb-0">{{ answer.get_answer_as_markdown|capfirst }}</p>
 					</blockquote>
 					<blockquote class="blockquote text-right">
-						<footer class="blockquote-footer"><cite title="Source Title"><a href="{% url 'account:profile' answer.answer_by.username %}">{{ answer.answer_by.username|capfirst }}</a><br>Upload : {{ answer.answers_at|naturaltime }}<br>Updated : {{ answer.updated_at|naturaltime }}</cite></footer>
+						<footer class="blockquote-footer"><cite title="Source Title"><a href="#">{{ answer.answer_by.username|capfirst }}</a><br>Upload : {{ answer.answers_at|naturaltime }}<br>Updated : {{ answer.updated_at|naturaltime }}</cite></footer>
 					</blockquote>
 				</div>
 			</div><br>

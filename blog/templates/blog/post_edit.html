@@ -1,4 +1,9 @@
 {% extends 'blog/base.html' %}
+{% load static %}
+
+{% block stylesheet %}
+	<link rel="stylesheet" href="{% static 'css/simplemde.min.css' %}">
+{% endblock stylesheet %}
 
 {% block content %}
     <h2>New post</h2>
@@ -6,4 +11,14 @@
         {% include 'includes/form.html' %}
         <button type="submit" class="save btn btn-success">Save</button>
     </form>
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'js/simplemde.min.js' %}"></script>
+<!--<script>
+	var simplemde = new SimpleMDE();
+</script>--> 
+<script>
+var simplemde = new SimpleMDE({ element: document.getElementById("id_description") });
+</script>
 {% endblock %}
