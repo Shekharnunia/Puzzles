@@ -16,6 +16,7 @@ urlpatterns = [
 
     url(r'^admin/', admin.site.urls),  
 
+    url(r'^accounts/', include('allauth.urls')),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
 
     url(r'^settings/$', core_views.settings, name='settings'),

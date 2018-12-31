@@ -53,6 +53,9 @@ INSTALLED_APPS = [
     'account',
 
 
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 
     'widget_tweaks',
 
@@ -112,8 +115,12 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.twitter.TwitterOAuth',
     'social_core.backends.facebook.FacebookOAuth2',
 
+    # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
 )
+
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
