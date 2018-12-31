@@ -60,11 +60,13 @@ INSTALLED_APPS = [
 
     'crispy_forms',
 
-
-
+    'sorl.thumbnail',
+    "taggit",
     'django_comments',
     'django_filters',
 ]
+
+TAGGIT_CASE_INSENSITIVE = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

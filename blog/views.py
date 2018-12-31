@@ -1,101 +1,67 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
-from django.utils import timezone
-from django.utils.text import slugify
-from .forms import PostForm #, CommentForm
-from .models import Post #, Comment
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import CreateView, ListView, UpdateView, DetailView
+from django.urls import reverse
+
+from .helpers import AuthorRequiredMixin
+from .models import Article
+from .forms import ArticleForm
 
 
+class ArticlesListView(LoginRequiredMixin, ListView):
+    """Basic ListView implementation to call the published articles list."""
+    model = Article
+    paginate_by = 15
+    context_object_name = "articles"
 
-def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    return render(request, 'blog/post_list.html', {'posts':posts})
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['popular_tags'] = Article.objects.get_counted_tags()
+        return context
 
-
-def post_detail(request, pk, slug):
-    post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/post_detail.html', {'post': post})
-
-
-@login_required
-def post_new(request):
-    if request.method == "POST":
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.slug = request.user
-            post.save()
-            return redirect('blog:post_detail', pk=post.pk, slug=post.slug)
-    else:
-        form = PostForm()
-    return render(request, 'blog/post_edit.html', {'form': form})
+    def get_queryset(self, **kwargs):
+        return Article.objects.get_published()
 
 
-@login_required
-def post_edit(request, pk=None, slug=None):
-    post = get_object_or_404(Post, pk=pk)
-    if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('blog:post_detail', pk=post.pk, slug=post.slug)
-    else:
-        form = PostForm(instance=post)
-    return render(request, 'blog/post_edit.html', {'form': form})
+class DraftsListView(ArticlesListView):
+    """Overriding the original implementation to call the drafts articles
+    list."""
+    def get_queryset(self, **kwargs):
+        return Article.objects.get_drafts()
 
 
-@login_required
-def post_draft_list(request):
-    posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
-    return render(request, 'blog/post_draft_list.html', {'posts': posts})
+class CreateArticleView(LoginRequiredMixin, CreateView):
+    """Basic CreateView implementation to create new articles."""
+    model = Article
+    message = ("Your article has been created.")
+    form_class = ArticleForm
+    template_name = 'blog/article_create.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, self.message)
+        return reverse('blog:list')
 
 
-@login_required
-def post_publish(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    post.publish()
-    return redirect('blog:post_detail', pk=pk, slug=post.slug)
+class EditArticleView(LoginRequiredMixin, AuthorRequiredMixin, UpdateView):
+    """Basic EditView implementation to edit existing articles."""
+    model = Article
+    message = ("Your article has been updated.")
+    form_class = ArticleForm
+    template_name = 'blog/article_update.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, self.message)
+        return reverse('blog:list')
 
 
-@login_required
-def post_remove(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    post.delete()
-    return redirect('blog:post_list')
-
-
-def add_comment_to_post(request, pk, slug):
-    post = get_object_or_404(Post, pk=pk)
-    if request.method == "POST":
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.save()
-            return redirect('blog:post_detail', pk=post.pk, slug=post.slug)
-    else:
-        form = CommentForm()
-    return render(request, 'blog/add_comment_to_post.html', {'form': form})
-
-
-@login_required
-def comment_approve(request, pk):
-    comment = get_object_or_404(Comment, pk=pk)
-    comment.approve()
-    return redirect('blog:post_detail', pk=comment.post.pk, slug=comment.post.slug)
-
-
-@login_required
-def comment_remove(request, pk):
-    comment = get_object_or_404(Comment, pk=pk)
-    comment.delete()
-    return redirect('blog:post_detail', pk=comment.post.pk, slug=comment.post.slug)
-
-
-def approved_comments(self):
-    return self.comments.filter(approved_comment=True)
-
-
+class DetailArticleView(LoginRequiredMixin, DetailView):
+    """Basic DetailView implementation to call an individual article."""
+    model = Article

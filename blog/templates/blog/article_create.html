@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static 	i18n %}
+{% load crispy_forms_tags %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'main:home' %}">Home</a></li>
+    <li class="breadcrumb-item active"><a href="{% url 'blog:list' %}">Articles</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <form action="{% url 'blog:write_new' %}" enctype="multipart/form-data"  id="article-form" method="POST" role="form">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="form-group">
+      <button type="button" class="btn btn-primary publish">{% trans 'Publish' %}</button>
+      <button type="button" class="btn btn-default draft">{% trans 'Save as draft' %}</button>
+      <a href="{% url 'blog:list' %}" class="btn btn-default">{% trans 'Cancel' %}</a>
+    </div>
+  </form>
+  {{ form.media }}
+</div>
+{% endblock content %}
+
+{% block modal %}
+  <script src="{% static 'js/articles.js' %}"></script>
+{% endblock modal %}

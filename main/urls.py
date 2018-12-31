@@ -1,5 +1,4 @@
 from django.conf.urls import url
-from django.contrib import admin
 from main import views
 from django_filters.views import FilterView
 

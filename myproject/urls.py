@@ -11,7 +11,7 @@ urlpatterns = [
     path('blog/', include('blog.urls')),
     url(r'',include('main.urls',namespace='main')),
     url(r'account/',include('account.urls',namespace='account')),
-
+    url(r'^comments/', include('django_comments.urls')),
 
     url(r'^admin/', admin.site.urls),  
 

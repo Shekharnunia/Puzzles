@@ -1,15 +1,13 @@
 from django import forms
 
-from .models import Post#, Comment
+from .models import Article
 
-class PostForm(forms.ModelForm):
+
+class ArticleForm(forms.ModelForm):
+    status = forms.CharField(widget=forms.HiddenInput())
+    edited = forms.BooleanField(
+        widget=forms.HiddenInput(), required=False, initial=False)
 
     class Meta:
-        model = Post
-        fields = ('title', 'description',)
-
-#class CommentForm(forms.ModelForm):
-
-#    class Meta:
-#        model = Comment
-#        fields = ('author', 'text',)
+        model = Article
+        fields = ["title", "content", "image", "tags", "status", "edited"]

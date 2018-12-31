@@ -12,10 +12,11 @@
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 	
 	<!-- This will be use to use extra css file for some specific page -->
-
+<title>
 	{% block head %}
-		<title>PUZZLES</title>
+		PUZZLES
 	{% endblock head %}
+</title>
         <link rel="icon" href="{% static 'img/favicon.png' %}">
 	{% block stylesheet %}
 		<link rel="stylesheet" href="{% static 'css/simplemde.min.css' %}">
@@ -79,6 +80,7 @@
 	});
 </script>
 {% block javascript %}{% endblock %}
+      {% block modal %}{% endblock modal %}
 <script id="dsq-count-scr" src="//http-127-0-0-1-8000-gv7aevam3r.disqus.com/count.js" async></script>
 </body>
 </html>
