@@ -17,34 +17,27 @@
                                 <li class="nav-item">
 					<a class="nav-link" href="{% url 'main:search' %}">Search</i></a>
 				</li>
-                      		<li class="nav-item">
-					<a class="nav-link" href="{% url 'account_email' %}">account_email</a>
-				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"> {{ request.user.username|title }}</i></a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="#">Profile</a>
-						<a class="dropdown-item" href="{% url 'account_change_password' %}">Change Password</a>
+						<a class="dropdown-item" href="{% url 'account:profile' request.user.username %}">Profile</a>
+						<a class="dropdown-item" href="{% url 'account:change_password' %}">Change Password</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
+						<a class="dropdown-item" href="{% url 'account:logout' %}">Logout</a>
 					</div>
 				</li>
-
-
 			</ul>
 			{% else %}	
 			<ul class="navbar-nav ">
 				<li class="nav-item">
-					<a class="nav-link" href="{% url 'account_signup' %}"><i class="fas fa-user-plus"> Sign-Up</i></a>
+					<a class="nav-link" href="{% url 'account:account_signup' %}"><i class="fas fa-user-plus"> Sign-Up</i></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="{% url 'account_login' %}"><i class="fas fa-user"> Log-In</i></a>
+					<a class="nav-link" href="{% url 'account:login' %}"><i class="fas fa-user"> Log-In</i></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="{% url 'account_reset_password' %}">Reset Password</a>
+					<a class="nav-link" href="{% url 'account:password_reset' %}">Reset Password</a>
 				</li>
-
-
 			</ul>
 			{% endif %}
 		</div>

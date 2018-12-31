@@ -8,11 +8,11 @@
             </div>
             <h2><a href="{% url 'blog:post_detail' pk=post.pk slug=post.slug %}">{{ post.title }}</a></h1></h2>
             <p>{{ post.description|linebreaksbr }}</p>
-            {% if post.comments.approved_comments.count %}
+<!--            {% if post.comments.approved_comments.count %}
             <a href="{% url 'blog:post_detail' pk=post.pk slug=post.slug %}#comment_id">Comments: {{ post.comments.count }}</a>
             {% else %}
             <a href="{% url 'blog:post_detail' pk=post.pk slug=post.slug %}#comment_id">Join the Discussion</a>
-            {% endif %}
+            {% endif %}-->
         </div><hr>
     {% endfor %}
 {% endblock %}

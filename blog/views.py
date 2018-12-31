@@ -2,8 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.utils.text import slugify
-from .forms import PostForm, CommentForm
-from .models import Post, Comment
+from .forms import PostForm #, CommentForm
+from .models import Post #, Comment
 
 
 

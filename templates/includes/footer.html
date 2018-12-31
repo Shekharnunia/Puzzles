@@ -8,9 +8,9 @@
 						<ul class="list-unstyled quick-links">
 							<li><a href="{% url 'main:home' %}"><i class="fa fa-angle-double-right"></i>Home</a></li>
 
-							<li><a href="#"><i class="fa fa-angle-double-right"></i>Profile</a></li>
+							<li><a href="{% url 'account:profile' request.user.username %}"><i class="fa fa-angle-double-right"></i>Profile</a></li>
 
-							<li><a href="{% url 'account_change_password' %}"><i class="fa fa-angle-double-right"></i>Change Password</a></li>
+							<li><a href="{% url 'account:change_password' %}"><i class="fa fa-angle-double-right"></i>Change Password</a></li>
 
 						</ul>
 					</div>
@@ -20,11 +20,11 @@
 					<ul class="list-unstyled quick-links">
 						<li><a href="{% url 'main:home' %}"><i class="fa fa-angle-double-right"></i>Home</a></li>
 
-						<li><a href="{% url 'account_signup' %}"><i class="fa fa-angle-double-right"></i>Sign-Up</a></li>
+						<li><a href="{% url 'account:register' %}"><i class="fa fa-angle-double-right"></i>Sign-Up</a></li>
 
-						<li><a href="{% url 'account_login' %}"><i class="fa fa-angle-double-right"></i>Login</a></li>
+						<li><a href="{% url 'account:login' %}"><i class="fa fa-angle-double-right"></i>Login</a></li>
 
-						<li><a href="{% url 'account_reset_password' %}"><i class="fa fa-angle-double-right"></i>Reset Password</a></li>
+						<li><a href="{% url 'account:password_reset' %}"><i class="fa fa-angle-double-right"></i>Reset Password</a></li>
 						<!-- <li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Videos</a></li> -->
 					</ul>
 					</div>
