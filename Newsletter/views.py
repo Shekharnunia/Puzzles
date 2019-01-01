@@ -86,7 +86,7 @@ def control_newsletter(request):
             body = newsletter.body
             from_email = settings.EMAIL_HOST_USER
             for email in newsletter.email.all():
-                send_mail(subject=subject, from_email=from_email, recipient_list=[email], message=body, fail_silently=True)
+                send_mail(subject=subject, from_email=from_email, recipient_list=[email.email], message=body, fail_silently=True)
     
     context={
         "form":form,
