@@ -151,7 +151,7 @@ def question(request, pk):
                 'answer_user': request.user,
             }
             context_message = get_template('answer_mail.txt').render(context)
-            send_mail( subject, context_message, email_from, recipient_list, fail_silently = True )
+            send_mail( subject, context_message, email_from, recipient_list, fail_silently = False)
             return redirect(answer.get_absolute_url())
         else:
             messages.warning(request, 'Login first')
