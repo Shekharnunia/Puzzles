@@ -9,8 +9,9 @@ from account import views as core_views
 urlpatterns = [
     path('polls/', include('polls.urls')),
     path('blog/', include('blog.urls')),
-    url(r'',include('main.urls',namespace='main')),
-    url(r'account/',include('account.urls',namespace='account')),
+    path('', include('main.urls')),
+    path('account/', include('account.urls')),
+    path('newsletter/', include('Newsletter.urls')),
     url(r'^comments/', include('django_comments.urls')),
 
     url(r'^admin/', admin.site.urls),  

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static crispy_forms_tags %}
+{% crispy form form.helper %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+		<h3 class="text-center">Unsubscribe from our mailing service</h3>
+		<form method="POST" novalidate>{% csrf_token %}
+		      {% crispy form %}
+    		        <button type="submit" class="btn btn-outline-success">Unsubscribe</button>
+
+		</form> 
+        </div>
+    </div>
+</div>
+{% endblock %}
+
