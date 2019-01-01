@@ -34,7 +34,7 @@
               <i class="lead fa fa-user"></i>
               <a href="{% url 'account:profile' article.user.username %}">{{ article.user.first_name|title }}</a>
               {% for tag in article.tags.names %}
-                <a href="#">{{ tag }}</a>
+                <a href="#"><span class="badge badge-info">{{ tag }}</span></a>
               {% endfor %}
             </div>
           </div>

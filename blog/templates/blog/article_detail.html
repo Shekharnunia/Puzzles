@@ -80,7 +80,9 @@
           <div class="card my-4">
             <div class="card-body text-center">
               <a class="btn btn-success" href="{% url 'blog:write_new' %}" title="{% trans 'Write a new article' %}"><i class="fa fa-pencil" aria-hidden="true"></i> {% trans 'New Article' %}</a>
+              {% if request.user == article.user %}
               <a class="btn btn-primary" href="{% url 'blog:edit_article' article.id %}" title="{% trans 'Edit this article' %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> {% trans 'Edit' %}</a>
+              {% endif %}
             </div>
           </div>
         {% endif %}

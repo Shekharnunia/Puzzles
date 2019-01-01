@@ -28,26 +28,3 @@ post_save.connect(create_profile, sender=User)
 
 
 
-
-
-
-
-
-
-
-# class UserProfile(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     description = models.CharField(max_length=100, default='', blank=True)
-#     city = models.CharField(max_length=100, default='')
-#     website = models.URLField(default='', blank=True)
-#     phone = models.PositiveIntegerField(default=0, blank=True)
-#     image = models.ImageField(upload_to='media', blank=True)
-
-#     def __str__(self):
-#         return self.user.username
-
-# def create_profile(sender, **kwargs):
-#     if kwargs['created']:
-#         user_profile = UserProfile.objects.create(user=kwargs['instance'])
-
-# post_save.connect(create_profile, sender=User)
