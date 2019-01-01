@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'blog',
     'account',
     'Newsletter',
+    'control_panel',
 
 
     'widget_tweaks',

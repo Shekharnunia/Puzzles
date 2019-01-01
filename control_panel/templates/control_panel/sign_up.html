@@ -3,15 +3,6 @@
 {% crispy form form.helper %}
 
 {% block body %}
-		<div class="container">		
-			{% if messages %}
-			    {% for message in messages %}
-			    <div {% if message.tags %} class="alert alert-{{ message.tags }}" role="alert"{% endif %}>{{ message }}</div>
-			    {% endfor %}
-
-			{% endif %}
-		</div>
-
 <div class="container">
     <div class="row">
         <div class="col-md-6 offset-md-3">
@@ -19,6 +10,7 @@
 		<form method="POST" novalidate>{% csrf_token %}
 		      {% crispy form %}
     		        <button type="submit" class="btn btn-outline-success">Unsubscribe</button>
+
 		</form> 
         </div>
     </div>

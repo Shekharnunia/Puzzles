@@ -32,10 +32,13 @@ def newsletter_signup(request):
             subject = "Thanks for joining our Newsletter"
             from_email = settings.EMAIL_HOST_USER
             to_email = [instance.email]
-            with open(settings.BASE_DIR + "/templates/newsletter/sign_up_email/html") as f:
-                signup_message = f.read()
+            #with open(settings.BASE_DIR + "/templates/newsletter/sign_up_email.txt") as f:
+            #    signup_message = f.read()
+            signup_message='''Welcome to our website
+            Thanks for Joining
+            To unsubscribe click the this link http://127.0.0.1:8000/newsletter/unsubscribe/'''
             message = EmailMultiAlternatives(subject=subject, body=signup_message, from_email=from_email, to=to_email)
-            html_template = get_template("newsletters/unsubscribe_email.html")
+            html_template = get_template("newsletter/sign_up_email.html").render()
             message.attach_alternative(html_template, "text/html")
             message.send()
     context = {
@@ -54,10 +57,14 @@ def newsletter_unsubscribe(request):
             subject = "You have been unsubscribed"
             from_email = settings.EMAIL_HOST_USER
             to_email = [instance.email]
-            with open(settings.BASE_DIR + "/templates/newsletter/unsubscribe_email.txt") as f:
-                signup_message = f.read()
+            #with open(settings.BASE_DIR + "/templates/newsletter/unsubscribe_email.txt") as f:
+            #    signup_message = f.read()
+            signup_message='''Welcome to our website
+            Thanks for Joining
+            To unsubscribe click the this link http://127.0.0.1:8000/newsletter/unsubscribe/'''
+
             message = EmailMultiAlternatives(subject=subject, body=signup_message, from_email=from_email, to=to_email)
-            html_template = get_template("newsletters/unsubscribe_email.html")
+            html_template = get_template("newsletter/unsubscribe_email.html").render()
             message.attach_alternative(html_template, "text/html")
             message.send()
         else:
@@ -66,15 +73,25 @@ def newsletter_unsubscribe(request):
             'form':form,
     }
     return render(request, 'newsletter/unsubscribe.html', context)
-            
     
+        
+def control_newsletter(request):
+    form = NewsLetterCreationForm(request.POST or None)
     
+    if form.is_valid():
+        instance = form.save()
+        newsletter = NewsLetter.objects.get(id=instance.id)
+        if newsletter.status == "Published":
+            subject = newsletter.subject
+            body = newsletter.body
+            from_email = settings.EMAIL_HOST_USER
+            for email in newsletter.email.all():
+                send_mail(subject=subject, from_email=from_email, recipient_list=[email], message=body, fail_silently=True)
     
-    
-    
-    
-    
-    
+    context={
+        "form":form,
+    }
+    return render(request, "control_panel/control_newsletter.html", context)
     
     
     
