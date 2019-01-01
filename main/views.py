@@ -20,8 +20,8 @@ from django.utils import timezone
 from django.views.generic import UpdateView, ListView, CreateView, DeleteView
 
 
-from main.models import Question, Answer, ContactUs, NewsLetter, QuestionFilter
-from main.forms import QuestionForm, AnswerForm, NewsLetterForm
+from main.models import Question, Answer, ContactUs,  QuestionFilter
+from main.forms import QuestionForm, AnswerForm
 
 # This is the format of sending email
 def email(request):
@@ -38,15 +38,6 @@ def email(request):
 
 def questionlistview(request):
     queryset_list = Question.objects.all().order_by('-pk')
-    form = NewsLetterForm(request.POST)
-
-    if request.method == 'POST':
-        if form.is_valid():
-            form = form.save()
-            messages.success(request, "Your Email has Successfully Submitted")
-        else:
-            messages.warning(request, "Wrong Email or Email Already Exist")
-
 
     query = request.GET.get("q")
     if query:
@@ -68,7 +59,6 @@ def questionlistview(request):
 
     context = {
         "questions": queryset, 
-        'form': NewsLetterForm,
     }
     return render(request, 'main/home.html', context)
 

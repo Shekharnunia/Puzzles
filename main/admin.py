@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
-from main.models import Question, Answer, ContactUs, NewsLetter
+from main.models import Question, Answer, ContactUs
 
 
 class QuestionAdmin(admin.ModelAdmin):
@@ -32,4 +32,3 @@ admin.site.register(Answer, AnswerAdmin)
 
 admin.site.register(ContactUs, ContactUsAdmin)
 
-admin.site.register(NewsLetter)

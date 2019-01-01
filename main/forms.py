@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from main.models import Question, Answer, NewsLetter
+from main.models import Question, Answer
 
 class QuestionForm(forms.ModelForm):
     topic = forms.CharField(
@@ -42,9 +42,3 @@ class AnswerForm(forms.ModelForm):
             'answer'
         ]
 
-class NewsLetterForm(forms.ModelForm):
-    class Meta:
-        model = NewsLetter
-        fields = [
-            'email',
-        ]

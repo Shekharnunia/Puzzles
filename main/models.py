@@ -60,13 +60,6 @@ class ContactUs(models.Model):
         return self.email
 
 
-class NewsLetter(models.Model):
-    email = models.EmailField(unique=True)
-
-    def __str__(self):
-        return self.email
-
-
 
 
 class QuestionFilter(django_filters.FilterSet):
