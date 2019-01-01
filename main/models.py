@@ -54,6 +54,7 @@ class Answer(models.Model):
 class ContactUs(models.Model):
     name = models.CharField(max_length=50, blank=False,)
     email = models.EmailField()
+    subject = models.CharField(max_length = 256)
     message = models.TextField(max_length=2000, blank=False)
 
     def __str__(self):

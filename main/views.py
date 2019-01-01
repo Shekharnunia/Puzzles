@@ -135,13 +135,13 @@ def question(request, pk):
             subject = 'There is a Answer uploaded for your Question'
             email_from = 'settings.EMAIL_HOST_USER'
             recipient_list = [question.created_by.email,]
-
+            message = "heloo"
             context = {
                 'question_user': question.created_by,
                 'answer_user': request.user,
             }
             context_message = get_template('answer_mail.txt').render(context)
-            send_mail( subject, context_message, email_from, recipient_list, fail_silently = False)
+            send_mail( subject, context_message, email_from, recipient_list, fail_silently = True)
             return redirect(answer.get_absolute_url())
         else:
             messages.warning(request, 'Login first')
@@ -261,7 +261,7 @@ def term_and_conditions(request):
 class ContactUs(CreateView):
     model = ContactUs
     template_name = 'main/contact_us.html'
-    fields = ('name', 'email', 'message',)
+    fields = ('name', 'email', 'subject', 'message',)
     
     def form_valid(self, form):
         contact_us = form.save(commit=False)
@@ -269,11 +269,11 @@ class ContactUs(CreateView):
 
 
 	# one mail for website admins
-        subject_for_admin = 'Some is trying to contact to your website'
+        subject_for_admin = contact_us.subject
         email_from = 'settings.EMAIL_HOST_USER'
         recipient_list_for_admin = [settings.EMAIL_HOST_USER,]
         context_message_for_admin = contact_us.message
-        send_mail( subject_for_admin, context_message_for_admin, email_from, recipient_list_for_admin, fail_silently = True )
+        #send_mail( subject_for_admin, context_message_for_admin, email_from, recipient_list_for_admin, fail_silently = True )
 
 
 	# one mail for uploader
