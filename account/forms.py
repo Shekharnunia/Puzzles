@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from account.models import UserProfile
+from account.models import  UserProfile
+
 
 class RegistrationForm(UserCreationForm):
     email = forms.CharField(max_length=254, required=True, widget=forms.EmailInput())
@@ -34,9 +35,9 @@ class RegistrationForm(UserCreationForm):
 
         return user
 
-
  
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']
+

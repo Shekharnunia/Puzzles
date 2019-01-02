@@ -7,7 +7,7 @@ from .models import UserProfile
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user','phone','city','country')
+    list_display = ('user', 'city', 'country', 'role', 'birthdate')
 
 
     def get_queryset(self, request):
@@ -16,3 +16,4 @@ class UserProfileAdmin(admin.ModelAdmin):
         return queryset
 
 admin.site.register(UserProfile, UserProfileAdmin)
+

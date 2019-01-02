@@ -10,7 +10,7 @@ urlpatterns = [
     path('polls/', include('polls.urls')),
     path('blog/', include('blog.urls')),
     path('', include('main.urls')),
-    path('account/', include('account.urls')),
+    url(r'^account/', include('account.urls')),
     path('control/', include('control_panel.urls')),
     path('newsletter/', include('Newsletter.urls')),
     url(r'^comments/', include('django_comments.urls')),

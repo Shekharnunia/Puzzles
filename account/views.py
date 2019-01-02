@@ -1,14 +1,14 @@
-from account.forms import UserProfileForm
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import PermissionDenied
 
 from django.urls import reverse
 
 from django.shortcuts import render, redirect
-from account.models import UserProfile
+
 from django.contrib.auth.models import User
 
-from account.forms import RegistrationForm
+from account.forms import RegistrationForm, UserProfileForm
+from account.models import UserProfile
 from django.contrib.auth import login
 
 from main import views
@@ -18,6 +18,7 @@ from django.views.generic import UpdateView, CreateView
 from django.urls import reverse_lazy
 
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 from django.utils.decorators import method_decorator
 
 from django.contrib.auth import(authenticate,get_user_model,login,logout)
@@ -36,7 +37,7 @@ def register(request):
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             messages.success(request, 'Your account successfully created')
-            return redirect(('account:profile'))
+            return redirect(('main:home'))
     else:
         form = RegistrationForm()
     return render(request, 'account/register.html',{'form': form})
@@ -53,7 +54,7 @@ def edit_user(request, pk):
     user = User.objects.get(pk=pk)
     user_form = UserProfileForm(instance=user)
 
-    ProfileInlineFormset = inlineformset_factory(User, UserProfile, fields=('website', 'bio', 'phone', 'city', 'country', 'organization','image'))
+    ProfileInlineFormset = inlineformset_factory(User, UserProfile, fields=('website', 'bio', 'phone', 'city', 'country', 'organization', 'birthdate', 'image'))
     formset = ProfileInlineFormset(instance=user)
 
     if request.user.is_authenticated and request.user.id == user.id:

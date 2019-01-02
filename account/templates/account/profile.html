@@ -2,11 +2,7 @@
 
 {% load static %}
 
-{% block head %}
-
-{{ user.username|title }}
-
-{% endblock head %}
+{% block head %}{{ user.username|title }}{% endblock head %}
 
 {% block breadcrumb %}
 	<li class="breadcrumb-item active"><a href="{% url 'main:home' %}">Home</a></li>
@@ -82,8 +78,12 @@
 							<p>Country: {{ user.user.country }}</p>
 						{% endif %}
 						
-						{% if user.user.organization %}
-							<p>Organization: {{ user.user.organization|title }}</p>
+						{% if user.user.role %}
+							{% if user.user.role == 1 %}<p>Role: Student{% elif user.user.role == 2 %}Role: Teacher{% endif %}</p>
+						{% endif %}
+
+						{% if user.user.birthdate %}
+							<p>Birthdate: {{ user.user.birthdate }}</p>
 						{% endif %}
 
 			      </div>
