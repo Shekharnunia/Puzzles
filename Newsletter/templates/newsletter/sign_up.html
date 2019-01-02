@@ -3,8 +3,8 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-sm-9 offset-sm-1 col-md-10 offset-sm-1 main">
+    <div class="row text-center">
+        <div class="col-sm-9 offset-sm-1 col-md-10 offset-md-1 main">
 			{% if messages %}
 			    {% for message in messages %}
 			    <div {% if message.tags %} class="alert alert-{{ message.tags }}" role="alert"{% endif %}>{{ message }}</div>
@@ -14,6 +14,7 @@
 		<h3 class="text-center">Subscribe from our mailing service</h3>
 		<form method="POST" novalidate>{% csrf_token %}
 		      {% crispy form %}
+    		        <button type="submit" class="btn btn-outline-primary"><i class="fas fa-clipboard-list-check">Subscribe</button>
 		</form> 
         </div>
     </div>

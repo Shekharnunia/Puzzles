@@ -5,7 +5,7 @@
 {% block content %}	
 			
 <div class="container">
-    <div class="row">
+    <div class="row text-center">
         <div class="col-sm-9 offset-sm-1 col-md-10 offset-sm-1 main">
         {% if messages %}
 	    {% for message in messages %}
@@ -15,7 +15,7 @@
 		<h3 class="text-center">Unsubscribe from our mailing service</h3>
 		<form method="POST" novalidate>{% csrf_token %}
 		      {% crispy form %}
-    		        <button type="submit" class="btn btn-outline-success">Unsubscribe</button>
+    		        <button type="submit" class="btn btn-outline-primary">Unsubscribe</button>
 		</form> 
         </div>
     </div>
