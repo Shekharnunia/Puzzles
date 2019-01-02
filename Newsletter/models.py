@@ -18,7 +18,7 @@ class NewsLetter(models.Model):
         (PUBLISHED, ("Published")),
     )
     subject = models.CharField(max_length=250)
-    body = models.TextField(max_length=250)
+    body = models.TextField(max_length=5000)
     email = models.ManyToManyField(NewsLetterUser)
     status = models.CharField(max_length=10, choices=EMAIL_STATUS_CHOICES, default='Draft')
     created = models.DateTimeField(auto_now_add=True, auto_now=False)

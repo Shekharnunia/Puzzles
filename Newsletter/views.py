@@ -94,10 +94,25 @@ def control_newsletter(request):
     return render(request, "control_panel/control_newsletter.html", context)
     
     
-    
-    
-    
-    
+def control_newsletter_list(request):    
+    newsletters = NewsLetter.objects.all()
+
+    paginator = Paginator(newsletters, 1)
+    page = request.GET.get('page')
+
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        items = paginator.page(1)
+    except EmptyPage:
+        items = paginator.page(paginator.num_pages)
+
+    context = {
+        "questions": items, 
+        "newsletters": newsletters, 
+    }
+    return render(request, 'control_panel/control_newsletter_list.html', context)
+
     
     
     
