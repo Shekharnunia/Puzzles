@@ -7,15 +7,9 @@ from django.dispatch import receiver
 
 
 class UserProfile(models.Model):
-    STUDENT = 1
-    TEACHER = 2
-    ROLE_CHOICES = (
-        (STUDENT, 'Student'),
-        (TEACHER, 'Teacher'),
-    )
     user = models.OneToOneField(User, related_name='user', on_delete=models.CASCADE)
     website = models.URLField(default='', blank=True)
-    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, null=True, blank=True)
+    role = models.BooleanField(null=True, blank=True)
     bio = models.TextField(default='', blank=True)
     phone = models.CharField(max_length=20, blank=True, default='')
     city = models.CharField(max_length=100, default='', blank=True)

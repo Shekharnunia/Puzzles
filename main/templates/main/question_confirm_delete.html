@@ -7,7 +7,7 @@
 {% block breadcrumb %}
 	<li class="breadcrumb-item active"><a href="{% url 'main:home' %}">Home</a></li>
 	<li class="breadcrumb-item active"><a href="{{ question.get_absolute_url }}">{{ question.topic }}</a></li>
-	<li class="breadcrumb-item active">Edit Question</li>
+	<li class="breadcrumb-item active">Delete Question</li>
 {% endblock %}
 
 {% block content %}
@@ -19,7 +19,7 @@
 	<form method="POST">
 		{% csrf_token %}
 		<h2>Are you sure you want to delete the post</h2>
-		<button class="btn btn-primary btn-outline-danger" type="submit">Yes, Delete</button>
+		<button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
 		<a class="btn btn-outline-secondary" href="{{ question.get_absolute_url }}">Cancel</a>
 	</form>
 </div><br><br>	

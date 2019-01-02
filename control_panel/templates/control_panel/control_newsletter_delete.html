@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block head %}
+	Delete
+{% endblock %}
+
+{% block breadcrumb %}
+	<li class="breadcrumb-item active"><a href="{% url 'control_panel:control_newsletter_list' %}">Newsletter List</a></li>
+	<li class="breadcrumb-item active"><a href="#">something</a></li>
+	<li class="breadcrumb-item active">Delete Newsletter</li>
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="container">
+	<h1>Delete Newsletter</h1>
+	<br>
+	<h4>Topic: {{ newsletter.subject }}</h4>
+	<form method="POST">
+		{% csrf_token %}
+		<h2>Are you sure you want to delete the post</h2>
+		<button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
+		<a class="btn btn-outline-secondary" href="{% url 'control_panel:control_newsletter_list' %}">Cancel</a>
+	</form>
+</div><br><br>	
+{% endblock %}

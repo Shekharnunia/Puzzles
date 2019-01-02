@@ -32,6 +32,9 @@ def register(request):
         form = RegistrationForm(request.POST )
         if form.is_valid():
             user = form.save()
+            user.refresh_from_db()
+            user.user.role = form.cleaned_data.get('role')
+            user.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)

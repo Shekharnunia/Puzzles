@@ -5,7 +5,14 @@ from account.models import  UserProfile
 
 
 class RegistrationForm(UserCreationForm):
-    email = forms.CharField(max_length=254, required=True, widget=forms.EmailInput())
+    STUDENT = 0
+    TEACHER = 1
+    ROLE_CHOICES = (
+        (STUDENT, 'Student'),
+        (TEACHER, 'Teacher'),
+    )
+    role = forms.ChoiceField(choices=ROLE_CHOICES, required=True, widget=forms.Select(), initial='')
+    email = forms.EmailField(max_length=254, required=True, widget=forms.EmailInput())
     first_name = forms.CharField(max_length=254, required=True)
     last_name = forms.CharField(max_length=254, required=True)
     username = forms.CharField(
@@ -20,6 +27,7 @@ class RegistrationForm(UserCreationForm):
             'first_name',
             'last_name',
             'email',
+            'role',
             'password1',
             'password2'
         )

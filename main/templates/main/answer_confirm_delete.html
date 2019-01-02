@@ -18,7 +18,7 @@
 	<form method="POST">
 		{% csrf_token %}
 		<h2>Are you sure you want to delete the post</h2>
-		<button class="btn btn-primary btn-outline-danger" type="submit">Yes, Delete</button>
+		<button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
 		<a class="btn btn-outline-secondary" href="{{ answer.question_a.get_absolute_url }}">Cancel</a>
 	</form>
 </div><br><br>	

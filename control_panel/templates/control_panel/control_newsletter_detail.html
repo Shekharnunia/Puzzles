@@ -1,6 +1,6 @@
 {% extends "control_base.html" %}
 {% block content %}
-<div class="col-sm-9 offset-sm-1 col-md-10 offset-sm-1 main">
+<div class="col-sm-9 offset-sm-1 col-md-10 offset-sm-1 main mt-3">
     <div class = "row">
     <div class = "col-sm-9">
         <h1 class="page-header">All Newsletters</h1>
@@ -21,26 +21,30 @@
             </tr>
           </thead>
           <tbody>
-            {% for newsletter in newsletters %}
             <tr>
-              <td><a href="{% url 'control_panel:control_newsletter_detail' newsletter.pk %}">{{ newsletter.subject }}</a></td>
+              <td>{{ newsletter.subject }}</td>
               <td>{{ newsletter.status }}</td>
               <td>{{ newsletter.created }}</td>
               <td>{{ newsletters.updated }}</td>
               <td><a href="#">Edit</a></td>
               <td><a href="#">Delete</a></td>
             </tr>
-            {% endfor %}
           </tbody>
         </table>
-        
-        {% include 'includes/pagination.html' %}
-        
-        
-        
-        
-        
-
+        <hr>
+        <div>
+            <h2 class=page-header>Body</h2>
+                {{ newsletter.body }}
+        </div>
+        <hr>
+        <div>
+            <h2 class=page-header>Emails</h2>
+            {% for email in newsletter.email.all %}
+                <ul>
+                    <li>{{ email }}</li>
+                </ul>
+            {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock %}

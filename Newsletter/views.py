@@ -98,7 +98,7 @@ def control_newsletter_list(request):
     newsletters = NewsLetter.objects.all()
 
     paginator = Paginator(newsletters, 1)
-    page = request.GET.get('page')
+    page = request.GET.get('page', 1)
 
     try:
         items = paginator.page(page)
@@ -111,16 +111,64 @@ def control_newsletter_list(request):
         "questions": items, 
         "newsletters": newsletters, 
     }
-    return render(request, 'control_panel/control_newsletter_list.html', context)
+    return render(request, 'control_panel/control_newsletter_list.html', context)    
+    
 
+
+class NewsletterListView(ListView):
+    model = NewsLetter
+    paginate_by = 10
+    template_name = 'control_panel/control_newsletter_list.html'
+    context_object_name = 'newsletters'
+
+
+def newsletter_detail(request, pk):
+    newsletter = get_object_or_404(NewsLetter, pk=pk)
+    args = {
+        'newsletter':newsletter,
+    }
+    return render(request, 'control_panel/control_newsletter_detail.html', args)
+
+
+
+@method_decorator(login_required, name='dispatch')
+class NewsletterEditView(UserPassesTestMixin, UpdateView):
+    model = NewsLetter
+    fields = ('question',)
+    template_name = 'control_panel/control_newsletter_edit.html'
+    pk_url_kwarg = 'pk'
+    context_object_name = 'question'
+
+    def form_valid(self, form):
+        question = form.save(commit=False)
+        question.created_by = self.request.user
+        question.updated_at = timezone.now()
+        question.save()
+        messages.success(self.request, 'Question successfully updated')
+        return redirect('main:question', pk=question.pk)
+
+    def test_func(self):
+        question = self.get_object()
+        if self.request.user == question.created_by:
+            return True
+        return False
     
-    
-    
-    
-    
-    
-    
-    
+
+
+
+@method_decorator(login_required, name='dispatch')
+class NewsletterDeleteView(UserPassesTestMixin, DeleteView):
+    model = NewsLetter
+    success_url = '/'
+
+    def test_func(self):
+        question = self.get_object()
+        if self.request.user == question.created_by:
+            return True
+        return False
+
+
+
     
     
     

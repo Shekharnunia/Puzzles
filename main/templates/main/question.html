@@ -48,33 +48,11 @@
 						</blockquote>
 					</div>
 				</div><br>
-
 				{% if question.created_by == user %}
-				<!-- Model for deleting question -->
 				<div class="pull-right">
 					<a class="btn btn-outline-secondary btn-sm mr-4" role="button" href="{% url 'main:edit_question' question.pk %}"><i class="far fa-edit"> Edit</i></a>
 
-
-					<!-- Button trigger modal -->
-					<button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#deletequestionModal"><i class="fas fa-trash-alt"> Delete</i></button>
-
-					<!-- Modal -->
-					<div class="modal fade" id="deletequestionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this question?</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="modal-body">
-									<a class="btn btn-primary" href="{% url 'main:delete_question' question.pk %}">Delete</a>
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-								</div>
-							</div>
-						</div>
-					</div>
+					<a class="btn btn-outline-secondary btn-sm" href="{% url 'main:delete_question' question.pk %}"><i class="fas fa-trash-alt"> Delete</i></a>
 				</div>
 				{% endif %}<br><br>
 			</div>
