@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load humanize thumbnail i18n comments %}
 
-{% block title %} {% trans 'Articles' %} {% endblock %}
+{% block head %} {% trans 'Articles' %} {% endblock %}
 
 
 {% block breadcrumb %}
@@ -20,16 +20,17 @@
           <!-- Blog Post -->
           <div class="card mb-4">
             <div class="card-header text-center">
-              <h2 class="card-title">{{ article.title|title }}</h2>
+              <h2 class="card-title"><a href="{% url 'blog:article' article.slug %}">{{ article.title|title }}</a></h2>
               <div class="text-muted text-center mt-4 mb-2">
                  <i class="fa fa-calendar mr-2"></i>{{ article.timestamp|date:"M d, Y" }}
                 <i class="lead fa fa-user ml-4 mr-1"></i>
                 <a href="{% url 'account:profile' article.user.username %}"> {{ article.user|title }}</a>
-                {% get_comment_count for blog.article pk as comment_count %}
-                <i class="fas fa-comments ml-4 mr-2"></i>{{ comment_count }} {% trans 'comments' %}
+                {% get_comment_count for article as comment_count %}
+                <i class="fas fa-comments ml-4 mr-2"></i><a href="{% url 'blog:article' article.slug %}#comments-link">{{ comment_count }} {% trans 'comments' %}</a>
                 <i class="far fa-eye ml-4 mr-2"></i>{% trans 'views' %}
                 {{ article.views }}
               </div>
+
             </div>
             {% thumbnail article.image "750x300" as im %}
               <img src="{{ im.url }}" alt="{% trans 'Featured Image' %}" class="card-img-top">

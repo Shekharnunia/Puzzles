@@ -120,3 +120,9 @@ section .section-title {
 #id_newletter label{
     color:#ffffff;
 }
+
+.bullet{
+    padding: 0;
+    color: #c2c6cc;
+    line-height: 1.4;
+}

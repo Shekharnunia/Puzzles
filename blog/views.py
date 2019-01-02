@@ -11,7 +11,7 @@ from .forms import ArticleForm
 class ArticlesListView(LoginRequiredMixin, ListView):
     """Basic ListView implementation to call the published articles list."""
     model = Article
-    paginate_by = 15
+    paginate_by = 5
     context_object_name = "articles"
 
     def get_context_data(self, *args, **kwargs):
