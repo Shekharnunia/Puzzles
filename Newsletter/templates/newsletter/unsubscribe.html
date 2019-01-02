@@ -1,20 +1,17 @@
-{% extends "base.html" %}
+{% extends "control_base.html" %}
 {% load static crispy_forms_tags %}
 {% crispy form form.helper %}
 
-{% block body %}
-		<div class="container">		
-			{% if messages %}
-			    {% for message in messages %}
-			    <div {% if message.tags %} class="alert alert-{{ message.tags }}" role="alert"{% endif %}>{{ message }}</div>
-			    {% endfor %}
-
-			{% endif %}
-		</div>
-
+{% block content %}	
+			
 <div class="container">
     <div class="row">
-        <div class="col-md-6 offset-md-3">
+        <div class="col-sm-9 offset-sm-1 col-md-10 offset-sm-1 main">
+        {% if messages %}
+	    {% for message in messages %}
+	        <div {% if message.tags %} class="alert alert-{{ message.tags }}" role="alert"{% endif %}>{{ message }}</div>
+	    {% endfor %}
+	{% endif %}
 		<h3 class="text-center">Unsubscribe from our mailing service</h3>
 		<form method="POST" novalidate>{% csrf_token %}
 		      {% crispy form %}

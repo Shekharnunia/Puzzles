@@ -1,15 +1,19 @@
 from django.conf import settings
 from django.contrib import messages
-from django.shortcuts import render,redirect,get_object_or_404
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.models import User
 
 from django.core.exceptions import PermissionDenied
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail, EmailMultiAlternatives
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from django.shortcuts import render,redirect,get_object_or_404
 
 from django.template.loader import get_template
+
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 
 from django.views.generic import UpdateView, ListView, CreateView, DeleteView
@@ -46,6 +50,7 @@ def newsletter_signup(request):
     }
     return render(request, 'newsletter/sign_up.html', context)
 
+
 def newsletter_unsubscribe(request):
     form = NewsLetterUserSignupForm(request.POST or None)
 
@@ -74,7 +79,8 @@ def newsletter_unsubscribe(request):
     }
     return render(request, 'newsletter/unsubscribe.html', context)
     
-        
+
+@staff_member_required
 def control_newsletter(request):
     form = NewsLetterCreationForm(request.POST or None)
     
@@ -87,13 +93,18 @@ def control_newsletter(request):
             from_email = settings.EMAIL_HOST_USER
             for email in newsletter.email.all():
                 send_mail(subject=subject, from_email=from_email, recipient_list=[email.email], message=body, fail_silently=True)
+            messages.success(request, 'Newsletter successfully send')
+            return redirect('control_panel:control_newsletter_list')
+        messages.success(request, 'Newsletter successfully Saved')
+        return redirect('control_panel:control_newsletter_list')
     
     context={
         "form":form,
     }
     return render(request, "control_panel/control_newsletter.html", context)
     
-    
+
+#Not in use    
 def control_newsletter_list(request):    
     newsletters = NewsLetter.objects.all()
 
@@ -114,7 +125,7 @@ def control_newsletter_list(request):
     return render(request, 'control_panel/control_newsletter_list.html', context)    
     
 
-
+@method_decorator(staff_member_required, name='dispatch')
 class NewsletterListView(ListView):
     model = NewsLetter
     paginate_by = 10
@@ -122,6 +133,7 @@ class NewsletterListView(ListView):
     context_object_name = 'newsletters'
 
 
+@staff_member_required
 def newsletter_detail(request, pk):
     newsletter = get_object_or_404(NewsLetter, pk=pk)
     args = {
@@ -130,42 +142,55 @@ def newsletter_detail(request, pk):
     return render(request, 'control_panel/control_newsletter_detail.html', args)
 
 
-
-@method_decorator(login_required, name='dispatch')
-class NewsletterEditView(UserPassesTestMixin, UpdateView):
+# Newsletter Edit view but not in use right now
+class NewsletterEditView(UpdateView):
     model = NewsLetter
-    fields = ('question',)
+    fields = ['subject', 'body', 'email', 'status',]
     template_name = 'control_panel/control_newsletter_edit.html'
     pk_url_kwarg = 'pk'
-    context_object_name = 'question'
+    context_object_name = 'newsletter'
 
     def form_valid(self, form):
-        question = form.save(commit=False)
-        question.created_by = self.request.user
-        question.updated_at = timezone.now()
-        question.save()
+        newsletter = form.save(commit=False)
+        newsletter.updated = timezone.now()
+        newsletter.save()
         messages.success(self.request, 'Question successfully updated')
-        return redirect('main:question', pk=question.pk)
+        return redirect('control_panel:control_newsletter_detail', pk=newsletter.pk)
+        # return redirect('main:question', pk=question.pk)
 
-    def test_func(self):
-        question = self.get_object()
-        if self.request.user == question.created_by:
-            return True
-        return False
+
+@staff_member_required
+def control_newsletter_edit(request, pk):
+    newsletter = get_object_or_404(NewsLetter, pk=pk)
+    if request.method == 'POST':
+        form = NewsLetterCreationForm(request.POST , instance = newsletter)
     
+        if form.is_valid():
+            newsletter = form.save()
+
+            if newsletter.status == "Published":
+                subject = newsletter.subject
+                body = newsletter.body
+                from_email = settings.EMAIL_HOST_USER
+                for email in newsletter.email.all():
+                    send_mail(subject=subject, from_email=from_email, recipient_list=[email.email], message=body, fail_silently=True)
+                messages.success(request, 'Newsletter successfully send')
+                return redirect('control_panel:control_newsletter_detail', pk=newsletter.pk)
+            messages.success(request, 'Newsletter successfully Saved')
+            return redirect('control_panel:control_newsletter_detail', pk=newsletter.pk)
+    else:
+        form = NewsLetterCreationForm(instance = newsletter)    
+        context={
+            "form":form,
+        }
+        return render(request, "control_panel/control_newsletter_edit.html", context)
 
 
-
-@method_decorator(login_required, name='dispatch')
-class NewsletterDeleteView(UserPassesTestMixin, DeleteView):
+@method_decorator(staff_member_required, name='dispatch')
+class NewsletterDeleteView(DeleteView):
     model = NewsLetter
     success_url = '/'
-
-    def test_func(self):
-        question = self.get_object()
-        if self.request.user == question.created_by:
-            return True
-        return False
+    template_name = 'control_panel/control_newsletter_delete.html'
 
 
 
