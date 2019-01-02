@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container mb-4">
   <form action="{% url 'blog:edit_article' form.instance.pk %}" enctype="multipart/form-data"  id="article-form" method="post" role="form">
     {% csrf_token %}
     {{ form|crispy }}

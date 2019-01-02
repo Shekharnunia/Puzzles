@@ -73,7 +73,7 @@
               <img class="d-flex mr-3 rounded-circle" src="{% static 'img/avatar.svg' %}" height="50px" alt="{% trans 'No Profile Picture' %}" />
             {% endthumbnail %}
             <div class="media-body">
-              <h5 class="mt-0">{{ comment.user|title }}<span class="bullet ml-2 h6 time-ago-bullet">•</span><span class="ml-2 h6 bullet">{{ comment.submit_date|naturaltime }}</span><span class=" h6 pull-right"><a href="/flag/{{ article.pk }}/">Flag</a></span></h5> 
+              <h5 class="mt-0">{{ comment.user|title }}<span class="bullet ml-2 h6 time-ago-bullet">•</span><span class="ml-2 h6 bullet">{{ comment.submit_date|naturaltime }}</span><span class=" h6 pull-right"><a href="{% url 'comments-flag' comment.id %}">Flag</a></span></h5> 
               {{ comment.comment }}
             </div>
           </div>

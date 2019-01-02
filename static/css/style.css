@@ -126,3 +126,7 @@ section .section-title {
     color: #c2c6cc;
     line-height: 1.4;
 }
+
+#div_id_honeypot {
+    display: none;
+}

@@ -1,7 +1,9 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from django.urls import reverse
+
 
 from .helpers import AuthorRequiredMixin
 from .models import Article
@@ -65,3 +67,11 @@ class EditArticleView(LoginRequiredMixin, AuthorRequiredMixin, UpdateView):
 class DetailArticleView(LoginRequiredMixin, DetailView):
     """Basic DetailView implementation to call an individual article."""
     model = Article
+
+
+class TagArticlesListView(ArticlesListView):
+    """Overriding the original implementation to call the drafts articles
+    list."""
+    def get_queryset(self, **kwargs):
+        return Article.objects.filter(tags__name=self.kwargs['tag_name']).filter(status='P')
+

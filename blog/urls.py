@@ -8,6 +8,6 @@ urlpatterns = [
     url(r'^drafts/$', views.DraftsListView.as_view(), name='drafts'),
     url(r'^edit/(?P<pk>\d+)/$', views.EditArticleView.as_view(), name='edit_article'),
     url(r'^(?P<slug>[-\w]+)/$', views.DetailArticleView.as_view(), name='article'),
-
+    url(r'^tag/(?P<tag_name>.+)/$', views.TagArticlesListView.as_view(), name='tag'),
 ]
 
