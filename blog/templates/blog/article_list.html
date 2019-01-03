@@ -1,15 +1,17 @@
-{% extends 'base.html' %}
+{% extends 'qa_base.html' %}
 {% load humanize thumbnail i18n comments %}
 
-{% block head %} {% trans 'Articles' %} {% endblock %}
+{% block title %} {% trans 'Articles' %} {% endblock %}
 
 
-{% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="#">{% trans 'Home' %}</a></li>
-    <li class="breadcrumb-item active"><a href="{% url 'blog:list' %}">{% trans 'Articles' %}</a></li>
-{% endblock %}
 
 {% block content %}
+<div class="container">
+	<ol class="breadcrumb my-4">
+                <li class="breadcrumb-item"><a href="#">{% trans 'Home' %}</a></li>
+                <li class="breadcrumb-item active"><a href="{% url 'blog:list' %}">{% trans 'Articles' %}</a></li>
+      	</ol>
+</div>
 
   <!-- Page Content -->
   <div class="container">

@@ -15,12 +15,12 @@
       </h4>
       <p>{{ question.get_markdown|safe|truncatechars:100 }}</p>
       <div class="question-user pull-right">
-        <span class="text-secondary">{% trans 'Asked' %} {{ question.timestamp|naturaltime }} {% trans 'by' %}</span>
-        <a href="{% url 'account:profile' question.user.username  %}">{{ question.user.username|title }}</a>
+        <span class="pull-right"><span class="text-secondary">{% trans 'Asked' %} {{ question.timestamp|naturaltime }} {% trans 'by' %}</span>
+        <a class="" href="{% url 'account:profile' question.user.username  %}">{{ question.user.username|title }}</a></span><br>
         {% if question.tags.names %}
-          <p style="position: absolute; bottom: 0;">
+          <p style="inline position: absolute; bottom: 0;">
             {% for tag in question.tags.names %}
-              <span class="badge badge-primary">{{ tag }}</span>
+              <a href="{% url 'qa:tag' tag %}"><span class="badge badge-primary">{{ tag }}</span></a>
             {% endfor %}
           </p>
         {% endif %}

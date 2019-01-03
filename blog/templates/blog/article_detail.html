@@ -4,6 +4,12 @@
 
 {% block title %}{{ article.title|title }}{% endblock %}
 
+
+{% block head %}
+  <link href="{% static 'css/articles.css' %}" rel="stylesheet">
+  <script src="{% static 'js/articles.js' %}"></script>
+{% endblock head %}
+
 {% block content %}
 
   <!-- breadcrumb Content -->
@@ -16,7 +22,7 @@
 </div>
 
   <!-- Page Content -->
-  <div class="container">
+  <div class="">
     <div class="row">
       <!-- Post Content Column -->
       <div class="col-lg-8">
@@ -45,43 +51,50 @@
             </div>
             <div class="card-footer text-muted">
               {% for tag in article.tags.names %}
-                <a href="#" class="ml-2"><span class="badge badge-info">{{ tag }}</span></a>
+                <a href="{% url 'blog:tag' tag %}" class="ml-2"><span class="badge badge-info">{{ tag }}</span></a>
               {% endfor %}
             </div>
           </div>
 
-        <hr>        <!-- Comments Form -->
-        <div class="card my-4">
-          <h5 class="card-header">{% trans 'Leave a Comment' %}:</h5>
-          <div class="card-body">
-            {% if user.is_authenticated %}
-              {% get_comment_form for article as form %}
-              <form action="{% comment_form_target %}" method="POST">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <input type="hidden" name="next" value="{% url 'blog:article' article.slug %}" />
-                <input type="submit" class="btn btn-info" value="{% trans 'Add comment' %}" id="id_submit" />
-              </form>
-            {% endif %}
-          </div>
-        </div>
-
-        <!-- Single Comment -->
-
-        {% get_comment_list for article as comment_list %}
-        {% for comment in comment_list %}
-          <div class="media mb-4" id="comments-link">
-            {% thumbnail comment.user.user.image "x50" as im %}
-              <img class="d-flex mr-3 rounded-circle" src="{{ im.url }}" alt="{% trans 'Picture Profile' %}" id="pic" />
-            {% empty %}
-              <img class="d-flex mr-3 rounded-circle" src="{% static 'img/avatar.svg' %}" height="50px" alt="{% trans 'No Profile Picture' %}" />
+        <hr>       
+		 <!-- Comments Form -->
+		<span class="pull-right text-muted" id="comment-helper" style="display: none"><small>{% trans 'Press Ctrl + Enter to post' %}</small></span>
+		<h4><span class="comment-count">{{ article.get_comments.count }}</span> {% trans 'Comments' %}</h4>
+		<div class="post-comment clearfix">
+		  <form role="form" id="comment-form">
+			{% csrf_token %}
+			<input type="hidden" name="article" value="{{ article.pk }}">
+			<div class="user-portrait clearfix">
+		        {% thumbnail user.user.image "x50" as im %}
+		          <img class="d-flex mr-3 mb-2 rounded-circle" src="{{ im.url }}" alt="{% trans 'Picture Profile' %}" id="pic" />
+		        {% empty %}
+		          <img class="d-flex mr-3 rounded-circle" src="{% static 'img/avatar.svg' %}" height="50px" alt="{% trans 'No Profile Picture' %}" />
             {% endthumbnail %}
-            <div class="media-body">
-              <h5 class="mt-0">{{ comment.user|title }}<span class="bullet ml-2 h6 time-ago-bullet">•</span><span class="ml-2 h6 bullet">{{ comment.submit_date|naturaltime }}</span><span class=" h6 pull-right"><a href="{% url 'comments-flag' comment.id %}">Flag</a></span></h5> 
-              {{ comment.comment }}
-            </div>
-          </div>
-        {% endfor %}
+			</div>
+			<div class="comment-input clearfix">
+			  <textarea class="form-control" rows="1" placeholder="{% trans 'Write a comment...' %}" name="comment" id="comment"></textarea>
+			</div>
+		  </form>
+		</div>
+		        <!-- Single Comment -->
+		<div class="well well-sm" id="comment-list">
+		  {% for comment in article.get_comments %}
+			<div class="comment">
+			  <a href="{% url 'account:profile' comment.user.username %}">
+				      <img class="comment-portrait" src="{{ comment.user.user.image.url }}"/>
+			  </a>
+			  <div class="comment-text">
+				<h5>
+				  <a href="{% url 'account:profile' comment.user.username %}">{{ comment.user.username }}</a> 
+				  <small>{{ comment.date|naturaltime }}</small>
+				</h5>
+				<p>{{ comment.comment|safe }}</p>
+			  </div>
+			</div>
+			  {% empty %}
+				<div style="padding: .6em 0">{% trans 'Be the first one to comment!' %}</div>
+			  {% endfor %}
+			</div>
       </div>
 
 
@@ -105,7 +118,7 @@
           <h5 class="card-header">{% trans 'Cloud tag' %}</h5>
           <div class="card-body">
             {% for tag in article.tags.all %}
-              <a href="#"><span class="badge badge-info">{{ tag }}</span></a>
+              <a href="{% url 'blog:tag' tag %}"><span class="badge badge-info">{{ tag }}</span></a>
             {% endfor %}
           </div>
         </div>

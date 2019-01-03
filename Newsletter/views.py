@@ -68,7 +68,7 @@ def newsletter_unsubscribe(request):
             Thanks for Joining
             To unsubscribe click the this link http://127.0.0.1:8000/newsletter/unsubscribe/'''
 
-            message = EmailMultiAlternatives(subject=subject, body=signup_message, from_email=from_email, to=to_email)
+            message = EmailMultiAlternatives(subject=subject, body=signup_message, from_email=from_email, to=to_email, fail_silently=True)
             html_template = get_template("newsletter/unsubscribe_email.html").render()
             message.attach_alternative(html_template, "text/html")
             message.send()

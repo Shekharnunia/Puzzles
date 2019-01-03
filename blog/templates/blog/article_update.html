@@ -1,14 +1,18 @@
-{% extends 'base.html' %}
+{% extends 'qa_base.html' %}
 {% load static i18n %}
 {% load crispy_forms_tags %}
 
-{% block breadcrumb %}
+
+{% block content %}
+<div class="container">
+    <ol class="breadcrumb my-4">
       <li class="breadcrumb-item"><a href="#">{% trans 'Home' %}</a></li>
       <li class="breadcrumb-item"><a href="{% url 'blog:drafts' %}">{% trans 'Drafts' %}</a></li>
       <li class="breadcrumb-item active" aria-current="page">{% trans 'Update an article' %}</li>
-{% endblock %}
+    </ol>
+</div>
 
-{% block content %}
+
 <div class="container mb-4">
   <form action="{% url 'blog:edit_article' form.instance.pk %}" enctype="multipart/form-data"  id="article-form" method="post" role="form">
     {% csrf_token %}

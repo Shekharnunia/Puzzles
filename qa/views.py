@@ -62,6 +62,15 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
     model = Question
     context_object_name = "question"
 
+    def get_context_data(self, **kwargs):
+        session_key = 'viewed_question_{}'.format(self.object.pk) 
+        if not self.request.session.get(session_key, False):
+            self.object.question_views += 1
+            self.object.save()
+            self.request.session[session_key] = True   
+        return super().get_context_data(**kwargs)
+
+
 
 class CreateQuestionView(LoginRequiredMixin, CreateView):
     """

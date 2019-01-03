@@ -1,6 +1,7 @@
 @import url('{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}');
 body{
     font-family: 'Libre Baskerville', serif;
+  padding-top: 80px;
 }
 
 a{

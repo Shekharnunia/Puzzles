@@ -20,12 +20,6 @@
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link href="{% static 'css/bootcamp.css' %}?v=1" rel="stylesheet">
 
-
-
-
-
-
-
     {% endblock css %}
     {% block head %}{% endblock head %}
   </head>
@@ -51,7 +45,7 @@
                   <li class="nav-item"><a class="nav-link" href="{% url 'polls:poll' %}">{% trans 'Poll' %} <span class="sr-only">(current)</span></a></li>
                   <li class="nav-item"><a class="nav-link" href="{% url 'blog:list' %}">Blog</a></li>
                   <li class="nav-item"><a class="nav-link" href="{% url 'qa:index_noans' %}">{% trans 'Q&A' %}</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{% url 'control_panel:control_newsletter_list' %}">{% trans 'Newsletter' %}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{% url 'Newsletter:newsletter_signup' %}">{% trans 'Newsletter' %}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{% url 'main:contact_us' %}">{% trans 'Contacts' %}</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -108,14 +102,13 @@
       ================================================== -->
       <!-- Placed at the end of the document so the pages load faster -->
       {% block javascript %}
-        <!-- Required by Bootstrap v4 -->
+        <!-- Required by Bootstrap v4.2 -->
 <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
         <!-- Your stuff: Third-party javascript libraries go here -->
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js" type="text/javascript"></script>
         <!-- place project specific Javascript in this file -->
-        <script src="{% static 'js/bootcamp.js' %}" type="text/javascript"></script>
       {% endblock javascript %}
 
       {% block modal %}{% endblock modal %}

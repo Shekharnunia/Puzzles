@@ -4,10 +4,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from django.urls import reverse
 
-
+from decorators import ajax_required
 from helpers import AuthorRequiredMixin
-from .models import Article
-from .forms import ArticleForm
+from .models import Article, ArticleComment
+from .forms import ArticleForm, ArticleCommentForm
 
 
 class ArticlesListView(LoginRequiredMixin, ListView):
@@ -69,7 +69,7 @@ class DetailArticleView(LoginRequiredMixin, DetailView):
     model = Article
 
     def get_context_data(self, **kwargs):
-        session_key = 'viewed_topic_{}'.format(self.object.pk) 
+        session_key = 'viewed_article_{}'.format(self.object.pk) 
         if not self.request.session.get(session_key, False):
             self.object.views += 1
             self.object.save()
@@ -84,3 +84,31 @@ class TagArticlesListView(ArticlesListView):
     def get_queryset(self, **kwargs):
         return Article.objects.filter(tags__name=self.kwargs['tag_name']).filter(status='P')
 
+
+@login_required
+@ajax_required
+def comment(request):
+    try:
+        if request.method == 'POST':
+            article_id = request.POST.get('article')
+            article = Article.objects.get(pk=article_id)
+            comment = request.POST.get('comment')
+            comment = comment.strip()
+            if len(comment) > 0:
+                article_comment = ArticleComment(user=request.user,
+                                                 article=article,
+                                                 comment=comment)
+                article_comment.save()
+            html = ''
+            for comment in article.get_comments():
+                html = '{0}{1}'.format(html, render_to_string(
+                    'articles/article_detail.html',
+                    {'comment': comment}))
+
+            return HttpResponse(html)
+
+        else:   # pragma: no cover
+            return HttpResponseBadRequest()
+
+    except Exception:   # pragma: no cover
+        return HttpResponseBadRequest()
