@@ -56,7 +56,7 @@ class Article(models.Model):
     tags = TaggableManager()
     objects = ArticleQuerySet.as_manager()
     updated_date = models.DateTimeField(auto_now=True, auto_now_add=False)
-    views = models.IntegerField(default = 0)
+    views = models.PositiveIntegerField(default = 0)
 
 
 
@@ -79,5 +79,31 @@ class Article(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super(Article, self).save(*args, **kwargs)
+
+    def get_summary(self):
+        if len(self.content) > 255:
+            return '{0}...'.format(self.content[:255])
+
+        else:
+            return self.content
+
+    def get_comments(self):
+        return ArticleComment.objects.filter(article=self)
+
+
+
+class ArticleComment(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    comment = models.CharField(max_length=500)
+    date = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = ("Article Comment")
+        verbose_name_plural = ("Article Comments")
+        ordering = ("date",)
+
+    def __str__(self):
+        return '{0} - {1}'.format(self.user.username, self.article.title)
 
 

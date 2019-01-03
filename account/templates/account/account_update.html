@@ -6,10 +6,6 @@
 Update info
 {% endblock %}
 
-{% block stylesheet %}
-	<!-- {% include 'material/includes/material_css.html' %} -->
-{% endblock stylesheet %}
-
 {% block breadcrumb %}
 	<li class="breadcrumb-item active"><a href="{% url 'account:profile' user.username %}">Profile</a></li>
 	<li class="breadcrumb-item active">Update Profile</li>
@@ -33,6 +29,3 @@ Update info
 </div>
 {% endblock %}
 
-{% block javascript %}
-	<!-- {% include 'material/includes/material_js.html' %} -->
-{% endblock %}

@@ -25,8 +25,7 @@
                  <i class="fa fa-calendar mr-2"></i>{{ article.timestamp|date:"M d, Y" }}
                 <i class="lead fa fa-user ml-4 mr-1"></i>
                 <a href="{% url 'account:profile' article.user.username %}"> {{ article.user|title }}</a>
-                {% get_comment_count for article as comment_count %}
-                <i class="fas fa-comments ml-4 mr-2"></i><a href="{% url 'blog:article' article.slug %}#comments-link">{{ comment_count }} {% trans 'comments' %}</a>
+                <i class="fas fa-comments ml-4 mr-2"></i><a href="{% url 'blog:article' article.slug %}#comments-link">{{ article.get_comments.count }} {% trans 'comments' %}</a>
                 <i class="far fa-eye ml-4 mr-2"></i>{% trans 'views' %}
                 {{ article.views }}
               </div>
@@ -38,7 +37,7 @@
               <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
             {% endthumbnail %}
             <div class="card-body">
-              <p class="card-text">{{ article.content|safe|truncatechars:150 }}</p>
+              <p class="card-text">{{ article.get_summary|safe }}</p>
               <a href="{% url 'blog:article' article.slug %}" class="btn btn-primary"> {% trans 'Read More' %} &rarr;</a>
             </div>
 

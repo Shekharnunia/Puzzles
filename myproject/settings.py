@@ -53,7 +53,6 @@ INSTALLED_APPS = [
 
 
     'widget_tweaks',
-    'material',
     'crispy_forms',
     'sorl.thumbnail',
     "taggit",

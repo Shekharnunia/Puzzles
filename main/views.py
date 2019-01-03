@@ -97,7 +97,12 @@ class CreateQuestionView(CreateView):
 def question(request, pk):
     form = AnswerForm(request.POST)
     question = get_object_or_404(Question, pk=pk)
-    #answer_count = question.answers.count
+    session_key = 'viewed_question_{}'.format(question.pk) 
+    if not request.session.get(session_key, False):
+        question.question_views += 1
+        question.save()
+        request.session[session_key] = True   
+
 
     answer = Answer.objects.filter(question_a=question)
     if request.method == 'POST':
@@ -106,6 +111,7 @@ def question(request, pk):
             answer.question_a = question
             answer.answer_by = request.user
             answer = form.save()
+
             messages.success(request, 'Answer successfully submitted')
 
             subject = 'There is a Answer uploaded for your Question'
