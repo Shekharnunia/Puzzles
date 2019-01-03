@@ -12,7 +12,7 @@ import django_filters
 class Question(models.Model):
     topic = models.CharField(max_length=300,unique=True)
     question = models.TextField(max_length=4000, blank=False)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_by')
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
     question_views = models.PositiveIntegerField(default=0)
@@ -37,7 +37,7 @@ class Question(models.Model):
 class Answer(models.Model):
     question_a = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
     answer = models.TextField(max_length=1500,blank=False)
-    answer_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='answer')
+    answer_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='answer_by')
     answers_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     answer_views = models.PositiveIntegerField(default=0)
@@ -50,6 +50,7 @@ class Answer(models.Model):
 
     def get_answer_as_markdown(self):
         return mark_safe(markdown(self.answer, safe_mode='escape'))
+
 
 class ContactUs(models.Model):
     name = models.CharField(max_length=50, blank=False,)

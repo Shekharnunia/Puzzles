@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'account',
     'Newsletter',
     'control_panel',
+    'qa',
 
 
     'widget_tweaks',
