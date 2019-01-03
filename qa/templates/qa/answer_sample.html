@@ -1,4 +1,4 @@
-{% load i18n humanize %}
+{% load i18n humanize thumbnail static %}
 
 <div class="row answer" answer-id="{{ answer.uuid_id }}">
   {% csrf_token %}
@@ -16,7 +16,11 @@
   </div>
   <div class="col-md-11">
     <div class="answer-user">
-      <a href="#"><img src="{{ answer.user.picture }}" class="user"></a>
+      {% thumbnail answer.user.user.image "x30" as im %}
+        <img src="{{ im.url }}" style="border-radius: 50%;"  alt="{% trans 'User Image' %}" class="user user-image">
+      {% empty %}
+        <img src="{% static 'img/user.png' %}" height="30px" alt="{% trans 'No Profile Picture' %}" />
+      {% endthumbnail %}
       <a href="#" class="username">{{ answer.user.username }}</a>
       <small class="answered">{% trans "answered" %} {{ answer.timestamp|naturaltime }}</small>
     </div>

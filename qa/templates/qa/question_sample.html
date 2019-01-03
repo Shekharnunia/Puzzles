@@ -16,7 +16,7 @@
       <p>{{ question.get_markdown|safe|truncatechars:100 }}</p>
       <div class="question-user pull-right">
         <span class="text-secondary">{% trans 'Asked' %} {{ question.timestamp|naturaltime }} {% trans 'by' %}</span>
-        <a href="{% url 'users:detail' question.user.username  %}">{{ question.user.get_profile_name|title }}</a>
+        <a href="{% url 'account:profile' question.user.username  %}">{{ question.user.username|title }}</a>
         {% if question.tags.names %}
           <p style="position: absolute; bottom: 0;">
             {% for tag in question.tags.names %}

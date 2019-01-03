@@ -1,11 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'qa_base.html' %}
 {% load static 	i18n %}
 {% load crispy_forms_tags %}
-
-{% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item active"><a href="{% url 'blog:list' %}">Articles</a></li>
-{% endblock %}
 
 {% block content %}
 <div class="container mb-4">

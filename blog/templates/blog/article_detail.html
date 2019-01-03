@@ -1,16 +1,20 @@
-{% extends 'base.html' %}
+{% extends 'qa_base.html' %}
 {% load static i18n %}
 {% load comments crispy_forms_tags thumbnail humanize %}
 
-{% block head %}{{ article.title|title }}{% endblock %}
-
-{% block breadcrumb %}
-        <li class="breadcrumb-item"><a href="#">{% trans 'Home' %}</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'blog:list' %}">{% trans 'Articles' %}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ article.title|title }}</li>
-{% endblock %}
+{% block title %}{{ article.title|title }}{% endblock %}
 
 {% block content %}
+
+  <!-- breadcrumb Content -->
+<div class="container">
+	<ol class="breadcrumb my-4">
+            <li class="breadcrumb-item"><a href="#">{% trans 'Home' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'blog:list' %}">{% trans 'Articles' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ article.title|title }}</li>
+      	</ol>
+</div>
+
   <!-- Page Content -->
   <div class="container">
     <div class="row">

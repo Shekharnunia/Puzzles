@@ -25,6 +25,13 @@ class QuestionsIndexListView(LoginRequiredMixin, ListView):
         return context
 
 
+class TagQuestionListView(QuestionsIndexListView):
+    """Overriding the original implementation to call the tag question
+    list."""
+    def get_queryset(self, **kwargs):
+        return Question.objects.filter(tags__name=self.kwargs['tag_name']).filter(status='O').order_by()
+
+
 class QuestionAnsListView(QuestionsIndexListView):
     """CBV to render a list view with all question which have been already
     marked as answered."""

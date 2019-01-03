@@ -10,6 +10,7 @@ from django.db.models import Count
 
 from django.urls import reverse
 
+from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import mark_safe
 
@@ -100,14 +101,14 @@ class Question(models.Model):
     objects = QuestionQuerySet.as_manager()
 
     class Meta:
-        ordering = ["-timestamp"]
+        ordering = ["total_votes", "-timestamp"]
         verbose_name = _("Question")
         verbose_name_plural = _("Questions")
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(f"{self.title}-{self.id}",
-                                to_lower=True, max_length=80)
+            self.slug = slugify(f"{self.title}-{self.id}")
+                                
 
         super().save(*args, **kwargs)
 
@@ -158,7 +159,7 @@ class Question(models.Model):
 class Answer(models.Model):
     """Model class to contain every answer in the forum and to link it
     to its respective question."""
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(blank=False)
     uuid_id = models.UUIDField(

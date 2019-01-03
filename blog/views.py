@@ -79,7 +79,7 @@ class DetailArticleView(LoginRequiredMixin, DetailView):
 
 
 class TagArticlesListView(ArticlesListView):
-    """Overriding the original implementation to call the drafts articles
+    """Overriding the original implementation to call the tag articles
     list."""
     def get_queryset(self, **kwargs):
         return Article.objects.filter(tags__name=self.kwargs['tag_name']).filter(status='P')
