@@ -14,6 +14,7 @@ urlpatterns = [
     path('control/', include('control_panel.urls')),
     path('newsletter/', include('Newsletter.urls')),
     url(r'^comments/', include('django_comments.urls')),
+    url(r'^qa/', include('qa.urls')),
 
     url(r'^admin/', admin.site.urls),  
 

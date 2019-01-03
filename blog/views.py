@@ -5,7 +5,7 @@ from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from django.urls import reverse
 
 
-from .helpers import AuthorRequiredMixin
+from helpers import AuthorRequiredMixin
 from .models import Article
 from .forms import ArticleForm
 
