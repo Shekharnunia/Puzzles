@@ -21,7 +21,7 @@
       {% empty %}
         <img src="{% static 'img/user.png' %}" height="30px" alt="{% trans 'No Profile Picture' %}" />
       {% endthumbnail %}
-      <a href="#" class="username">{{ answer.user.username }}</a>
+      <a href="{% url 'account:profile' answer.user.username  %}" class="username">{{ answer.user.username }}</a>
       <small class="answered">{% trans "answered" %} {{ answer.timestamp|naturaltime }}</small>
     </div>
     <div class="answer-description">

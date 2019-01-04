@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n static %}
 <hr>
 <span class="pull-right text-muted" id="comment-helper" style="display: none"><small>{% trans 'Press Ctrl + Enter to post' %}</small></span>
 <h4><span class="comment-count">{{ article.get_comments.count }}</span> {% trans 'Comments' %}</h4>
@@ -6,9 +6,15 @@
   <form role="form" id="comment-form">
     {% csrf_token %}
     <input type="hidden" name="article" value="{{ article.pk }}">
+	{% if user.user.image %}
     <div class="user-portrait clearfix">
       <img src="{{ user.user.image.url }}">
     </div>
+    {% else %}
+    <div class="user-portrait clearfix">
+      <img src="{% static 'img/avatar.svg' %}">
+    </div>
+    {% endif %}
     <div class="comment-input clearfix">
       <textarea class="form-control" rows="1" placeholder="{% trans 'Write a comment...' %}" name="comment" id="comment"></textarea>
     </div>

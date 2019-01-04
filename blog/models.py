@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.db.models import Count
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+import markdown
 from taggit.managers import TaggableManager
 
 
@@ -107,3 +108,5 @@ class ArticleComment(models.Model):
         return '{0} - {1}'.format(self.user.username, self.article.title)
 
 
+    def get_comment_as_markdown(self):
+        return markdown.markdown(self.comment, safe_mode='escape')
