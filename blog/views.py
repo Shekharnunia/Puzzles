@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from django.urls import reverse
+from django.template.loader import render_to_string
 
 from decorators import ajax_required
 from helpers import AuthorRequiredMixin

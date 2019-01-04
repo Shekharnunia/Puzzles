@@ -1,0 +1,12 @@
+{% load humanize %}
+
+<div class="comment">
+  <a href="{% url 'account:profile' comment.user.username %}"><img src="{{ comment.user.user.image.url }}" class="comment-portrait"></a>
+  <div class="comment-text">
+    <h5>
+      <a href="{% url 'account:profile' comment.user.username %}">{{ comment.user.username }}</a> 
+      <small>{{ comment.date|naturaltime }}</small>
+    </h5>
+    <p>{{ comment.comment|safe }}</p>
+  </div>
+</div>

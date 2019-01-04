@@ -8,7 +8,7 @@ from blog import views
 
 urlpatterns = [
     path('polls/', include('polls.urls')),
-    path('blog/', include('blog.urls')),
+    path('articles/', include('blog.urls')),
     path('', include('main.urls')),
     url(r'^account/', include('account.urls')),
     path('control/', include('control_panel.urls')),

@@ -5,10 +5,11 @@
 {% block title %}{{ article.title|title }}{% endblock %}
 
 
-{% block head %}
+{% block modal %}
   <link href="{% static 'css/articles.css' %}" rel="stylesheet">
   <script src="{% static 'js/articles.js' %}"></script>
-{% endblock head %}
+    <script src="{% static 'js/comments.js' %}"></script>
+{% endblock %}
 
 {% block content %}
 
@@ -58,43 +59,7 @@
 
         <hr>       
 		 <!-- Comments Form -->
-		<span class="pull-right text-muted" id="comment-helper" style="display: none"><small>{% trans 'Press Ctrl + Enter to post' %}</small></span>
-		<h4><span class="comment-count">{{ article.get_comments.count }}</span> {% trans 'Comments' %}</h4>
-		<div class="post-comment clearfix">
-		  <form role="form" id="comment-form">
-			{% csrf_token %}
-			<input type="hidden" name="article" value="{{ article.pk }}">
-			<div class="user-portrait clearfix">
-		        {% thumbnail user.user.image "x50" as im %}
-		          <img class="d-flex mr-3 mb-2 rounded-circle" src="{{ im.url }}" alt="{% trans 'Picture Profile' %}" id="pic" />
-		        {% empty %}
-		          <img class="d-flex mr-3 rounded-circle" src="{% static 'img/avatar.svg' %}" height="50px" alt="{% trans 'No Profile Picture' %}" />
-            {% endthumbnail %}
-			</div>
-			<div class="comment-input clearfix">
-			  <textarea class="form-control" rows="1" placeholder="{% trans 'Write a comment...' %}" name="comment" id="comment"></textarea>
-			</div>
-		  </form>
-		</div>
-		        <!-- Single Comment -->
-		<div class="well well-sm" id="comment-list">
-		  {% for comment in article.get_comments %}
-			<div class="comment">
-			  <a href="{% url 'account:profile' comment.user.username %}">
-				      <img class="comment-portrait" src="{{ comment.user.user.image.url }}"/>
-			  </a>
-			  <div class="comment-text">
-				<h5>
-				  <a href="{% url 'account:profile' comment.user.username %}">{{ comment.user.username }}</a> 
-				  <small>{{ comment.date|naturaltime }}</small>
-				</h5>
-				<p>{{ comment.comment|safe }}</p>
-			  </div>
-			</div>
-			  {% empty %}
-				<div style="padding: .6em 0">{% trans 'Be the first one to comment!' %}</div>
-			  {% endfor %}
-			</div>
+  {% include 'blog/partial_article_comments.html' with article=article %}
       </div>
 
 
