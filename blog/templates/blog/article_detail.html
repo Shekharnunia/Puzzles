@@ -23,7 +23,7 @@
 </div>
 
   <!-- Page Content -->
-  <div class="">
+  <div class="container">
     <div class="row">
       <!-- Post Content Column -->
       <div class="col-lg-8">
@@ -35,8 +35,7 @@
                  <i class="fa fa-calendar mr-2"></i>{{ article.timestamp|date:"M d, Y" }}
                 <i class="lead fa fa-user ml-4 mr-1"></i>
                 <a href="{% url 'account:profile' article.user.username %}"> {{ article.user|title }}</a>
-                {% get_comment_count for article as comment_count %}
-                <i class="fas fa-comments ml-4 mr-2"></i>{{ comment_count }} {% trans 'comments' %}
+                <i class="fas fa-comments ml-4 mr-2"></i>{{ article.get_comments.count }} {% trans 'comments' %}
                 <i class="far fa-eye ml-4 mr-2"></i>{% trans 'views' %}
                 {{ article.views }}
               </div>

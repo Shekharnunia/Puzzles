@@ -34,7 +34,6 @@ DEBUG = config('DEBUG', cast=bool)
 # Application definition
 
 INSTALLED_APPS = [
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django.contrib.sites', 
-
+    
+	#local
     'main',
     'polls',
     'blog',
@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'control_panel',
     'qa',
 
-
+	#third party
     'widget_tweaks',
     'crispy_forms',
     'sorl.thumbnail',

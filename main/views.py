@@ -1,11 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.contrib.auth.models import User
 
 from django.conf import settings
 
-from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail, send_mass_mail
 
@@ -17,7 +15,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.utils.decorators import method_decorator
 from django.utils import timezone
 
-from django.views.generic import UpdateView, ListView, CreateView, DeleteView
+from django.views.generic import UpdateView, CreateView, DeleteView
 
 
 from main.models import Question, Answer, ContactUs,  QuestionFilter
