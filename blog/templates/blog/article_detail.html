@@ -47,7 +47,8 @@
         {% endthumbnail %}
         <!-- <img src="{{ MEDIA_URL }}{{ article.image }}" lt="{% trans 'Featured Image' %}" class="card-img-top"> -->
             <div class="card-body mt-2 mb-2">
-              <p class="card-text">{{ article.content|safe }}</p>
+              <p class="card-text">{{ article.content|safe }}</p><hr>
+              <p class="card-text">{{ article.content_image|safe }}</p>
             </div>
             <div class="card-footer text-muted">
               {% for tag in article.tags.names %}

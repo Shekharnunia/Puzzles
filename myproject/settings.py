@@ -188,7 +188,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 
 
-CKEDITOR_BASEPATH = "/my_static/ckeditor/ckeditor/"
+CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 
 CKEDITOR_UPLOAD_PATH = "uploads/ckeditor/"
 
