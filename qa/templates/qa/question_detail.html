@@ -37,7 +37,7 @@
         <p>{{ question.get_markdown|safe }}</p>
         <div class="question-user pull-right">
           <span class="text-secondary">{% trans 'Asked' %} {{ question.timestamp|naturaltime }} {% trans 'by' %}</span>
-          <a href="{% url 'account:profile' question.user.username  %}">{{ question.user.get_profile_name|title }}</a>
+          <a href="{% url 'account:profile' question.user.username  %}">{{ question.user.username|title }}</a>
           {% if question.tags.names %}
             <p>
               {% for tag in question.tags.names %}

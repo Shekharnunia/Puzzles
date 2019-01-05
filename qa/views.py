@@ -15,7 +15,7 @@ from qa.forms import QuestionForm
 class QuestionsIndexListView(LoginRequiredMixin, ListView):
     """CBV to render a list view with all the registered questions."""
     model = Question
-    paginate_by = 20
+    paginate_by = 10
     context_object_name = "questions"
 
     def get_context_data(self, *args, **kwargs):
