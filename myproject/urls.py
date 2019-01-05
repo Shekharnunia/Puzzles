@@ -3,8 +3,9 @@ from django.conf.urls import url,include
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
+from django.views.decorators.cache import never_cache
 
-from blog import views
+from ckeditor_uploader import views
 
 urlpatterns = [
     path('polls/', include('polls.urls')),
@@ -17,6 +18,10 @@ urlpatterns = [
     url(r'^qa/', include('qa.urls')),
     
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    url(r'^upload/', (views.upload), name='ckeditor_upload'),
+    url(r'^browse/', never_cache(views.browse), name='ckeditor_browse'),
+
+
     url(r'^admin/', admin.site.urls),  
 
 ]

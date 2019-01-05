@@ -55,6 +55,7 @@ INSTALLED_APPS = [
 	#third party
     'widget_tweaks',
     'ckeditor',
+    'ckeditor_uploader',
     'crispy_forms',
     'sorl.thumbnail',
     "taggit",
@@ -192,7 +193,11 @@ CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 
 CKEDITOR_UPLOAD_PATH = "uploads/ckeditor/"
 
-CKEDITOR_RESTRICT_BY_DATE = True
+CKEDITOR_RESTRICT_BY_USER = False
+
+CKEDITOR_BROWSE_SHOW_DIRS = True
+
+CKEDITOR_RESTRICT_BY_DATE = False
 
 CKEDITOR_CONFIGS = {
     'default': {
@@ -254,7 +259,7 @@ CKEDITOR_CONFIGS = {
             'dialog',
             'dialogui',
             'elementspath'
-        ]),
+        ]),'uiColor': '#9AB8F3',
     }
 }
 
