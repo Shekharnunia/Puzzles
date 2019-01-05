@@ -13,10 +13,12 @@
       <a href="{% url 'blog:list' %}" class="btn btn-default">{% trans 'Cancel' %}</a>
     </div>
   </form>
-  {{ form.media }}
+  
 </div>
 {% endblock content %}
 
 {% block modal %}
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
   <script src="{% static 'js/articles.js' %}"></script>
 {% endblock modal %}

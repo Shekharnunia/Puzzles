@@ -5,8 +5,11 @@ from django.utils import timezone
 from django.db.models import Count
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+
 import markdown
 from taggit.managers import TaggableManager
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class ArticleQuerySet(models.query.QuerySet):
@@ -53,6 +56,7 @@ class Article(models.Model):
     slug = models.SlugField(max_length=80, null=True, blank=True)
     status = models.CharField(max_length=1, choices=STATUS, default=DRAFT)
     content = models.TextField()
+    content_image = RichTextUploadingField()
     edited = models.BooleanField(default=False)
     tags = TaggableManager()
     objects = ArticleQuerySet.as_manager()

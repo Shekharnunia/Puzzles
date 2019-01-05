@@ -15,7 +15,8 @@ urlpatterns = [
     path('newsletter/', include('Newsletter.urls')),
     url(r'^comments/', include('django_comments.urls')),
     url(r'^qa/', include('qa.urls')),
-
+    
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^admin/', admin.site.urls),  
 
 ]
