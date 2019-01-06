@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^indexed/$', views.QuestionsIndexListView.as_view(), name='index_all'),
     url(r'^question-detail/(?P<pk>\d+)/$', views.QuestionDetailView.as_view(), name='question_detail'),
     url(r'^ask-question/$', views.CreateQuestionView.as_view(), name='ask_question'),
+    url(r'^question-detail/(?P<pk>\d+)/edit/$', views.EditQuestionView.as_view(), name='edit_question'),
     url(r'^propose-answer/(?P<question_id>\d+)/$', views.CreateAnswerView.as_view(), name='propose_answer'),
     url(r'^question/vote/$', views.question_vote, name='question_vote'),
     url(r'^answer/vote/$', views.answer_vote, name='answer_vote'),

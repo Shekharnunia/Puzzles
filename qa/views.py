@@ -1,11 +1,11 @@
 from django.db.utils import IntegrityError
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.urls import reverse
 from django.utils.translation import ugettext as _
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
 from helpers import ajax_required
 from qa.models import Question, Answer
@@ -90,6 +90,28 @@ class CreateQuestionView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         messages.success(self.request, self.message)
         return reverse("qa:index_noans")
+
+
+class EditQuestionView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Question
+    form_class = QuestionForm
+    template_name = "qa/question_edit_form.html"
+    message = _("Your question has been Updated.")
+    context_object_name = 'question'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, self.message)
+        return reverse("qa:index_noans")
+
+    def test_func(self):
+        question = self.get_object()
+        if self.request.user == question.user:
+            return True
+        return False
 
 
 class CreateAnswerView(LoginRequiredMixin, CreateView):

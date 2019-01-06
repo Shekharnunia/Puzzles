@@ -50,12 +50,12 @@ class QuestionQuerySet(models.query.QuerySet):
     def get_answered(self):
         """Returns only items which has been marked as answered in the current
         queryset"""
-        return self.filter(has_answer=True)
+        return self.filter(has_answer=True).filter(status='O')
 
     def get_unanswered(self):
         """Returns only items which has not been marked as answered in the
         current queryset"""
-        return self.filter(has_answer=False)
+        return self.filter(has_answer=False).filter(status='O')
 
     def get_counted_tags(self):
         """Returns a dict element with tags and its count to show on the UI."""
