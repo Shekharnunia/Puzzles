@@ -34,11 +34,22 @@
           <small class="text-secondary">{% trans 'Votes' %}</small>
         </div>
       </div>
-      <div class="col-md-11">
+      <div class="col-md-9">
         <p>{{ question.get_markdown|safe }}</p>
         <div class="question-user pull-right">
-          <span class="text-secondary">{% trans 'asked' %} {{ question.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ question.timestamp|date:"G:i" }}</span>
-          <a href="{% url 'account:profile' question.user.username  %}">{{ question.user.username|title }}</a>
+          <div class="card">
+            <small><span class="text-secondary">{% trans 'asked' %} {{ question.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ question.timestamp|date:"G:i" }}</span></small>
+            <div class="media">
+              {% if question.user.user.image %}
+              <img src="{{ question.user.user.image.url }}" class="mr-2 comment-portrait">
+              {% else %}
+              <img src="{% static 'img/user.png' %}" class="mr-2" height="30" alt="{% trans 'No Profile Picture' %}" />  
+              {% endif %}
+              <div class="media-body">
+                <h5 class="mt-0"><a href="{% url 'account:profile' question.user.username  %}">{{ question.user.username|title }}</a></h5>
+              </div>
+            </div>
+          </div>
         </div>
         {% if question.tags.names %}
           <p>
@@ -47,7 +58,6 @@
             {% endfor %}
           </p>
         {% endif %}
-        
       </div>
     </div>
     <hr>
