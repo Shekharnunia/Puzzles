@@ -18,6 +18,9 @@ class QuestionsIndexListView(LoginRequiredMixin, ListView):
     paginate_by = 10
     context_object_name = "questions"
 
+    def get_queryset(self, **kwargs):
+        return Question.objects.filter(status='O')
+
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context["popular_tags"] = Question.objects.get_counted_tags()

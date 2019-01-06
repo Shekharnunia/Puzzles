@@ -34,7 +34,7 @@
           <small class="text-secondary">{% trans 'Votes' %}</small>
         </div>
       </div>
-      <div class="col-md-9">
+      <div class="col-md-8">
         <p>{{ question.get_markdown|safe }}</p>
         <div class="question-user pull-right">
           <div class="card">
@@ -58,6 +58,10 @@
             {% endfor %}
           </p>
         {% endif %}
+      </div>
+      <div class="col-md-3"  style="font-size: 15px; font-width: 15px;">
+        <p><span class="text-muted mr-2">{% trans 'asked' %} </span>{{ question.timestamp|naturaltime }}</p>
+        <p><span class="text-muted mr-2">{% trans 'views' %} </span>{{ question.question_views }}</p>
       </div>
     </div>
     <hr>

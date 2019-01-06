@@ -1,13 +1,15 @@
 {% load humanize i18n static humanize %}
 {% load thumbnail %}
-
+<div class="row">
 <div class="card questions">
   <div class="card-body">
     <div class="question-info pull-left text-center">
-      <h3 class="{% if question.has_answer %}bg-success text-white{% endif %}">{{ question.count_answers }}</h3>
-      <small class="text-secondary">{% trans 'Answers' %}</small>
+      <div class="{% if question.has_answer %}bg-success text-white{% endif %} answer-size">
+        <h4>{{ question.count_answers }}</h4>
+        <small style="font-size: 12px;">{% trans 'answers' %}</small>
+      </div>
       <h3>{{ question.total_votes }}</h3>
-      <small class="text-secondary">{% trans 'Votes' %}</small>
+      <small class="text-secondary answer-size">{% trans 'Votes' %}</small>
     </div>
     <div>
       <h4 class="card-title">
@@ -28,15 +30,16 @@
               </div>
             </div>
           </div>
-        </div
-        {% if question.tags.names %}
-          <p style="inline position: absolute; bottom: 0;">
-            {% for tag in question.tags.names %}
-              <a href="{% url 'qa:tag' tag %}"><span class="badge badge-primary">{{ tag }}</span></a>
-            {% endfor %}
-          </p>
-        {% endif %}
+      </div>
+      {% if question.tags.names %}
+        <p style="inline position: absolute; bottom: 0;">
+          {% for tag in question.tags.names %}
+            <a href="{% url 'qa:tag' tag %}"><span class="badge badge-primary">{{ tag }}</span></a>
+          {% endfor %}
+        </p>
+      {% endif %}
       </div>
     </div>
   </div>
+</div>
 </div>
