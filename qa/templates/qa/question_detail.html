@@ -22,6 +22,7 @@
       </a>
       <h1>{{ question.title }}</h1>
     </div>
+    <hr>
     <div class="row question" question-id="{{ question.id }}">
       <div class="col-md-1">
         <div class="question-info options">
@@ -38,19 +39,40 @@
         <div class="question-user pull-right">
           <span class="text-secondary">{% trans 'Asked' %} {{ question.timestamp|naturaltime }} {% trans 'by' %}</span>
           <a href="{% url 'account:profile' question.user.username  %}">{{ question.user.username|title }}</a>
-          {% if question.tags.names %}
-            <p>
-              {% for tag in question.tags.names %}
-                <span class="badge badge-primary">{{ tag }}</span>
-              {% endfor %}
-            </p>
-          {% endif %}
         </div>
+        {% if question.tags.names %}
+          <p>
+            {% for tag in question.tags.names %}
+              <span class="badge badge-primary">{{ tag }}</span>
+            {% endfor %}
+          </p>
+        {% endif %}
+        
       </div>
-        <a href="{% url 'qa:propose_answer' question.id %}" class="btn btn-primary pull-right" role="button">{% trans "Submit an answer" %}</a>
     </div>
+    <hr>
+    <div class="row">
+      <a href="{% url 'qa:propose_answer' question.id %}" class="btn btn-primary pull-right" role="button">{% trans "Submit an answer" %}</a>
+    </div>
+    
     <div class="page-header">
-      <h1>{% trans 'Answers' %}</h1>
+      <div class="">
+        <ul class="nav nav-tabs justify-content-end">
+          <li class="nav-item">
+            <h1>{% trans 'Answers' %}</h1>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Active</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+        </ul>
+      </div>
+      
     </div>
     <div class="row">
       <ul class="col-md-12">
