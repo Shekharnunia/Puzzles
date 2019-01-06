@@ -37,7 +37,7 @@
       <div class="col-md-11">
         <p>{{ question.get_markdown|safe }}</p>
         <div class="question-user pull-right">
-          <span class="text-secondary">{% trans 'Asked' %} {{ question.timestamp|naturaltime }} {% trans 'by' %}</span>
+          <span class="text-secondary">{% trans 'asked' %} {{ question.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ question.timestamp|date:"G:i" }}</span>
           <a href="{% url 'account:profile' question.user.username  %}">{{ question.user.username|title }}</a>
         </div>
         {% if question.tags.names %}
@@ -54,7 +54,7 @@
     <div class="row">
       <a href="{% url 'qa:propose_answer' question.id %}" class="btn btn-primary pull-right" role="button">{% trans "Submit an answer" %}</a>
     </div>
-    
+
     <div class="page-header">
       <div class="">
         <ul class="nav nav-tabs justify-content-end">
