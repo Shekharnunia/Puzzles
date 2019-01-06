@@ -1,30 +1,20 @@
-from django.forms.models import inlineformset_factory
 from django.core.exceptions import PermissionDenied
 
-from django.urls import reverse
+from django.contrib import messages
+from django.contrib.auth import(authenticate,get_user_model,login,logout)
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+
+from django.db import transaction
+from django.forms.models import inlineformset_factory
 
 from django.shortcuts import render, redirect
-
-from django.contrib.auth.models import User
+from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
+from django.views.generic import UpdateView, CreateView, DetailView
 
 from account.forms import RegistrationForm, UserProfileForm
 from account.models import UserProfile
-from django.contrib.auth import login
-
-from main import views
-
-from django.views.generic import UpdateView, CreateView
-
-from django.urls import reverse_lazy
-
-from django.contrib.auth.decorators import login_required
-from django.db import transaction
-from django.utils.decorators import method_decorator
-
-from django.contrib.auth import(authenticate,get_user_model,login,logout)
-
-from django.contrib import messages
-
 
 
 def register(request):

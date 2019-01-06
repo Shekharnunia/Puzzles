@@ -21,6 +21,18 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+    def get_screen_name(self):
+        try:
+            if self.user.get_full_name():
+                return self.user.get_full_name()
+
+            else:
+                return self.user.username
+
+        except Exception:  # pragma: no cover
+            return self.user.username
+
+
 
 def create_profile(sender, **kwargs):
     user = kwargs["instance"]

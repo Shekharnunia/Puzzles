@@ -13,8 +13,7 @@ urlpatterns = [
     url(r'^register/$', account_views.register, name='register'),
 
     url(r'^profile/(?P<username>[a-zA-Z0-9]+)$', account_views.profile, name='profile'),
-    url(r'^accounts/update/(?P<pk>[\-\w]+)/$', account_views.edit_user, name='account_update'),
-    
+    url(r'^update/(?P<pk>[\-\w]+)/$', account_views.edit_user, name='account_update'),
     
     url(r'^change-password/$', auth_views.PasswordChangeView.as_view(template_name='account/change_password.html', success_url = reverse_lazy('account:password_change_done')),
         name='change_password'),
