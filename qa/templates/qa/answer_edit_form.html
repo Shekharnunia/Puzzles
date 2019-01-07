@@ -13,7 +13,7 @@
       <li class="breadcrumb-item active" aria-current="page">{% trans 'Answer a question' %}</li>
     </ol>
   </nav>
-  <form action="{% url 'qa:propose_answer' view.kwargs.question_id %}" id="answerForm" method="post" role="form">
+  <form id="answerForm" method="post" role="form">
     {% csrf_token %}
     {{ form|crispy }}
     <div class="form-group">

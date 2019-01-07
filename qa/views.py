@@ -149,6 +149,46 @@ class CreateAnswerView(LoginRequiredMixin, CreateView):
             "qa:question_detail", kwargs={"pk": self.kwargs["question_id"]})
 
 
+class EditAnswerView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Answer
+    message = _("Your Answer has been updated.")
+    context_object_name = 'answer'
+    fields = ["content", ]
+    pk_url_kwarg = 'answer_id'
+    template_name = 'qa/answer_edit_form.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, self.message)
+        return reverse("qa:question_detail", kwargs={"pk": self.kwargs["pk"]})
+
+    def test_func(self):
+        answer = self.get_object()
+        if self.request.user == answer.user:
+            return True
+        return False
+
+
+class DeleteAnswerView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Answer
+    message = _("Your Answer has been Deleted.")
+    context_object_name = 'answer'
+    pk_url_kwarg = 'answer_id'
+
+    def get_success_url(self):
+        messages.success(self.request, self.message)
+        return reverse("qa:question_detail", kwargs={"pk": self.kwargs["pk"]})
+
+    def test_func(self):
+        answer = self.get_object()
+        if self.request.user == answer.user:
+            return True
+        return False
+
+
 @login_required
 @ajax_required
 def question_vote(request):

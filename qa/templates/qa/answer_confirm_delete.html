@@ -5,22 +5,23 @@
 {% endblock %}
 
 {% block content %}
+
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
 		  <li class="breadcrumb-item"><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
 		  <li class="breadcrumb-item"><a href="{% url 'qa:index_all' %}">{% trans 'Q&A' %}</a></li>
-		  <li class="breadcrumb-item active" aria-current="page">{% trans 'Delete Question' %}</li>
+		  <li class="breadcrumb-item active" aria-current="page">{% trans 'Delete Answer' %}</li>
 		</ol>
-		</nav>
-
+	</nav>
 	<div class="container mb-5">
 		<br>
-		<h4>Topic: {{ question.title }}</h4><br>
+		<h4>Topic: {{ answer.question.title }}</h4><br>
+		<p>{{ answer.question.content|safe }}</p>
 		<form method="POST">
 			{% csrf_token %}
 			<h2>Are you sure you want to delete the post</h2><br>
 			<button class="btn btn-outline-danger mr-2" type="submit">Yes, Delete</button>
-			<a class="btn btn-outline-secondary" href="{% url 'qa:question_detail' question.pk %}">Cancel</a>
+			<a class="btn btn-outline-secondary" href="{% url 'qa:question_detail' answer.question.pk %}">Cancel</a>
 		</form>
-	</div>	
+	</div>
 {% endblock %}
