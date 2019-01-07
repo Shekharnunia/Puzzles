@@ -1,34 +1,34 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+# # -*- coding: utf-8 -*-
+# from __future__ import unicode_literals
 
-from django.contrib import admin
+# from django.contrib import admin
 
-from main.models import Question, Answer, ContactUs
-
-
-class QuestionAdmin(admin.ModelAdmin):
-	list_display = ['topic', 'question', 'created_by']
-
-	class Meta:
-	    model = Question
+# from main.models import Question, Answer, ContactUs
 
 
-class ContactUsAdmin(admin.ModelAdmin):
-	list_display = ['name', 'email', 'message']
+# class QuestionAdmin(admin.ModelAdmin):
+# 	list_display = ['topic', 'question', 'created_by']
 
-	class Meta:
-	    model = ContactUs
+# 	class Meta:
+# 	    model = Question
 
 
-class AnswerAdmin(admin.ModelAdmin):
-	list_display = ['question_a', 'answer', 'answer_by']
+# class ContactUsAdmin(admin.ModelAdmin):
+# 	list_display = ['name', 'email', 'message']
 
-	class Meta:
-	    model = Answer
+# 	class Meta:
+# 	    model = ContactUs
 
-admin.site.register(Question, QuestionAdmin)
 
-admin.site.register(Answer, AnswerAdmin)
+# class AnswerAdmin(admin.ModelAdmin):
+# 	list_display = ['question_a', 'answer', 'answer_by']
 
-admin.site.register(ContactUs, ContactUsAdmin)
+# 	class Meta:
+# 	    model = Answer
+
+# admin.site.register(Question, QuestionAdmin)
+
+# admin.site.register(Answer, AnswerAdmin)
+
+# admin.site.register(ContactUs, ContactUsAdmin)
 

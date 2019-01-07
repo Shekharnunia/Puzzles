@@ -49,14 +49,13 @@ class Article(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, null=True, related_name="author",
         on_delete=models.SET_NULL)
-    image = models.ImageField(
-        ('Featured image'), upload_to='articles_pictures/%Y/%m/%d/')
+    thumbnail = models.ImageField(
+        ('thumbnail image'), upload_to='articles_pictures/%Y/%m/%d/')
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     title = models.CharField(max_length=255, null=False, unique=True)
     slug = models.SlugField(max_length=80, null=True, blank=True)
     status = models.CharField(max_length=1, choices=STATUS, default=DRAFT)
-    content = models.TextField()
-    content_image = RichTextUploadingField()
+    content = RichTextUploadingField()
     edited = models.BooleanField(default=False)
     tags = TaggableManager()
     objects = ArticleQuerySet.as_manager()

@@ -33,8 +33,8 @@
               </div>
 
             </div>
-            {% thumbnail article.image "750x300" as im %}
-              <img src="{{ im.url }}" alt="{% trans 'Featured Image' %}" class="card-img-top">
+            {% thumbnail article.thumbnail "750x300" as im %}
+              <img src="{{ im.url }}" alt="{% trans 'Thumbnail Image' %}" class="card-img-top">
             {% empty %}
               <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
             {% endthumbnail %}

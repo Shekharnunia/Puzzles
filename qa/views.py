@@ -19,7 +19,7 @@ class QuestionsIndexListView(LoginRequiredMixin, ListView):
     context_object_name = "questions"
 
     def get_queryset(self, **kwargs):
-        return Question.objects.filter(status='O')
+        return Question.objects.exclude(status='D')
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -32,14 +32,14 @@ class TagQuestionListView(QuestionsIndexListView):
     """Overriding the original implementation to call the tag question
     list."""
     def get_queryset(self, **kwargs):
-        return Question.objects.filter(tags__name=self.kwargs['tag_name']).filter(status='O').order_by()
+        return Question.objects.filter(tags__name=self.kwargs['tag_name']).exclude(status='D').order_by('-total_votes')
 
 
 class QuestionAnsListView(QuestionsIndexListView):
     """CBV to render a list view with all question which have been already
     marked as answered."""
     def get_queryset(self, **kwargs):
-        return Question.objects.get_answered()
+        return Question.objects.get_answered().exclude(status='D')
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)

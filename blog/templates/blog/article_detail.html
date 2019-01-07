@@ -40,8 +40,8 @@
                 {{ article.views }}
               </div>
             </div>
-        {% thumbnail article.image "900x300" as im %}
-          <img src="{{ im.url }}" alt="{% trans 'Featured Image' %}" class="card-img-top">
+        {% thumbnail article.thumbnail "900x300" as im %}
+          <img src="{{ im.url }}" alt="{% trans 'Thumbnail Image' %}" class="card-img-top">
         {% empty %}
           <img class="img-fluid rounded" src="{% static 'img/avatar.svg' %}" alt="Card Image">
         {% endthumbnail %}

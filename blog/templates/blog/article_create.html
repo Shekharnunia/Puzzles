@@ -7,6 +7,7 @@
   <form action="{% url 'blog:write_new' %}" enctype="multipart/form-data"  id="article-form" method="POST" role="form">
     {% csrf_token %}
     {{ form|crispy }}
+    {{ form.media }}
     <div class="form-group">
       <button type="button" class="btn btn-primary publish">{% trans 'Publish' %}</button>
       <button type="button" class="btn btn-default draft">{% trans 'Save as draft' %}</button>
@@ -18,7 +19,5 @@
 {% endblock content %}
 
 {% block modal %}
-<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
   <script src="{% static 'js/articles.js' %}"></script>
 {% endblock modal %}

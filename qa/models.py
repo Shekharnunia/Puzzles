@@ -15,6 +15,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.html import mark_safe
 
 from markdown import markdown
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from taggit.managers import TaggableManager
 
 
@@ -50,12 +52,12 @@ class QuestionQuerySet(models.query.QuerySet):
     def get_answered(self):
         """Returns only items which has been marked as answered in the current
         queryset"""
-        return self.filter(has_answer=True).filter(status='O')
+        return self.filter(has_answer=True).exclude(status='D')
 
     def get_unanswered(self):
         """Returns only items which has not been marked as answered in the
         current queryset"""
-        return self.filter(has_answer=False).filter(status='O')
+        return self.filter(has_answer=False).exclude(status='D')
 
     def get_counted_tags(self):
         """Returns a dict element with tags and its count to show on the UI."""
@@ -87,7 +89,7 @@ class Question(models.Model):
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=300, unique=True, blank=False)
-    content = models.TextField(blank=False)
+    content = RichTextUploadingField(blank=False)
     status = models.CharField(max_length=1, choices=STATUS, default=DRAFT)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
