@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.urls import reverse
 from django.utils.translation import ugettext as _
-from django.views.generic import CreateView, ListView, DetailView, UpdateView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
 from helpers import ajax_required
 from qa.models import Question, Answer
@@ -102,6 +102,22 @@ class EditQuestionView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, self.message)
+        return reverse("qa:index_noans")
+
+    def test_func(self):
+        question = self.get_object()
+        if self.request.user == question.user:
+            return True
+        return False
+
+
+class DeleteQuestionView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Question
+    message = _("Your question has been Deleted.")
+    context_object_name = 'question'
 
     def get_success_url(self):
         messages.success(self.request, self.message)

@@ -36,6 +36,13 @@
       </div>
       <div class="col-md-8">
         <p>{{ question.get_markdown|safe }}</p>
+        {% if question.tags.names %}
+          <p>
+            {% for tag in question.tags.names %}
+              <span class="badge badge-primary">{{ tag }}</span>
+            {% endfor %}
+          </p>
+        {% endif %}
         <div class="question-user pull-right">
           <div class="card">
             <small><span class="text-secondary">{% trans 'asked' %} {{ question.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ question.timestamp|date:"G:i" }}</span></small>
@@ -51,13 +58,12 @@
             </div>
           </div>
         </div>
-        {% if question.tags.names %}
           <p>
-            {% for tag in question.tags.names %}
-              <span class="badge badge-primary">{{ tag }}</span>
-            {% endfor %}
+              <a href="{% url 'qa:edit_question' question.pk %}"><small class="text-muted">edit</small></a>
+              <a href="{% url 'qa:delete_question' question.pk %}"><small class="text-muted">delete</small></a>
+              <a href=""><small class="text-muted">flag</small></a>
+              <a href="#"><small class="text-muted">close</small></a>
           </p>
-        {% endif %}
       </div>
       <div class="col-md-3"  style="font-size: 15px; font-width: 15px;">
         <p><span class="text-muted mr-2">{% trans 'asked' %} </span>{{ question.timestamp|naturaltime }}</p>
