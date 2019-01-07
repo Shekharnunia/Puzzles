@@ -10,7 +10,7 @@ from ckeditor_uploader import views
 urlpatterns = [
     path('polls/', include('polls.urls')),
     path('articles/', include('blog.urls')),
-    path('', include('main.urls')),
+    path('main/', include('main.urls')),
     url(r'^account/', include('account.urls')),
     path('control/', include('control_panel.urls')),
     path('newsletter/', include('Newsletter.urls')),
