@@ -1,5 +1,5 @@
 {% extends 'qa_base.html' %}
-{% load humanize thumbnail i18n comments %}
+{% load humanize thumbnail i18n %}
 
 {% block title %} {% trans 'Articles' %} {% endblock %}
 
@@ -24,11 +24,12 @@
             <div class="card-header text-center">
               <h2 class="card-title"><a href="{% url 'blog:article' article.slug %}">{{ article.title|title }}</a></h2>
               <div class="text-muted text-center mt-4 mb-2">
-                 <i class="fa fa-calendar mr-2"></i>{{ article.timestamp|date:"M d, Y" }}
-                <i class="lead fa fa-user ml-4 mr-1"></i>
+                 <i class="fa fa-calendar ml-3 mr-2"></i>{{ article.timestamp|date:"M d, Y" }}
+                <i class="lead fa fa-user ml-3 mr-1"></i>
                 <a href="{% url 'account:profile' article.user.username %}"> {{ article.user|title }}</a>
-                <i class="fas fa-comments ml-4 mr-2"></i><a href="{% url 'blog:article' article.slug %}#comments-link">{{ article.get_comments.count }} {% trans 'comments' %}</a>
-                <i class="far fa-eye ml-4 mr-2"></i>{% trans 'views' %}
+                <i class="fa fa-clock-o ml-3 mr-2"></i>{{ article.get_readtime }}
+                <i class="fas fa-comments ml-3 mr-2"></i><a href="{% url 'blog:article' article.slug %}#comments-link">{{ article.get_comments.count }} {% trans 'comments' %}</a>
+                <i class="far fa-eye ml-3 mr-2"></i>{% trans 'views' %}
                 {{ article.views }}
               </div>
 

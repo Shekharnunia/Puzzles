@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 
 import markdown
+import readtime
 from taggit.managers import TaggableManager
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -58,9 +59,10 @@ class Article(models.Model):
     content = RichTextUploadingField()
     edited = models.BooleanField(default=False)
     tags = TaggableManager()
-    objects = ArticleQuerySet.as_manager()
     updated_date = models.DateTimeField(auto_now=True, auto_now_add=False)
     views = models.PositiveIntegerField(default = 0)
+    
+    objects = ArticleQuerySet.as_manager()
 
 
 
@@ -93,6 +95,9 @@ class Article(models.Model):
 
     def get_comments(self):
         return ArticleComment.objects.filter(article=self)
+
+    def get_readtime(self):
+        return readtime.of_html(self.content)
 
 
 
