@@ -71,8 +71,8 @@
                       {{ request.user.user.get_screen_name }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="{% url 'account:profile' request.user.username  %}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile' %}</a>
-                      <a class="dropdown-item" href="{% url 'account:account_update' request.user.pk  %}"><i class="far fa-user fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile Settings' %}</a>
+                      <a class="dropdown-item" href="{% url 'account:profile' request.user.username  %}"><i class="far fa-user fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile' %}</a>
+                      <a class="dropdown-item" href="{% url 'account:account_update' request.user.pk  %}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile Settings' %}</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="{% url 'account:logout' %}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>&nbsp; {% trans "Log Out" %}</a>
                     </div>
