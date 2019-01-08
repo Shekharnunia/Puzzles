@@ -6,6 +6,7 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
+from django.shortcuts import redirect
 
 from helpers import ajax_required
 from qa.models import Question, Answer
@@ -74,7 +75,7 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
         return super().get_context_data(**kwargs)
 
 
-class QuestionDetaiCloseView(LoginRequiredMixin, UpdateView):
+class QuestionDetaiCloseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Question
     message = _("Your question has been Updated.")
     template_name = "qa/question_close_form.html"
@@ -82,14 +83,17 @@ class QuestionDetaiCloseView(LoginRequiredMixin, UpdateView):
     form_class = QuestionForm
     
     def form_valid(self, form):
-        form.instance.close_question = self.request.user
-        form.instance.status = 'C'
-        return super().form_valid(form)
+        question = form.save(commit=False)
+        question.close_question = self.request.user
+        question.status = 'C'
+        question.save(update_fields=["status", "close_question"])
+        messages.success(self.request, 'Your question has been Updated.')
+        return redirect(reverse("qa:index_noans"))
 
-    def get_success_url(self):
-        messages.success(self.request, self.message)
-        return reverse("qa:index_noans")
-
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        return False
     
 
 class CreateQuestionView(LoginRequiredMixin, CreateView):

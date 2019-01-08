@@ -101,7 +101,7 @@ class Question(models.Model):
     has_answer = models.BooleanField(default=False)
     tags = TaggableManager()
     objects = QuestionQuerySet.as_manager()
-    close_question = models.ForeignKey(User, on_delete=models.CASCADE, default = '1', related_name='question_close_user')
+    close_question = models.ForeignKey(User, on_delete=models.CASCADE, default = '1', related_name='question_close_user', null=True, blank=True)
     
     class Meta:
         ordering = ["total_votes", "-timestamp"]
