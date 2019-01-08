@@ -75,10 +75,12 @@
       </div>
     </div>
     <hr>
+
+    {% if question.status == 'O' %}    
     <div class="row">
       <a href="{% url 'qa:propose_answer' question.id %}" class="btn btn-primary pull-right" role="button">{% trans "Submit an answer" %}</a>
     </div>
-
+    {% endif %}
     <div class="page-header">
       <div class="">
         <ul class="nav nav-tabs justify-content-end">
@@ -96,7 +98,6 @@
           </li>
         </ul>
       </div>
-      
     </div>
     <div class="row">
       <ul class="col-md-12">
