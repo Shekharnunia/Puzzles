@@ -32,11 +32,12 @@
             <div class="card-header text-center">
               <h2 class="card-title">{{ article.title|title }}</h2>
               <div class="text-muted text-center mt-4 mb-2">
-                 <i class="fa fa-calendar mr-2"></i>{{ article.timestamp|date:"M d, Y" }}
-                <i class="lead fa fa-user ml-4 mr-1"></i>
+                <i class="fa fa-calendar ml-3 mr-2"></i>{{ article.timestamp|date:"M d, Y" }}
+                <i class="lead fa fa-user ml-3 mr-1"></i>
                 <a href="{% url 'account:profile' article.user.username %}"> {{ article.user|title }}</a>
-                <i class="fas fa-comments ml-4 mr-2"></i>{{ article.get_comments.count }} {% trans 'comments' %}
-                <i class="far fa-eye ml-4 mr-2"></i>{% trans 'views' %}
+                <i class="fa fa-clock-o ml-3 mr-2"></i>{{ article.get_readtime }}
+                <i class="fas fa-comments ml-3 mr-2"></i>{{ article.get_comments.count }} {% trans 'comments' %}
+                <i class="far fa-eye ml-3 mr-2"></i>{% trans 'views' %}
                 {{ article.views }}
               </div>
             </div>
