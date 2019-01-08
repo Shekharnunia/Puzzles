@@ -20,7 +20,9 @@
       <a href="{% url 'qa:ask_question' %}" class="btn btn-primary pull-right">
         <i class="fa fa-pencil" aria-hidden="true"></i> {% trans "Ask a Question" %}
       </a>
-      <h1>{{ question.title }}</h1>
+      <h1>{% if question.status == 'C' %}
+        {{ '[CLOSED]' }}     
+        {% endif %}{{ question.title }}</h1>
     </div>
     <hr>
     <div class="row question" question-id="{{ question.id }}">
@@ -59,10 +61,12 @@
           </div>
         </div>
         <p>
+          {% if request.user == question.user %}
             <a href="{% url 'qa:edit_question' question.pk %}"><small class="text-muted">edit</small></a>
-            <a href="{% url 'qa:delete_question' question.pk %}"><small class="text-muted">delete</small></a>
+            <a href="{% url 'qa:delete_question' question.pk %}"><small class="text-muted">delete</small></a>            
+          {% endif %}
             <a href=""><small class="text-muted">flag</small></a>
-            <a href="#"><small class="text-muted">close</small></a>
+            <a href="{% url 'qa:question_close' question.pk %}"><small class="text-muted">close</small></a>
         </p>
       </div>
       <div class="col-md-3"  style="font-size: 15px; font-width: 15px;">

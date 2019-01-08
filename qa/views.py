@@ -39,7 +39,7 @@ class QuestionAnsListView(QuestionsIndexListView):
     """CBV to render a list view with all question which have been already
     marked as answered."""
     def get_queryset(self, **kwargs):
-        return Question.objects.get_answered().exclude(status='D')
+        return Question.objects.get_answered()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -74,6 +74,23 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
         return super().get_context_data(**kwargs)
 
 
+class QuestionDetaiCloseView(LoginRequiredMixin, UpdateView):
+    model = Question
+    message = _("Your question has been Updated.")
+    template_name = "qa/question_close_form.html"
+    context_object_name = 'question'
+    form_class = QuestionForm
+    
+    def form_valid(self, form):
+        form.instance.close_question = self.request.user
+        form.instance.status = 'C'
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, self.message)
+        return reverse("qa:index_noans")
+
+    
 
 class CreateQuestionView(LoginRequiredMixin, CreateView):
     """

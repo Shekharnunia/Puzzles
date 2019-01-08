@@ -42,8 +42,10 @@
           </div>
         </div>
         <p>
+          {% if request.user == answer.user %}
             <a href="{% url 'qa:edit_answer' pk=question.pk answer_id=answer.uuid_id %}"><small class="text-muted">edit</small></a>
-            <a href="{% url 'qa:delete_answer' pk=question.pk answer_id=answer.uuid_id %}"><small class="text-muted">delete</small></a>
+            <a href="{% url 'qa:delete_answer' pk=question.pk answer_id=answer.uuid_id %}"><small class="text-muted">delete</small></a>            
+          {% endif %}
             <a href=""><small class="text-muted">flag</small></a>
             <a href="#"><small class="text-muted">close</small></a>
         </p>
