@@ -1,6 +1,5 @@
 from django.conf.urls import url
 from main import views
-from django_filters.views import FilterView
 
 from .models import Question
 
@@ -8,9 +7,6 @@ from .models import Question
 app_name = 'main'
 urlpatterns = [	   
     url(r'^$', views.questionlistview, name='home'),
-
-    url(r'^list/$', views.question_list, name='search'),
-    url(r'^list2/$', FilterView.as_view(model=Question, filterset_fields={'topic', 'question', 'created_by',}, paginate_by = 10), name='search2'),
 
     url(r'^ask-question/$', views.CreateQuestionView.as_view(), name='ask_question'),
     url(r'^privacy-policy/$', views.privacy_policy, name='privacy_policy'),

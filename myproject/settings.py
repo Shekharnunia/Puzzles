@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'sorl.thumbnail',
     "taggit",
-    'django_comments',
     'django_filters',
 ]
 

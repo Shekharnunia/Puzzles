@@ -18,7 +18,7 @@ from django.utils import timezone
 from django.views.generic import UpdateView, CreateView, DeleteView
 
 
-from main.models import Question, Answer, ContactUs,  QuestionFilter
+from main.models import Question, Answer, ContactUs
 from main.forms import QuestionForm, AnswerForm
 
 # This is the format of sending email
@@ -59,11 +59,6 @@ def questionlistview(request):
         "questions": queryset, 
     }
     return render(request, 'main/home.html', context)
-
-
-def question_list(request):
-    f = QuestionFilter(request.GET, queryset=Question.objects.all())
-    return render(request, 'main/search.html', {'filter': f})
 
 
 @method_decorator(login_required, name='dispatch')

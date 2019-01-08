@@ -60,18 +60,3 @@ class ContactUs(models.Model):
 
     def __str__(self):
         return self.email
-
-
-
-
-class QuestionFilter(django_filters.FilterSet):
-    class Meta:
-        model = Question
-        fields = {
-            'topic': ['icontains', ],
-            'question': ['icontains', ],
-        }
-
-
-
-
