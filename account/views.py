@@ -18,22 +18,25 @@ from account.models import UserProfile
 
 
 def register(request):
-    if request.method =='POST':
-        form = RegistrationForm(request.POST )
-        if form.is_valid():
-            user = form.save()
-            user.refresh_from_db()
-            user.user.role = form.cleaned_data.get('role')
-            user.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            messages.success(request, 'Your account successfully created')
-            return redirect(('main:home'))
+    if not request.user.is_authenticated:    
+        if request.method =='POST':
+            form = RegistrationForm(request.POST )
+            if form.is_valid():
+                user = form.save()
+                user.refresh_from_db()
+                user.user.role = form.cleaned_data.get('role')
+                user.save()
+                username = form.cleaned_data.get('username')
+                raw_password = form.cleaned_data.get('password1')
+                user = authenticate(username=username, password=raw_password)
+                login(request, user)
+                messages.success(request, 'Your account successfully created')
+                return redirect(('main:home'))
+        else:
+            form = RegistrationForm()
+        return render(request, 'account/register.html',{'form': form})
     else:
-        form = RegistrationForm()
-    return render(request, 'account/register.html',{'form': form})
+        return redirect(reverse('qa:index_noans'))
 
 
 @login_required
