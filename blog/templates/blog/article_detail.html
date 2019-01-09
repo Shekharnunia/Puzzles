@@ -74,6 +74,7 @@
               <a class="btn btn-success" href="{% url 'blog:write_new' %}" title="{% trans 'Write a new article' %}"><i class="fa fa-pencil" aria-hidden="true"></i> {% trans 'New Article' %}</a>
               {% if request.user == article.user %}
               <a class="btn btn-primary" href="{% url 'blog:edit_article' article.id %}" title="{% trans 'Edit this article' %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> {% trans 'Edit' %}</a>
+              <a class="btn btn-danger mt-2" href="{% url 'blog:delete_article' article.id %}" title="{% trans 'Delete this article' %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> {% trans 'Delete' %}</a>
               {% endif %}
             </div>
           </div>

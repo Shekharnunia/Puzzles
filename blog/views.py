@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.views.generic import CreateView, ListView, UpdateView, DetailView
+from django.views.generic import CreateView, ListView, UpdateView, DetailView, DeleteView
 from django.urls import reverse
 from django.template.loader import render_to_string
 
@@ -57,6 +57,21 @@ class EditArticleView(LoginRequiredMixin, AuthorRequiredMixin, UpdateView):
     message = ("Your article has been updated.")
     form_class = ArticleForm
     template_name = 'blog/article_update.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, self.message)
+        return reverse('blog:list')
+
+
+class DeleteArticleView(LoginRequiredMixin, AuthorRequiredMixin, DeleteView):
+    """Basic EditView implementation to edit existing articles."""
+    model = Article
+    message = ("Your article has been deleted.")
+    template_name = 'blog/article_delete_confirm.html'
 
     def form_valid(self, form):
         form.instance.user = self.request.user

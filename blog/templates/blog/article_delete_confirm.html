@@ -1,0 +1,26 @@
+{% extends "qa_base.html" %}
+{% load i18n %}
+{% block title %}
+	Delete Post
+{% endblock %}
+
+{% block content %}
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+		  <li class="breadcrumb-item"><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
+		  <li class="breadcrumb-item"><a href="{% url 'blog:list' %}">{% trans 'Articles' %}</a></li>
+		  <li class="breadcrumb-item active" aria-current="page">{% trans 'Delete Post' %}</li>
+		</ol>
+		</nav>
+
+	<div class="container mb-5">
+		<br>
+		<h4>Topic: {{ article.title }}</h4><br>
+		<form method="POST">
+			{% csrf_token %}
+			<h2>Are you sure you want to delete the post</h2><br>
+			<button class="btn btn-outline-danger mr-2" type="submit">Yes, Delete</button>
+			<a class="btn btn-outline-secondary" href="{% url 'blog:article' article.slug %}">Cancel</a>
+		</form>
+	</div>	
+{% endblock %}
