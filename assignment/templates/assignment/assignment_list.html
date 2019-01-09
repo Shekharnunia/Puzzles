@@ -1,0 +1,25 @@
+{% extends "qa_base.html" %}
+
+{% block content %}
+	<a class="btn btn-info mb-4 pull-right" href="{% url 'assignment:create' %}">Create new assignment</a>
+	{% for assignment in assignments %}
+		<table class="table table-striped table-hover table-bordered">
+			<thead>
+				<tr>
+					<th scope="col">Uploader</td>
+					<th scope="col">Topic</td>
+					<th scope="col">Upload time</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><a href="{% url 'assignment:detail' assignment.slug assignment.pk %}">{{ assignment.uploader }}</a></td>
+					<td>{{ assignment.topic }}</td>
+					<td>{{ assignment.timestamp }}</td>
+				</tr>
+			</tbody>
+		</table>
+	{% empty %}
+		<h2>No assignments uploaded yet, be the first one to upload</h2>
+	{% endfor %}
+{% endblock content %}

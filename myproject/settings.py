@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'Newsletter',
     'control_panel',
     'qa',
+    'assignment',
 
 	#third party
     'widget_tweaks',
@@ -176,7 +177,7 @@ STATICFILES_DIRS =[
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-MEDIA_URL='/profile_picture/'
+MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 
 

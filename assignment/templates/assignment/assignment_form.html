@@ -1,0 +1,23 @@
+{% extends "qa_base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div>
+	<ol class="breadcrumb my-4">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'assignment:list' %}">Assignment</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'assignment:detail' assignment.slug assignment.pk %}">{{ assignment.topic|title }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Edit</li>
+      	</ol>
+</div>
+
+<div>
+	<form action="" class="mb-4" method="POST" novalidate>
+		{% csrf_token %}
+		{{ form|crispy }}
+		{{ form.media }}
+		<button type="submit" class="btn btn-primary mr-3">Update</button>
+		<a href="{% url 'assignment:detail' assignment.slug assignment.pk %}" class="btn btn-secondary">Cancel</a>
+	</form>
+</div>
+{% endblock content %}

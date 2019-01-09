@@ -1,0 +1,12 @@
+{% extends "qa_base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+	<a class="btn btn-info mb-4 pull-right" href="{% url 'assignment:create' %}">Create new assignment</a> <br>
+	<form action="" class="mb-4" method="POST" novalidate>
+		{% csrf_token %}
+		{{ form|crispy }}
+		{{ form.media }}
+		<button type="submit" class="btn btn-primary mr-3">Create</button>
+		<a href="{% url 'assignment:list' %}" class="btn btn-secondary">Cancel</a>
+	</form>
+{% endblock content %}

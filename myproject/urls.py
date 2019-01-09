@@ -13,7 +13,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='pages/home.html'), name='home'),
     path('about/', TemplateView.as_view(template_name='pages/about.html'), name='about'),
     path('contact-us/', main_view.ContactUs.as_view(), name='contact_us'),
-
+    path('assignments/', include('assignment.urls')),
     path('polls/', include('polls.urls')),
     path('articles/', include('blog.urls')),
     path('main/', include('main.urls')),
