@@ -1,18 +1,7 @@
-{% extends "base.html" %}
+{% extends "qa_base.html" %}
 
-{% block head %}
+{% block title %}
 Contact Us
-{% endblock %}
-
-<!-- 
-{% block stylesheet %}
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-{% endblock stylesheet %}
--->
-
-{% block breadcrumb %}
-	<li class="breadcrumb-item active"><a href="{% url 'main:home' %}">Home</a></li>
-	<li class="breadcrumb-item active">Contact US</li>
 {% endblock %}
 
 {% block content %}
@@ -27,14 +16,3 @@ Contact Us
 	</div>
 	
 {% endblock %}
-
-<!-- 
-{% block javascript %}
-<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-<!-- <script>
-	var simplemde = new SimpleMDE();
-</script> 
-<script>
-var simplemde = new SimpleMDE({ element: document.getElementById("id_message") });
-</script>
-{% endblock %}-->

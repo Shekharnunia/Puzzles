@@ -6,11 +6,14 @@ from django.urls import path
 from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
 
+from main import views as main_view
 from ckeditor_uploader import views
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='pages/home.html'), name='home'),
     path('about/', TemplateView.as_view(template_name='pages/about.html'), name='about'),
+    path('contact-us/', main_view.ContactUs.as_view(), name='contact_us'),
+
     path('polls/', include('polls.urls')),
     path('articles/', include('blog.urls')),
     path('main/', include('main.urls')),

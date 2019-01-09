@@ -47,7 +47,7 @@
                   <li class="nav-item"><a class="nav-link" href="{% url 'blog:list' %}">Blog</a></li>
                   <li class="nav-item"><a class="nav-link" href="{% url 'qa:index_noans' %}">{% trans 'Q&A' %}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{% url 'Newsletter:newsletter_signup' %}">{% trans 'Newsletter' %}</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{% url 'main:contact_us' %}">{% trans 'Contacts' %}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{% url 'contact_us' %}">{% trans 'Contacts' %}</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                   {% if not hide_search %}

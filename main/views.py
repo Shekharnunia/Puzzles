@@ -264,7 +264,7 @@ class ContactUs(CreateView):
 
 
         messages.success(self.request, 'Successfully Submitted.')
-        return redirect('main:home')
+        return redirect('home')
 
 
 
