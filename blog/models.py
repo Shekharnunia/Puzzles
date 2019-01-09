@@ -86,6 +86,10 @@ class Article(models.Model):
             self.slug = slugify(self.title)
         super(Article, self).save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        self.thumbnail.delete()
+        super().delete(*args, **kwargs)
+
     def get_summary(self):
         if len(self.content) > 255:
             return '{0}...'.format(self.content[:255])

@@ -21,6 +21,10 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+    def delete(self, *args, **kwargs):
+        self.image.delete()
+        super().delete(*args, **kwargs)
+
     def get_screen_name(self):
         try:
             if self.user.get_full_name():
