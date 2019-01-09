@@ -153,12 +153,6 @@ class Question(models.Model):
         return mark_safe(markdown(self.content, safe_mode='escape'))
 
 
-
-
-
-
-
-
 class Answer(models.Model):
     """Model class to contain every answer in the forum and to link it
     to its respective question."""
