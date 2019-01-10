@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'sorl.thumbnail',
     "taggit",
+    'debug_toolbar',
 ]
 
 TAGGIT_CASE_INSENSITIVE = True
@@ -73,6 +74,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 SITE_ID = 1
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -82,6 +85,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
 ]
+
+INTERNAL_IPS = '127.0.0.1'
 
 ROOT_URLCONF = 'myproject.urls'
 
