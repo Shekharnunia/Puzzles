@@ -73,3 +73,10 @@ class Assignment(models.Model):
 	    
 	def get_absolute_url(self, *args, **kwargs):
 		return redirect(reverse('assignment:list', kwargs={self.pk, self.slug}))
+
+	def get_summary(self):
+		if len(self.description) > 255:
+			return '{0}...'.format(self.description[:255])
+
+		else:
+			return self.description

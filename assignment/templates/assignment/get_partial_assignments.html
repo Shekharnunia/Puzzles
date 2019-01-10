@@ -15,7 +15,7 @@
 
     </div>
     <div class="card-body">
-      <p class="card-text">{{ assignment.description|safe }}</p>
+      <p class="card-text">{{ assignment.get_summary|safe }}</p>
       <a href="{% url 'assignment:detail' assignment.slug assignment.pk %}" class="btn btn-primary"> {% trans 'Get Your Assignment' %} &rarr;</a>
     </div>
 

@@ -7,7 +7,7 @@ from .models import Assignment
 
 class AllAssignmentListView(ListView):
 	model = Assignment
-	paginated_by = 10
+	paginate_by = 10
 	context_object_name = 'assignments'
 
 	def get_context_data(self, *args, **kwargs):

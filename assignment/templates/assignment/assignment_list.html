@@ -43,6 +43,8 @@
       </li>
     </ul>
 	
-      {% include 'assignment/get_partial_assignments.html' with assignment=assignment %}
+    {% include 'assignment/get_partial_assignments.html' with assignment=assignment %}
+
+    {% include 'includes/pagination.html' %}
     
 {% endblock content %}
