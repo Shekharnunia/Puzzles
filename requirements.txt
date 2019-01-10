@@ -8,6 +8,7 @@ Django==2.1.4
 django-appconf==1.0.2
 django-ckeditor==5.6.1
 django-crispy-forms==1.7.2
+django-debug-toolbar==1.11
 django-js-asset==1.1.0
 django-taggit==0.23.0
 django-widget-tweaks==1.4.2
@@ -26,5 +27,6 @@ readtime==1.0.6
 requests==2.21.0
 sorl-thumbnail==12.5.0
 soupsieve==1.6.2
+sqlparse==0.2.4
 Unidecode==0.4.21
 urllib3==1.24.1
