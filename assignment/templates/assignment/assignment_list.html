@@ -1,25 +1,50 @@
 {% extends "qa_base.html" %}
+{% load static i18n %}
 
 {% block content %}
-	<a class="btn btn-info mb-4 pull-right" href="{% url 'assignment:create' %}">Create new assignment</a>
+	<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{% trans 'Assignments' %}</li>
+    </ol>
+  </nav>
+
+  <div class="page-header">
+    <a href="{% url 'assignment:create' %}" class="btn btn-primary pull-right">
+      <i class="fa fa-pencil" aria-hidden="true"></i> {% trans "Create new assignment" %}
+    </a>
+    <h1>{% trans "Assignments" %}</h1>
+  </div>
+
+  <div class="card my-4">
+    <h5 class="card-header">{% trans 'Questions by topic' %}</h5>
+    <div class="card-body">
+      {% for tag, count in popular_tags %}
+        <a href="{% url 'qa:tag' tag %}"><span class="badge badge-info">{{ count }} {{ tag }}</span></a>
+      {% endfor %}
+    </div>
+  </div>
+
+	<ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link{% if active == 'draft' %} active{% endif %}" href="{% url 'assignment:draft_list' %}">
+          {% trans "Draft" %}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link{% if active == 'assignment' %} active{% endif %}" href="{% url 'assignment:list' %}">
+          {% trans "Assignment" %}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link{% if active == 'all' %} active{% endif %}" href="{% url 'assignment:all_list' %}">
+          {% trans "All assignment" %}
+        </a>
+      </li>
+    </ul>
 	{% for assignment in assignments %}
-		<table class="table table-striped table-hover table-bordered">
-			<thead>
-				<tr>
-					<th scope="col">Uploader</td>
-					<th scope="col">Topic</td>
-					<th scope="col">Upload time</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><a href="{% url 'assignment:detail' assignment.slug assignment.pk %}">{{ assignment.uploader }}</a></td>
-					<td>{{ assignment.topic }}</td>
-					<td>{{ assignment.timestamp }}</td>
-				</tr>
-			</tbody>
-		</table>
-	{% empty %}
-		<h2>No assignments uploaded yet, be the first one to upload</h2>
+      {% include 'assignment/get_partial_assignments.html' with assignment=assignment %}
+    {% empty %}
+		<h4 class="no-data">No assignments uploaded yet, be the first one to upload</h4>
 	{% endfor %}
 {% endblock content %}

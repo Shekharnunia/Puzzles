@@ -5,10 +5,45 @@ from django.views.generic import ListView, DeleteView, UpdateView, DetailView, C
 from .models import Assignment
 
 
-class AssignmentListView(ListView):
+class AllAssignmentListView(ListView):
 	model = Assignment
 	paginated_by = 10
 	context_object_name = 'assignments'
+
+	def get_context_data(self, *args, **kwargs):
+		context = super().get_context_data(*args, **kwargs)
+		context["popular_tags"] = Assignment.objects.get_counted_tags()
+		context["active"] = "all"
+		return context
+
+
+class AssignmentListView(AllAssignmentListView):
+
+	def get_queryset(self):
+		return Assignment.objects.get_assignment()
+
+	def get_context_data(self, *args, **kwargs):
+		context = super().get_context_data(*args, **kwargs)
+		context["active"] = "assignment"
+		return context
+
+
+class AssignmentDraftListView(AllAssignmentListView):
+
+	def get_queryset(self):
+		return Assignment.objects.get_draft_assignment()
+
+	def get_context_data(self, *args, **kwargs):
+		context = super().get_context_data(*args, **kwargs)
+		context["active"] = "draft"
+		return context
+
+
+class TagQuestionListView(AllAssignmentListView):
+    """Overriding the original implementation to call the tag question
+    list."""
+    def get_queryset(self, **kwargs):
+        return Assignment.objects.filter(tags__name=self.kwargs['tag_name']).exclude(Draft=True)
 
 
 class AssignmentDetailView(DetailView):
@@ -18,7 +53,7 @@ class AssignmentDetailView(DetailView):
 
 class AssignmentCreateView(CreateView):
 	model = Assignment
-	fields = ('topic', 'description', 'assignment_file', 'tags',)
+	fields = ('topic', 'description', 'assignment_file', 'tags', 'draft',)
 	template_name = 'assignment/assignment_create.html'
 	success_url = '/'
 
@@ -32,3 +67,7 @@ class AssignmentEditView(UpdateView):
 class AssignmentDeleteView(DeleteView):
 	model = Assignment
 	context_object_name = 'assignment'
+
+
+class AssignmentDraftDetailView(UpdateView):
+	pass
