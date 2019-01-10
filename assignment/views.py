@@ -39,11 +39,11 @@ class AssignmentDraftListView(AllAssignmentListView):
 		return context
 
 
-class TagQuestionListView(AllAssignmentListView):
+class TagAssignmentListView(AllAssignmentListView):
     """Overriding the original implementation to call the tag question
     list."""
     def get_queryset(self, **kwargs):
-        return Assignment.objects.filter(tags__name=self.kwargs['tag_name']).exclude(Draft=True)
+        return Assignment.objects.filter(tags__name=self.kwargs['tag_name'])
 
 
 class AssignmentDetailView(DetailView):
@@ -55,7 +55,15 @@ class AssignmentCreateView(CreateView):
 	model = Assignment
 	fields = ('topic', 'description', 'assignment_file', 'tags', 'draft',)
 	template_name = 'assignment/assignment_create.html'
-	success_url = '/'
+	message = ("Your Assignment has been created.")
+
+	def form_valid(self, form):
+		form.instance.uploader = self.request.user
+		return super().form_valid(form)
+
+	def get_success_url(self):
+		messages.success(self.request, self.message)
+		return reverse("assignment:all_list")
 
 
 class AssignmentEditView(UpdateView):

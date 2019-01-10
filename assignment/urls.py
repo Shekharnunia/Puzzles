@@ -1,3 +1,4 @@
+from django.conf.urls import url
 from django.urls import path
 
 from . import views
@@ -11,4 +12,5 @@ urlpatterns = [
 	path('<slug:slug>/<int:int>/', views.AssignmentDetailView.as_view(), name='detail'),
 	path('<slug:slug>/<int:int>/edit/', views.AssignmentEditView.as_view(), name='edit'),
 	path('<slug:slug>/<int:int>/delete/', views.AssignmentDeleteView.as_view(), name='delete'),
+	url(r'^tag/(?P<tag_name>.+)/$', views.TagAssignmentListView.as_view(), name='tag'),
 ]

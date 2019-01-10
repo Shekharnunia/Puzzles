@@ -1,19 +1,30 @@
-{% load humanize i18n static humanize %}
+{% load humanize i18n humanize %}
 {% load thumbnail %}
 
-	<table class="table table-striped table-hover table-bordered">
-		<thead>
-			<tr>
-				<th scope="col">Uploader</td>
-				<th scope="col">Topic</td>
-				<th scope="col">Upload time</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><a href="{% url 'assignment:detail' assignment.slug assignment.pk %}">{{ assignment.uploader }}</a></td>
-				<td>{{ assignment.topic }}</td>
-				<td>{{ assignment.timestamp }}</td>
-			</tr>
-		</tbody>
-	</table>
+{% for assignment in assignments %}
+<div class="card mb-4">
+    <div class="card-header text-center">
+      <h2 class="card-title"><a href="{% url 'assignment:detail' assignment.slug assignment.id %}">{{ assignment.topic|title }}</a></h2>
+      <div class="text-muted text-center mt-4 mb-2">
+         <i class="fa fa-calendar ml-3 mr-2"></i>{{ assignment.timestamp|date:"M d, Y" }}
+        <i class="lead fa fa-user ml-3 mr-1"></i>
+        <a href="{% url 'account:profile' assignment.uploader.username %}"> {{ assignment.uploader }}</a>
+        <i class="far fa-eye ml-3 mr-2"></i>{% trans 'views' %}
+        {{ assignment.assignment_views }}
+      </div>
+
+    </div>
+    <div class="card-body">
+      <p class="card-text">{{ assignment.description|safe }}</p>
+      <a href="{% url 'assignment:detail' assignment.slug assignment.pk %}" class="btn btn-primary"> {% trans 'Get Your Assignment' %} &rarr;</a>
+    </div>
+
+    <div class="card-footer text-muted">
+      {% for tag in assignment.tags.names %}
+        <a href="#" class="ml-2"><span class="badge badge-info">{{ tag }}</span></a>
+      {% endfor %}
+    </div>
+  </div>
+{% empty %}
+  <h4 class="no-data">There is no published assignment yet <a href="{% url 'assignment:create' %}"> Be the first one to publish one!</a></h4>
+{% endfor %}

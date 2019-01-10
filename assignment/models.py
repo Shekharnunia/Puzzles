@@ -51,9 +51,12 @@ class Assignment(models.Model):
 	assignment_file = models.FileField(upload_to=assignment_upload_path, blank=False)
 	timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
 	assignment_views = models.PositiveIntegerField(default=0)
-	draft = models.BooleanField(default=False)
+	draft = models.BooleanField(default=False, null=True, blank=True)
 	tags = TaggableManager()
 	objects = AssignmentQuerySet.as_manager()
+
+	class Meta:
+		ordering = ['-timestamp',]
 
 	def __str__(self):
 		return self.topic
