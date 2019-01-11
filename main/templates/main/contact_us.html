@@ -5,7 +5,7 @@ Contact Us
 {% endblock %}
 
 {% block content %}
-
+	<a href="{% url 'home' %}"><h1 class="text-center">Puzzles</h1></a>
 	<div class="container"  style="margin-top: 30px;">
 		<form method="POST" novalidate>
 			{% csrf_token %}

@@ -1,0 +1,114 @@
+{% extends "qa_base.html" %}
+
+ {% load static %}
+
+ {% block head %}
+
+ <title>{{ user.username|title }}</title>
+
+ {% endblock head %}
+
+ {% block breadcrumb %}
+	<li class="breadcrumb-item active"><a href="{% url 'main:home' %}">Home</a></li>
+	<li class="breadcrumb-item active">Profile</li>
+{% endblock %}
+
+ {% block content %}
+
+ <div class="container" style="margin-bottom: 30px;">
+	<div class="row">
+		<div class="col-md-10">
+
+ 			<div class="row">
+			  <div class="col-3">
+			    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+ 			      <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true">Profile</a>
+
+ 			      <a class="nav-link" id="v-pills-bio-tab" data-toggle="pill" href="#v-pills-bio" role="tab" aria-controls="v-pills-bio" aria-selected="false">Bio</a>
+
+ 			      <a class="nav-link" id="v-pills-other-tab" data-toggle="pill" href="#v-pills-other" role="tab" aria-controls="v-pills-other" aria-selected="false">Other Informations</a>
+
+ 			      <a class="nav-link" id="v-pills-picture-tab" data-toggle="pill" href="#v-pills-picture" role="tab" aria-controls="v-pills-picture" aria-selected="false">Profile Picture</a>
+			    </div>
+			  </div>
+			  <div class="col-9">
+			    <div class="tab-content" id="v-pills-tabContent">
+
+ 			      <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">      	      
+
+ 					<!-- <h1>Profile</h1> -->
+
+ 					<p>UserName: {{ user }}</p>
+
+ 					{% if user.get_full_name %}
+					<p>Name: {{ user.get_full_name|title }}</p>
+					{% endif %}
+
+ 					{% if user.email %}
+					<p>Email: {{ user.email }}</p>
+					{% endif %}
+
+ 			      </div>
+
+ 			      <!-- <h1>Bio Section</h1> -->
+			      <div class="tab-pane fade" id="v-pills-bio" role="tabpanel" aria-labelledby="v-pills-bio-tab">
+
+ 			      	{% if user.user.bio %}
+						<p>Bio: {{ user.user.bio }}</p>
+					{% endif %}
+
+ 			      </div>
+
+
+ 				<!-- <h1>Other Information Section</h1> -->
+			      <div class="tab-pane fade" id="v-pills-other" role="tabpanel" aria-labelledby="v-pills-other-tab">
+
+
+ 						{% if user.user.phone %}
+							<p>Phone: {{ user.user.phone }}</p>
+						{% endif %}
+
+
+ 						{% if user.user.website %}
+							<p>Website: {{ user.user.website }}</p>
+						{% endif %}
+
+ 						{% if user.user.city %}
+							<p>City: {{ user.user.city|title }}</p>
+						{% endif %}
+
+ 						{% if user.user.country %}
+							<p>Country: {{ user.user.country }}</p>
+						{% endif %}
+
+ 						{% if user.user.organization %}
+							<p>Organization: {{ user.user.organization|title }}</p>
+						{% endif %}
+
+ 			      </div>
+
+
+ 				<!-- <h1>Image Section</h1> -->
+			      <div class="tab-pane fade" id="v-pills-picture" role="tabpanel" aria-labelledby="v-pills-picture-tab">
+					{% if user.user.image %}
+						<img class="rounded-circle" src="{{ user.user.image.url }}" width="240">
+					{% else %}
+						<div class="col-2">
+							<img src="{% static 'img/avatar.svg' %}" class="w-100">
+						</div>
+					{% endif %}
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</div>
+
+ 		<div class="col-md-2">
+			{% if user == request.user %}
+				<a class="btn btn-outline-secondary" href="#"><i class="fas fa-user-edit"></i>Account Update</a><br><br>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock content %}

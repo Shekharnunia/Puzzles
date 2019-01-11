@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'main',
     'polls',
     'blog',
-    'account',
+    #'account',
     'Newsletter',
     'control_panel',
     'qa',
@@ -64,6 +64,9 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     "taggit",
     'debug_toolbar',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 TAGGIT_CASE_INSENSITIVE = True
@@ -106,6 +109,14 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
@@ -188,9 +199,9 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 
 
 
-LOGIN_URL = 'account:login'
+LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'qa:index_noans'
-LOGOUT_REDIRECT_URL = 'account:login'
+LOGOUT_REDIRECT_URL = 'account_login'
 
 
 

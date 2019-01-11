@@ -59,15 +59,40 @@
                       {% empty %}
                         <img src="{% static 'img/user.png' %}" height="30px" alt="{% trans 'No Profile Picture' %}" />
                       {% endthumbnail %}
-                      {{ request.user.user.get_screen_name }}
+                      {{ request.user.username }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="{% url 'account:profile' request.user.username  %}"><i class="far fa-user fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile' %}</a>
-                      <a class="dropdown-item" href="{% url 'account:account_update' request.user.pk  %}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile Settings' %}</a>
+                      <a class="dropdown-item" href="{% url 'profile' request.user.username  %}"><i class="far fa-user fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile' %}</a>
+                      <a class="dropdown-item" href="{% url 'update' %}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile Settings' %}</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'account:logout' %}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>&nbsp; {% trans "Log Out" %}</a>
+                      <a class="dropdown-item" href="{% url 'account_logout' %}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>&nbsp; {% trans "Log Out" %}</a>
                     </div>
                   </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        {% else %}
+          <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
+            <div class="container">
+              <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <a class="navbar-brand" href="{% url 'home' %}"><img height="60" src="{% static "img/puzzles-logo.png" %}" alt="Puzzles"></a>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="btn btn-md" href="#" id="notifications" data-toggle="popover" data-title="{% trans 'Notifications' %}">
+                        <i class="fa fa-bell-o" aria-hidden="true"></i>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="navbar-nav mr-auto">
+                  <li class="nav-item"><a class="nav-link" href="{% url 'polls:poll' %}">{% trans 'Poll' %} <span class="sr-only">(current)</span></a></li>
+                  <li class="nav-item"><a class="nav-link" href="{% url 'blog:list' %}">{% trans 'Blog' %}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{% url 'qa:index_noans' %}">{% trans 'Q&A' %}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{% url 'Newsletter:newsletter_signup' %}">{% trans 'Newsletter' %}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{% url 'assignment:list' %}">{% trans 'Assignments' %}</a></li>
                 </ul>
               </div>
             </div>

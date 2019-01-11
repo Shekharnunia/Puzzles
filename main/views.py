@@ -4,6 +4,9 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 
 from django.conf import settings
 
+from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail, send_mass_mail
 
@@ -15,7 +18,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.utils.decorators import method_decorator
 from django.utils import timezone
 
-from django.views.generic import UpdateView, CreateView, DeleteView
+from django.views.generic import UpdateView, CreateView, DeleteView, ListView, DetailView
 
 
 from main.models import Question, Answer, ContactUs
@@ -32,6 +35,39 @@ def email(request):
     else:
         send_mail( subject, message, email_from, recipient_list, fail_silently = False )
         return redirect('main:home')
+
+
+
+class UserListView(LoginRequiredMixin, ListView):
+    model = User
+    # These next two lines tell the view to index lookups by username
+    template_name = 'users/user_list.html'
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
+
+
+class UserDetailView(LoginRequiredMixin, DetailView):
+    model = User
+    # These next two lines tell the view to index lookups by username
+    template_name='account/profile.html'
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
+
+
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    fields = ['first_name', 'email',]
+    model = User
+    template_name='users/user_form.html'
+
+    # send the user back to their own page after a successful update
+    def get_success_url(self):
+        return reverse('users:detail',
+                       kwargs={'username': self.request.user.username})
+
+    def get_object(self):
+        # Only get the User record for the user making the request
+        return User.objects.get(username=self.request.user.username)
+
 
 
 def questionlistview(request):
@@ -223,15 +259,7 @@ class DeleteAnswerView(UserPassesTestMixin, DeleteView):
         if self.request.user == answer.answer_by:
             return True
         return False
-
-
-def privacy_policy(request):
-    return render(request, 'main/privacy_policy.html', {})
-
-
-def term_and_conditions(request):
-    return render(request, 'main/term_and_conditions.html', {})
-
+        
 
 class ContactUs(CreateView):
     model = ContactUs

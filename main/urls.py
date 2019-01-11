@@ -7,10 +7,7 @@ from .models import Question
 app_name = 'main'
 urlpatterns = [	   
     url(r'^$', views.questionlistview, name='home'),
-
     url(r'^ask-question/$', views.CreateQuestionView.as_view(), name='ask_question'),
-    url(r'^privacy-policy/$', views.privacy_policy, name='privacy_policy'),
-    url(r'^term-and-conditions/$', views.term_and_conditions, name='term_and_conditions'),
         
     url(r'^question/(?P<pk>\d+)/$', views.question, name='question'),
 
