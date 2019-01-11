@@ -1,17 +1,15 @@
-from django.contrib.auth.models import User
-
-from django.urls import reverse
-
+from django.conf import settings
 from django.db import models
-
+from django.urls import reverse
 from django.utils.html import mark_safe
+
 from markdown import markdown
 
 
 class Question(models.Model):
     topic = models.CharField(max_length=300,unique=True)
     question = models.TextField(max_length=4000, blank=False)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_by')
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_by')
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
     question_views = models.PositiveIntegerField(default=0)
@@ -36,7 +34,7 @@ class Question(models.Model):
 class Answer(models.Model):
     question_a = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
     answer = models.TextField(max_length=1500,blank=False)
-    answer_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='answer_by')
+    answer_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='answer_by')
     answers_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     answer_views = models.PositiveIntegerField(default=0)

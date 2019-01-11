@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 from django.db.models import Count
 from django.urls import reverse
@@ -44,7 +44,7 @@ class AssignmentQuerySet(models.query.QuerySet):
 
 
 class Assignment(models.Model):
-	uploader = models.ForeignKey(User, on_delete = models.CASCADE)
+	uploader = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
 	slug = models.SlugField(max_length=50, blank=False)
 	topic = models.CharField(max_length=240, blank=False)
 	description = RichTextUploadingField()

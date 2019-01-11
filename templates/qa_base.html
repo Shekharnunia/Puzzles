@@ -54,7 +54,7 @@
 
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      {% thumbnail request.user.user.image "x30" as im %}
+                      {% thumbnail request.user.picture "x30" as im %}
                         <img src="{{ im.url }}" style="border-radius: 50%;" alt="{% trans 'User Image' %}" class="user-image">
                       {% empty %}
                         <img src="{% static 'img/user.png' %}" height="30px" alt="{% trans 'No Profile Picture' %}" />
@@ -62,8 +62,8 @@
                       {{ request.user.username }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="{% url 'profile' request.user.username  %}"><i class="far fa-user fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile' %}</a>
-                      <a class="dropdown-item" href="{% url 'update' %}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile Settings' %}</a>
+                      <a class="dropdown-item" href="{% url 'users:detail' request.user.username  %}"><i class="far fa-user fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile' %}</a>
+                      <a class="dropdown-item" href="{% url 'users:update'  %}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile Settings' %}</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="{% url 'account_logout' %}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>&nbsp; {% trans "Log Out" %}</a>
                     </div>

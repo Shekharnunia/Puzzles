@@ -109,7 +109,7 @@ class ArticleComment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     comment = models.CharField(max_length=500)
     date = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = ("Article Comment")

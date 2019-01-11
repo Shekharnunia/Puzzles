@@ -1,7 +1,7 @@
 import uuid
 from collections import Counter
 
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 
@@ -27,7 +27,7 @@ class Vote(models.Model):
     uuid_id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     value = models.BooleanField(default=True)
     content_type = models.ForeignKey(ContentType,
@@ -87,7 +87,7 @@ class Question(models.Model):
         (CLOSED, _("Closed")),
         (DRAFT, _("Draft")),
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=300, unique=True, blank=False)
     content = RichTextUploadingField(blank=False)
     status = models.CharField(max_length=1, choices=STATUS, default=DRAFT)
@@ -101,7 +101,7 @@ class Question(models.Model):
     has_answer = models.BooleanField(default=False)
     tags = TaggableManager()
     objects = QuestionQuerySet.as_manager()
-    close_question = models.ForeignKey(User, on_delete=models.CASCADE, default = '1', related_name='question_close_user', null=True, blank=True)
+    close_question = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default = '1', related_name='question_close_user', null=True, blank=True)
     
     class Meta:
         ordering = ["total_votes", "-timestamp"]
@@ -157,7 +157,7 @@ class Answer(models.Model):
     """Model class to contain every answer in the forum and to link it
     to its respective question."""
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content = models.TextField(blank=False)
     uuid_id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)

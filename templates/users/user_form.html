@@ -25,7 +25,7 @@
     </div>
 
     <div class="col-md-8">
-      <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{% url 'update' %}">
+      <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{% url 'users:update' %}">
         {% csrf_token %}
         {{ form|crispy }}
         <div class="control-group">

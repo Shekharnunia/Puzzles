@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'polls',
     'blog',
     #'account',
+    'users',
     'Newsletter',
     'control_panel',
     'qa',
@@ -67,7 +68,12 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'graphene_django',
 ]
+
+GRAPHENE = {
+    'SCHEMA': 'users.schema.schema' # Where your Graphene schema lives
+}
 
 TAGGIT_CASE_INSENSITIVE = True
 
@@ -120,6 +126,7 @@ AUTHENTICATION_BACKENDS = (
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
+AUTH_USER_MODEL = 'users.User'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases

@@ -9,6 +9,7 @@ from django.views.decorators.cache import never_cache
 from main import views as main_views
 
 from ckeditor_uploader import views
+from graphene_django.views import GraphQLView
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='pages/home.html'), name='home'),
@@ -21,19 +22,18 @@ urlpatterns = [
     path('articles/', include('blog.urls')),
     path('main/', include('main.urls')),
     #url(r'^account/', include('account.urls')),
+    url(r'^users/', include('users.urls')),
     path('control/', include('control_panel.urls')),
     path('newsletter/', include('Newsletter.urls')),
     url(r'^qa/', include('qa.urls')),
 
     path('contact-us/', main_views.ContactUs.as_view(), name='contact_us'),
-    url(r'^accounts/profile/(?P<username>[a-zA-Z0-9]+)/$', main_views.UserDetailView.as_view(), name='profile'),
-    url(r'^list/$', view=main_views.UserListView.as_view(), name='list'),
-    url(r'^update/$', main_views.UserUpdateView.as_view(), name='update'),
 
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^upload/', (views.upload), name='ckeditor_upload'),
     url(r'^browse/', never_cache(views.browse), name='ckeditor_browse'),
     url(r'^accounts/', include('allauth.urls')),
+    url(r'^graphql', GraphQLView.as_view(graphiql=True)),
 
     url(r'^admin/', admin.site.urls),  
 
