@@ -73,6 +73,8 @@ INSTALLED_APPS = [
     'graphene_django',
 ]
 
+ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
+
 GRAPHENE = {
     'SCHEMA': 'users.schema.schema' # Where your Graphene schema lives
 }

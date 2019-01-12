@@ -32,6 +32,12 @@
           {% if object.job_title %}
             <i class="fa fa-briefcase" aria-hidden="true"></i>  {{ object.job_title }} <br />
           {% endif %}
+          {% if object.is_student %}
+            <i class="fas fa-graduation-cap" aria-hidden="true"></i>  Student <br />
+          {% endif %}
+          {% if object.is_teacher %}
+            <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i>  Teacher <br />
+          {% endif %}
           {% if object.location %}
             <i class="fa fa-map-marker" aria-hidden="true"></i>  {{ object.location }} <br />
           {% endif %}
