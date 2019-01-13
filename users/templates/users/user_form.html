@@ -1,7 +1,5 @@
 {% extends "qa_base.html" %}
-{% load static i18n %}
-{% load crispy_forms_tags %}
-{% load thumbnail %}
+{% load static i18n thumbnail crispy_forms_tags %}
 
 {% block title %}{{ user.username|title }}{% endblock %}
 
@@ -10,31 +8,43 @@
 {% endblock head %}
 
 {% block content %}
-
-  <div class="row profile">
-    <div class="col-md-4 user-profile">
-      <h1>{{ user.username|title }}</h1>
-      {% if user.first_name %}<p class="lead">{{ user.first_name }}</p>{% endif %}
-      {% if user.picture %}
-        {% thumbnail user.picture "x250" as im %}
-          <img src="{{ im.url }}" alt="Picture Profile" id="pic">
-        {% endthumbnail %}
-      {% else %}
-        <img src="{% static 'img/user.png' %}" alt="No Profile Picture" />
-      {% endif %}
-    </div>
-
-    <div class="col-md-8">
-      <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{% url 'users:update' %}">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <div class="control-group">
-          <div class="controls">
-            <button type="submit" class="btn btn-dark">{% trans 'Update Profile' %}</button>
-          </div>
-        </div>
-      </form>
-    </div>
+  <div class="page-header">
+      <h1>{% trans 'Account Settings' %}</h1>
   </div>
+    <div class="row profile">
+      <div class="col-md-3 user-profile">
+        <h1>{{ user.username|title }}</h1>
+        {% if user.first_name %}<p class="lead">{{ user.first_name }}</p>{% endif %}
+        {% if user.picture %}
+          {% thumbnail user.picture "x190" as im %}
+            <img src="{{ im.url }}" alt="Picture Profile" id="pic">
+          {% endthumbnail %}
+        {% else %}
+          <img src="{% static 'img/user.png' %}" alt="No Profile Picture" />
+        {% endif %}
+        <div class=" mt-5">
+          {% include 'users/partial_settings_menu.html' with active='profile' %}
+        </div>
+      </div>
 
+      <div class="col-md-8 offset-1">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-success alert-dismissable">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{% url 'users:update' %}">
+          {% csrf_token %}
+          {{ form|crispy }}
+          <div class="control-group">
+            <div class="controls">
+              <button type="submit" class="btn btn-dark">{% trans 'Update Profile' %}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
 {% endblock %}

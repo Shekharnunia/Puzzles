@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 
 
 from decorators import ajax_required
-from helpers import AuthorRequiredMixin
+from helpers import AuthorRequiredMixin, TeacherRequiredMixin
 from .models import Article, ArticleComment
 from .forms import ArticleForm, ArticleCommentForm
 

@@ -49,3 +49,13 @@ class AuthorRequiredMixin(View):
             raise PermissionDenied
 
         return super().dispatch(request, *args, **kwargs)
+
+class TeacherRequiredMixin(View):
+    """Mixin to validate than the loggedin user is the creator of the object
+    to be edited or updated."""
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.user.is_teacher != True:
+            raise PermissionDenied
+
+        return super().dispatch(request, *args, **kwargs)
