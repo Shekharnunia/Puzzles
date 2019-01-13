@@ -17,7 +17,7 @@ class NewsLetter(models.Model):
         (DRAFT, ("Draft")),
         (PUBLISHED, ("Published")),
     )
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, default='1')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
     subject = models.CharField(max_length=250)
     body = models.TextField(max_length=5000)
     email = models.ManyToManyField(NewsLetterUser)
