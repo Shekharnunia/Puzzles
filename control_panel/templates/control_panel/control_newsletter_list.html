@@ -19,6 +19,7 @@
         <table class="table table-hover table-sm">
           <thead>
             <tr>
+              <th>User</th>
               <th>subject</th>
               <th>Status</th>
               <th>Created</th>
@@ -30,6 +31,7 @@
           <tbody>
             {% for newsletter in newsletters %}
             <tr>
+              <td><a href="{% url 'users:detail' username=newsletter.user.username %}">{{ newsletter.user }}</a></td>
               <td><a href="{% url 'control_panel:control_newsletter_detail' pk=newsletter.pk %}">{{ newsletter.subject }}</a></td>
               <td>{{ newsletter.status }}</td>
               <td>{{ newsletter.created }}</td>
