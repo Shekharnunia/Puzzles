@@ -1,0 +1,38 @@
+{% extends "control_base.html" %}
+{% block content %}
+
+<div class="col-sm-9 offset-sm-1 col-md-10 offset-sm-1 main">
+    <div class = "row">
+    <div class = "col-sm-9">
+	{% if messages %}
+	    {% for message in messages %}
+	    <div {% if message.tags %} class="alert alert-{{ message.tags }}" role="alert"{% endif %}>{{ message }}</div>
+	    {% endfor %}
+	{% endif %}
+        <h1 class="page-header">All subscribers</h1>
+    </div>
+    <div class = "col-sm-3">
+        <a href="{% url 'Newsletter:newsletter_signup' %}"><button type="button" class="btn btn-success">New subscriber</button></a>
+    </div>
+      <div class="table-responsive">
+        <table class="table table-hover table-sm">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Date added</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for subscriber in subscribers %}
+            <tr>
+              <td>{{ subscriber.email }}</td>
+              <td>{{ subscriber.date_added }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        
+        {% include 'includes/pagination.html' %}
+    </div>
+</div>
+{% endblock %}

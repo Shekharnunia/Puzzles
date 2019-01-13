@@ -1,7 +1,8 @@
+from django.contrib.auth.mixins import AccessMixin
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponseBadRequest
 from django.views.generic import View
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
 def paginate_data(qs, page_size, page, paginated_type, **kwargs):
@@ -50,12 +51,10 @@ class AuthorRequiredMixin(View):
 
         return super().dispatch(request, *args, **kwargs)
 
-class TeacherRequiredMixin(View):
-    """Mixin to validate than the loggedin user is the creator of the object
-    to be edited or updated."""
-    def dispatch(self, request, *args, **kwargs):
-        obj = self.get_object()
-        if obj.user.is_teacher != True:
-            raise PermissionDenied
 
+class TeacherRequiredMixin(AccessMixin):
+    """Verify that the current user is authenticated."""
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_teacher:
+            return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)

@@ -1,11 +1,13 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import ListView, DeleteView, UpdateView, DetailView, CreateView
 
+from helpers import AuthorRequiredMixin, TeacherRequiredMixin
 from .models import Assignment
 
 
-class AllAssignmentListView(ListView):
+class AllAssignmentListView(LoginRequiredMixin, ListView):
 	model = Assignment
 	paginate_by = 10
 	context_object_name = 'assignments'
@@ -28,7 +30,7 @@ class AssignmentListView(AllAssignmentListView):
 		return context
 
 
-class AssignmentDraftListView(AllAssignmentListView):
+class AssignmentDraftListView(AllAssignmentListView, AuthorRequiredMixin):
 
 	def get_queryset(self):
 		return Assignment.objects.get_draft_assignment()
@@ -46,12 +48,12 @@ class TagAssignmentListView(AllAssignmentListView):
         return Assignment.objects.filter(tags__name=self.kwargs['tag_name'])
 
 
-class AssignmentDetailView(DetailView):
+class AssignmentDetailView(LoginRequiredMixin, DetailView):
 	model = Assignment
 	context_object_name = 'assignment'
 
 
-class AssignmentCreateView(CreateView):
+class AssignmentCreateView(LoginRequiredMixin, TeacherRequiredMixin, CreateView):
 	model = Assignment
 	fields = ('topic', 'description', 'assignment_file', 'tags', 'draft',)
 	template_name = 'assignment/assignment_create.html'
@@ -66,16 +68,16 @@ class AssignmentCreateView(CreateView):
 		return reverse("assignment:all_list")
 
 
-class AssignmentEditView(UpdateView):
+class AssignmentEditView(LoginRequiredMixin, TeacherRequiredMixin, AuthorRequiredMixin, UpdateView):
 	model = Assignment
 	context_object_name = 'assignment'
 	fields = ('topic', 'description', 'assignment_file', 'tags',)
 
 
-class AssignmentDeleteView(DeleteView):
+class AssignmentDeleteView(LoginRequiredMixin, TeacherRequiredMixin, AuthorRequiredMixin, DeleteView):
 	model = Assignment
 	context_object_name = 'assignment'
 
 
-class AssignmentDraftDetailView(UpdateView):
+class AssignmentDraftDetailView(LoginRequiredMixin, UpdateView):
 	pass

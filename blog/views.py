@@ -2,10 +2,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.views.generic import CreateView, ListView, UpdateView, DetailView, DeleteView
-from django.urls import reverse
 from django.template.loader import render_to_string
-
+from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.views.generic import CreateView, ListView, UpdateView, DetailView, DeleteView
 
 from decorators import ajax_required
 from helpers import AuthorRequiredMixin, TeacherRequiredMixin
@@ -35,7 +35,7 @@ class DraftsListView(ArticlesListView):
         return Article.objects.get_drafts()
 
 
-class CreateArticleView(LoginRequiredMixin, CreateView):
+class CreateArticleView(LoginRequiredMixin, TeacherRequiredMixin, CreateView):
     """Basic CreateView implementation to create new articles."""
     model = Article
     message = ("Your article has been created.")

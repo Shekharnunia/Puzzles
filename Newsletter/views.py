@@ -156,7 +156,6 @@ class NewsletterEditView(UpdateView):
         newsletter.save()
         messages.success(self.request, 'Question successfully updated')
         return redirect('control_panel:control_newsletter_detail', pk=newsletter.pk)
-        # return redirect('main:question', pk=question.pk)
 
 
 @staff_member_required
@@ -193,13 +192,9 @@ class NewsletterDeleteView(DeleteView):
     template_name = 'control_panel/control_newsletter_delete.html'
 
 
-
-    
-    
-    
-    
-    
-    
-    
-    
-        
+@method_decorator(staff_member_required, name='dispatch')
+class NewsletterSubscriberListView(ListView):
+    model = NewsLetterUser
+    paginate_by = 10
+    template_name = 'newsletter/newsletter_list.html'
+    context_object_name = 'subscribers'
