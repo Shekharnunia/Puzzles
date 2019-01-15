@@ -5,7 +5,9 @@ from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import redirect
+from django.utils.html import mark_safe
 
+from markdown import markdown
 from taggit.managers import TaggableManager
 
 
@@ -50,7 +52,7 @@ class Assignment(models.Model):
 	assignment_file = models.FileField(upload_to=assignment_upload_path, blank=False)
 	timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
 	assignment_views = models.PositiveIntegerField(default=0)
-	draft = models.BooleanField(default=False, null=True, blank=True)
+	draft = models.BooleanField(default=False, null=True)
 	tags = TaggableManager()
 	objects = AssignmentQuerySet.as_manager()
 
@@ -73,9 +75,12 @@ class Assignment(models.Model):
 	def get_absolute_url(self, *args, **kwargs):
 		return redirect(reverse('assignment:list', kwargs={self.pk, self.slug}))
 
+	def get_description_as_markdown(self):
+		return mark_safe(markdown(self.description, safe_mode='escape'))
+
 	def get_summary(self):
-		if len(self.description) > 255:
-			return '{0}...'.format(self.description[:255])
+		if len(self.get_description_as_markdown()) > 255:
+			return '{0}...'.format(self.get_description_as_markdown()[:255])
 
 		else:
-			return self.description
+			return self.get_description_as_markdown()

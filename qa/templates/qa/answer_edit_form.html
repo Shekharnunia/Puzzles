@@ -1,8 +1,11 @@
 {% extends 'qa_base.html' %}
-{% load i18n %}
-{% load crispy_forms_tags %}
+{% load i18n static crispy_forms_tags %}
 
-{% block title %}{% trans 'Answer a question' %}{% endblock %}
+{% block title %}{% trans 'Update Answer' %}{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+{% endblock head %}
 
 {% block content %}
 
@@ -21,6 +24,12 @@
       <a href="{% url 'qa:index_all' %}" class="btn btn-default">{% trans 'Cancel' %}</a>
     </div>
   </form>
-  {{ form.media }}
 
 {% endblock content %}
+
+{% block modal %}
+  <script src="{% static 'js/simplemde.min.js' %}"></script>
+  <script>
+    var simplemde = new SimpleMDE({ element: document.getElementById("id_content") });
+  </script>
+{% endblock modal %}

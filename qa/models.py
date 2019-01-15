@@ -14,7 +14,7 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import mark_safe
 
-
+from markdown import markdown
 from taggit.managers import TaggableManager
 
 
@@ -140,9 +140,6 @@ class Question(models.Model):
 
     def get_accepted_answer(self):
         return Answer.objects.get(question=self, is_answer=True)
-
-    def get_markdown(self):
-        return markdownify(self.content)
 
     def get_absolute_url(self):
         return reverse("main:question", kwargs={"pk": self.pk, "slug":self.slug})

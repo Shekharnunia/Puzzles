@@ -26,7 +26,7 @@
               <div class="text-muted text-center mt-4 mb-2">
                  <i class="fa fa-calendar ml-3 mr-2"></i>{{ article.timestamp|date:"M d, Y" }}
                 <i class="lead fa fa-user ml-3 mr-1"></i>
-                <a href="{% url 'account:profile' article.user.username %}"> {{ article.user|title }}</a>
+                <a href="{% url 'users:detail' article.user.username %}"> {{ article.user|title }}</a>
                 <i class="fa fa-clock-o ml-3 mr-2"></i>{{ article.get_readtime }}
                 <i class="fas fa-comments ml-3 mr-2"></i><a href="{% url 'blog:article' article.slug %}#comments-link">{{ article.get_comments.count }} {% trans 'comments' %}</a>
                 <i class="far fa-eye ml-3 mr-2"></i>{% trans 'views' %}

@@ -8,7 +8,7 @@
       <div class="text-muted text-center mt-4 mb-2">
          <i class="fa fa-calendar ml-3 mr-2"></i>{{ assignment.timestamp|date:"M d, Y" }}
         <i class="lead fa fa-user ml-3 mr-1"></i>
-        <a href="{% url 'account:profile' assignment.uploader.username %}"> {{ assignment.uploader }}</a>
+        <a href="{% url 'users:detail' assignment.uploader.username %}"> {{ assignment.uploader }}</a>
         <i class="far fa-eye ml-3 mr-2"></i>{% trans 'views' %}
         {{ assignment.assignment_views }}
       </div>

@@ -1,5 +1,12 @@
 {% extends "qa_base.html" %}
-{% load crispy_forms_tags %}
+{% load static i18n crispy_forms_tags %}
+
+{% block title %}{% trans 'Create an assignment' %}{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/simplemde.min.css' %}">
+{% endblock head %}
+
 {% block content %}
 	<a class="btn btn-info mb-4 pull-right" href="{% url 'assignment:create' %}">Create new assignment</a> <br>
 	<form action="" class="mb-4" method="POST" novalidate>
@@ -10,3 +17,10 @@
 		<a href="{% url 'assignment:list' %}" class="btn btn-secondary">Cancel</a>
 	</form>
 {% endblock content %}
+
+{% block modal %}
+  <script src="{% static 'js/simplemde.min.js' %}"></script>
+  <script>
+    var simplemde = new SimpleMDE({ element: document.getElementById("id_description") });
+  </script>
+{% endblock modal %}

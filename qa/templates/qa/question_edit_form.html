@@ -4,6 +4,10 @@
 
 {% block title %}{% trans 'Edit question' %}{% endblock %}
 
+{% block head %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+{% endblock head %}
+
 {% block content %}
 
   <nav aria-label="breadcrumb">
@@ -28,4 +32,8 @@
 
 {% block modal %}
   <script src="{% static 'js/qa.js' %}"></script>
+  <script src="{% static 'js/simplemde.min.js' %}"></script>
+  <script>
+    var simplemde = new SimpleMDE({ element: document.getElementById("id_content") });
+  </script>
 {% endblock modal %}

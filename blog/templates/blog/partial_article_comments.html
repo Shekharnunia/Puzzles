@@ -6,9 +6,9 @@
   <form role="form" id="comment-form">
     {% csrf_token %}
     <input type="hidden" name="article" value="{{ article.pk }}">
-	{% if user.user.image %}
+	{% if user.picture %}
     <div class="user-portrait clearfix">
-      <img src="{{ user.user.image.url }}">
+      <img src="{{ user.picture.url }}">
     </div>
     {% else %}
     <div class="user-portrait clearfix">

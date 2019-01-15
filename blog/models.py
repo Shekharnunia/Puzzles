@@ -5,8 +5,9 @@ from django.utils import timezone
 from django.db.models import Count
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from django.utils.html import mark_safe
 
-import markdown
+from markdown import markdown
 import readtime
 from taggit.managers import TaggableManager
 
@@ -88,21 +89,21 @@ class Article(models.Model):
         self.thumbnail.delete()
         super().delete(*args, **kwargs)
 
+    def get_message_as_markdown(self):
+        return mark_safe(markdown(self.content, safe_mode='escape'))
+
     def get_summary(self):
-        if len(self.content) > 255:
-            return '{0}...'.format(self.content[:255])
+        if len(self.get_message_as_markdown()) > 255:
+            return '{0}...'.format(self.get_message_as_markdown()[:255])
 
         else:
-            return self.content
+            return self.get_message_as_markdown()
 
     def get_comments(self):
         return ArticleComment.objects.filter(article=self)
 
     def get_readtime(self):
         return readtime.of_html(self.content)
-
-    def get_content_as_markdown(self):
-        return markdown.markdown(self.content, safe_mode='escape')
 
 
 class ArticleComment(models.Model):

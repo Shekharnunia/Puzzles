@@ -1,6 +1,5 @@
 {% extends 'qa_base.html' %}
-{% load i18n %}
-{% load crispy_forms_tags %}
+{% load i18n crispy_forms_tags %}
 
 {% block title %}{% trans 'Answer a question' %}{% endblock %}
 
@@ -21,6 +20,5 @@
       <a href="{% url 'qa:index_all' %}" class="btn btn-default">{% trans 'Cancel' %}</a>
     </div>
   </form>
-  {{ form.media }}
 
 {% endblock content %}
