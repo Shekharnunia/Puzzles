@@ -14,9 +14,7 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import mark_safe
 
-from markdown import markdown
-from ckeditor.fields import RichTextField
-from ckeditor_uploader.fields import RichTextUploadingField
+
 from taggit.managers import TaggableManager
 
 
@@ -89,7 +87,7 @@ class Question(models.Model):
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=300, unique=True, blank=False)
-    content = RichTextUploadingField(blank=False)
+    content = models.TextField()
     status = models.CharField(max_length=1, choices=STATUS, default=DRAFT)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)

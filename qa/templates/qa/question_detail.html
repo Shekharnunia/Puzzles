@@ -41,7 +41,7 @@
         {% if question.tags.names %}
           <p>
             {% for tag in question.tags.names %}
-              <span class="badge badge-primary">{{ tag }}</span>
+              <a href="{% url 'qa:tag' tag %}"><span class="badge badge-primary">{{ tag }}</span></a>
             {% endfor %}
           </p>
         {% endif %}
@@ -55,7 +55,7 @@
               <img src="{% static 'img/user.png' %}" class="mr-2" height="30" alt="{% trans 'No Profile Picture' %}" />  
               {% endif %}
               <div class="media-body">
-                <h5 class="mt-0"><a href="{% url 'account:profile' question.user.username  %}">{{ question.user.username|title }}</a></h5>
+                <h5 class="mt-0"><a href="{% url 'users:detail' question.user.username  %}">{{ question.user.username|title }}</a></h5>
               </div>
             </div>
           </div>
@@ -65,8 +65,10 @@
             <a href="{% url 'qa:edit_question' question.pk %}"><small class="text-muted">edit</small></a>
             <a href="{% url 'qa:delete_question' question.pk %}"><small class="text-muted">delete</small></a>            
           {% endif %}
-            <a href=""><small class="text-muted">flag</small></a>
+          {% if request.user.is_teacher == True %}
             <a href="{% url 'qa:question_close' question.pk %}"><small class="text-muted">close</small></a>
+          {% endif %}
+            <a href=""><small class="text-muted">flag</small></a>
         </p>
       </div>
       <div class="col-md-3"  style="font-size: 15px; font-width: 15px;">

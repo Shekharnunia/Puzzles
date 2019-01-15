@@ -8,7 +8,6 @@ from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
 from main import views as main_views
 
-from ckeditor_uploader import views
 from graphene_django.views import GraphQLView
 
 urlpatterns = [
@@ -29,9 +28,6 @@ urlpatterns = [
 
     path('contact-us/', main_views.ContactUs.as_view(), name='contact_us'),
 
-    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
-    url(r'^upload/', (views.upload), name='ckeditor_upload'),
-    url(r'^browse/', never_cache(views.browse), name='ckeditor_browse'),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^graphql', GraphQLView.as_view(graphiql=True)),
 

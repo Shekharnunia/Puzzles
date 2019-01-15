@@ -27,7 +27,7 @@
               <img src="{% static 'img/user.png' %}" class="mr-2" height="30" alt="{% trans 'No Profile Picture' %}" />  
               {% endif %}
               <div class="media-body">
-                <h5 class="mt-0"><a href="{% url 'profile' question.user.username  %}">{{ question.user.username|title }}</a></h5>
+                <h5 class="mt-0"><a href="{% url 'users:detail' question.user.username  %}">{{ question.user.username|title }}</a></h5>
               </div>
             </div>
           </div>

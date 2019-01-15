@@ -9,8 +9,6 @@ from django.utils.text import slugify
 import markdown
 import readtime
 from taggit.managers import TaggableManager
-from ckeditor.fields import RichTextField
-from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class ArticleQuerySet(models.query.QuerySet):
@@ -56,7 +54,7 @@ class Article(models.Model):
     title = models.CharField(max_length=255, null=False, unique=True)
     slug = models.SlugField(max_length=80, null=True, blank=True)
     status = models.CharField(max_length=1, choices=STATUS, default=DRAFT)
-    content = RichTextUploadingField()
+    content = models.TextField()
     edited = models.BooleanField(default=False)
     tags = TaggableManager()
     updated_date = models.DateTimeField(auto_now=True, auto_now_add=False)
@@ -103,6 +101,8 @@ class Article(models.Model):
     def get_readtime(self):
         return readtime.of_html(self.content)
 
+    def get_content_as_markdown(self):
+        return markdown.markdown(self.content, safe_mode='escape')
 
 
 class ArticleComment(models.Model):

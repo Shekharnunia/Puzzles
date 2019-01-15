@@ -6,7 +6,6 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import redirect
 
-from ckeditor_uploader.fields import RichTextUploadingField
 from taggit.managers import TaggableManager
 
 
@@ -47,7 +46,7 @@ class Assignment(models.Model):
 	uploader = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
 	slug = models.SlugField(max_length=50, blank=False)
 	topic = models.CharField(max_length=240, blank=False)
-	description = RichTextUploadingField()
+	description = models.TextField()
 	assignment_file = models.FileField(upload_to=assignment_upload_path, blank=False)
 	timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
 	assignment_views = models.PositiveIntegerField(default=0)
