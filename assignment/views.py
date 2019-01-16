@@ -1,10 +1,12 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from django.views.generic import ListView, DeleteView, UpdateView, DetailView, CreateView
 
 from helpers import AuthorRequiredMixin, TeacherRequiredMixin
 from .models import Assignment
+from .forms import AssignmentForm
 
 
 class AllAssignmentListView(LoginRequiredMixin, ListView):
@@ -55,7 +57,7 @@ class AssignmentDetailView(LoginRequiredMixin, DetailView):
 
 class AssignmentCreateView(LoginRequiredMixin, TeacherRequiredMixin, CreateView):
 	model = Assignment
-	fields = ('topic', 'description', 'assignment_file', 'tags', 'draft',)
+	form_class = AssignmentForm
 	template_name = 'assignment/assignment_create.html'
 	message = ("Your Assignment has been created.")
 
