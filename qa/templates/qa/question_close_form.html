@@ -17,7 +17,7 @@
       <li class="breadcrumb-item active" aria-current="page">{% trans 'Close this question' %}</li>
     </ol>
   </nav>
-  <form action="{% url 'qa:question_close' question.pk %}" enctype="multipart/form-data"  id="question-form" method="post" role="form">
+  <form action="{% url 'qa:question_close' question.pk question.slug %}" enctype="multipart/form-data"  id="question-form" method="post" role="form">
     {% csrf_token %}
     <h1>{% if question.status == 'C' %}
         {{ '[CLOSED]' }}     
@@ -25,7 +25,7 @@
         {{ form|crispy }}
     <div class="form-group">
       <button id="close" type submit type="button" class="btn btn-primary">{% trans 'Close this question' %}</button>
-      <a href="{% url 'qa:question_detail' question.pk %}" class="btn btn-default">{% trans 'Cancel' %}</a>
+      <a href="{% url 'qa:question_detail' question.pk question.slug %}" class="btn btn-default">{% trans 'Cancel' %}</a>
     </div>
   </form>
   {{ form.media }}

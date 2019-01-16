@@ -20,10 +20,8 @@
   <form action="{% url 'qa:ask_question' %}" enctype="multipart/form-data"  id="question-form" method="post" role="form">
     {% csrf_token %}
     {{ form|crispy }}
-    {{ form.media }}
     <div class="form-group">
-      <button id="publish" type="button" class="btn btn-primary">{% trans 'Publish' %}</button>
-      <button id="draft" type="button" class="btn btn-default">{% trans 'Save as draft' %}</button>
+      <button id="publish" type="submit" class="btn btn-primary">{% trans 'Publish' %}</button>
       <a href="{% url 'qa:index_all' %}" class="btn btn-default">{% trans 'Cancel' %}</a>
     </div>
   </form>

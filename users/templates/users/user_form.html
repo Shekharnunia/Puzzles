@@ -36,7 +36,7 @@
             </div>
           {% endfor %}
         {% endif %}
-        <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{% url 'users:update' %}">
+        <form enctype="multipart/form-data" class="form-horizontal" method="post" action="{% url 'users:update' %}" novalidate>
           {% csrf_token %}
           {{ form|crispy }}
           <div class="control-group">

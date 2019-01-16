@@ -50,12 +50,12 @@ class QuestionQuerySet(models.query.QuerySet):
     def get_answered(self):
         """Returns only items which has been marked as answered in the current
         queryset"""
-        return self.filter(has_answer=True).exclude(status='D')
+        return self.filter(has_answer=True)
 
     def get_unanswered(self):
         """Returns only items which has not been marked as answered in the
         current queryset"""
-        return self.filter(has_answer=False).exclude(status='D')
+        return self.filter(has_answer=False)
 
     def get_counted_tags(self):
         """Returns a dict element with tags and its count to show on the UI."""
@@ -79,16 +79,14 @@ class Question(models.Model):
     """Model class to contain every question in the forum."""
     OPEN = "O"
     CLOSED = "C"
-    DRAFT = "D"
     STATUS = (
         (OPEN, _("Open")),
         (CLOSED, _("Closed")),
-        (DRAFT, _("Draft")),
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=300, unique=True, blank=False)
     content = models.TextField()
-    status = models.CharField(max_length=1, choices=STATUS, default=DRAFT)
+    status = models.CharField(max_length=1, choices=STATUS, default=OPEN)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
     question_views = models.PositiveIntegerField(default=0)
@@ -108,7 +106,7 @@ class Question(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(f"{self.title}-{self.id}")
+            self.slug = slugify(f"{self.title}")
                                 
 
         super().save(*args, **kwargs)
@@ -142,7 +140,7 @@ class Question(models.Model):
         return Answer.objects.get(question=self, is_answer=True)
 
     def get_absolute_url(self):
-        return reverse("main:question", kwargs={"pk": self.pk, "slug":self.slug})
+        return reverse("qa:question_detail", kwargs={"pk": self.pk, "slug":self.slug})
 
     def get_markdown(self):
         return mark_safe(markdown(self.content, safe_mode='escape'))
@@ -169,9 +167,6 @@ class Answer(models.Model):
 
     def __str__(self):  # pragma: no cover
         return self.content
-
-    def get_absolute_url(self):
-        return reverse("main:question", kwargs={"pk": self.question_a.pk})
 
     def get_markdown(self):
         return mark_safe(markdown(self.content, safe_mode='escape'))

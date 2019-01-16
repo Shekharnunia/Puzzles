@@ -13,6 +13,7 @@ from qa.models import Question, Answer
 from qa.forms import QuestionForm
 
 
+#Done
 class QuestionsIndexListView(LoginRequiredMixin, ListView):
     """CBV to render a list view with all the registered questions."""
     model = Question
@@ -20,7 +21,7 @@ class QuestionsIndexListView(LoginRequiredMixin, ListView):
     context_object_name = "questions"
 
     def get_queryset(self, **kwargs):
-        return Question.objects.exclude(status='D')
+        return Question.objects.all()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -29,6 +30,7 @@ class QuestionsIndexListView(LoginRequiredMixin, ListView):
         return context
 
 
+#Done
 class TagQuestionListView(QuestionsIndexListView):
     """Overriding the original implementation to call the tag question
     list."""
@@ -36,6 +38,7 @@ class TagQuestionListView(QuestionsIndexListView):
         return Question.objects.filter(tags__name=self.kwargs['tag_name']).exclude(status='D').order_by('-total_votes')
 
 
+#Done
 class QuestionAnsListView(QuestionsIndexListView):
     """CBV to render a list view with all question which have been already
     marked as answered."""
@@ -48,6 +51,7 @@ class QuestionAnsListView(QuestionsIndexListView):
         return context
 
 
+#Done
 class QuestionListView(QuestionsIndexListView):
     """CBV to render a list view with all question which haven't been marked
     as answered."""
@@ -60,6 +64,7 @@ class QuestionListView(QuestionsIndexListView):
         return context
 
 
+#Done
 class QuestionDetailView(LoginRequiredMixin, DetailView):
     """View to call a given Question object and to render all the details about
     that Question."""
@@ -75,6 +80,7 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
         return super().get_context_data(**kwargs)
 
 
+#Done
 class QuestionDetaiCloseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Question
     message = _("Your question has been Updated.")
@@ -91,11 +97,12 @@ class QuestionDetaiCloseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView
         return redirect(reverse("qa:index_noans"))
 
     def test_func(self):
-        if self.request.user.is_staff:
+        if self.request.user.is_teacher:
             return True
         return False
     
 
+#Done
 class CreateQuestionView(LoginRequiredMixin, CreateView):
     """
     View to handle the creation of a new question
@@ -105,6 +112,7 @@ class CreateQuestionView(LoginRequiredMixin, CreateView):
     message = _("Your question has been created.")
 
     def form_valid(self, form):
+        form.instance.status = 'O'
         form.instance.user = self.request.user
         return super().form_valid(form)
 
@@ -113,6 +121,7 @@ class CreateQuestionView(LoginRequiredMixin, CreateView):
         return reverse("qa:index_noans")
 
 
+#Done
 class EditQuestionView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Question
     form_class = QuestionForm
@@ -135,6 +144,7 @@ class EditQuestionView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return False
 
 
+#Done
 class DeleteQuestionView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Question
     message = _("Your question has been Deleted.")
@@ -151,6 +161,7 @@ class DeleteQuestionView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
 
 
+#Done
 class CreateAnswerView(LoginRequiredMixin, CreateView):
     """
     View to create new answers for a given question
@@ -158,6 +169,7 @@ class CreateAnswerView(LoginRequiredMixin, CreateView):
     model = Answer
     fields = ["content", ]
     message = _("Thank you! Your answer has been posted.")
+    template_name = 'qa/answer_form.html'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -170,6 +182,7 @@ class CreateAnswerView(LoginRequiredMixin, CreateView):
             "qa:question_detail", kwargs={"pk": self.kwargs["question_id"]})
 
 
+#Done
 class EditAnswerView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Answer
     message = _("Your Answer has been updated.")
@@ -184,7 +197,7 @@ class EditAnswerView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def get_success_url(self):
         messages.success(self.request, self.message)
-        return reverse("qa:question_detail", kwargs={"pk": self.kwargs["pk"]})
+        return reverse("qa:question_detail", kwargs={"pk": self.kwargs["pk"], "slug": self.kwargs["slug"]})
 
     def test_func(self):
         answer = self.get_object()
@@ -193,6 +206,7 @@ class EditAnswerView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return False
 
 
+#Done
 class DeleteAnswerView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Answer
     message = _("Your Answer has been Deleted.")
@@ -201,7 +215,7 @@ class DeleteAnswerView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def get_success_url(self):
         messages.success(self.request, self.message)
-        return reverse("qa:question_detail", kwargs={"pk": self.kwargs["pk"]})
+        return reverse("qa:question_detail", kwargs={"pk": self.kwargs["pk"], "slug": self.kwargs["slug"]})
 
     def test_func(self):
         answer = self.get_object()
@@ -270,6 +284,7 @@ def answer_vote(request):
         return HttpResponseBadRequest(content=_("Wrong request type."))
 
 
+#Done
 @login_required
 @ajax_required
 def accept_answer(request):

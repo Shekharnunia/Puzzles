@@ -21,7 +21,7 @@
 			{% csrf_token %}
 			<h2>Are you sure you want to delete the post</h2><br>
 			<button class="btn btn-outline-danger mr-2" type="submit">Yes, Delete</button>
-			<a class="btn btn-outline-secondary" href="{% url 'qa:question_detail' answer.question.pk %}">Cancel</a>
+			<a class="btn btn-outline-secondary" href="{% url 'qa:question_detail' answer.question.pk answer.question.slug %}">Cancel</a>
 		</form>
 	</div>
 {% endblock %}

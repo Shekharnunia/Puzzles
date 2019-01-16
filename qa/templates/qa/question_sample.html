@@ -12,7 +12,7 @@
     </div>
     <div>
       <h4 class="card-title">
-        <a href="{% url 'qa:question_detail' question.pk %}">{% if question.status == 'C' %}
+        <a href="{% url 'qa:question_detail' question.pk question.slug %}">{% if question.status == 'C' %}
         {{ '[CLOSED]' }}     
         {% endif %}{{ question.title }}</a>
       </h4>
