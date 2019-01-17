@@ -18,7 +18,6 @@ from markdown import markdown
 from taggit.managers import TaggableManager
 
 
-
 class Vote(models.Model):
     """Model class to host every vote, made with ContentType framework to
     allow a single model connected to Questions and Answers."""
@@ -29,7 +28,7 @@ class Vote(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     value = models.BooleanField(default=True)
     content_type = models.ForeignKey(ContentType,
-        blank=True, null=True, related_name="votes_on", on_delete=models.CASCADE)
+                                     blank=True, null=True, related_name="votes_on", on_delete=models.CASCADE)
     object_id = models.CharField(
         max_length=50, blank=True, null=True)
     vote = GenericForeignKey(
@@ -40,8 +39,6 @@ class Vote(models.Model):
         verbose_name_plural = _("Votes")
         index_together = ("content_type", "object_id")
         unique_together = ("user", "content_type", "object_id")
-
-
 
 
 class QuestionQuerySet(models.query.QuerySet):
@@ -72,9 +69,6 @@ class QuestionQuerySet(models.query.QuerySet):
         return tag_dict.items()
 
 
-
-
-
 class Question(models.Model):
     """Model class to contain every question in the forum."""
     OPEN = "O"
@@ -97,8 +91,9 @@ class Question(models.Model):
     has_answer = models.BooleanField(default=False)
     tags = TaggableManager()
     objects = QuestionQuerySet.as_manager()
-    close_question = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default = '1', related_name='question_close_user', null=True, blank=True)
-    
+    close_question = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                                       default='1', related_name='question_close_user', null=True, blank=True)
+
     class Meta:
         ordering = ["total_votes", "-timestamp"]
         verbose_name = _("Question")
@@ -107,7 +102,6 @@ class Question(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(f"{self.title}")
-                                
 
         super().save(*args, **kwargs)
 
@@ -140,7 +134,7 @@ class Question(models.Model):
         return Answer.objects.get(question=self, is_answer=True)
 
     def get_absolute_url(self):
-        return reverse("qa:question_detail", kwargs={"pk": self.pk, "slug":self.slug})
+        return reverse("qa:question_detail", kwargs={"pk": self.pk, "slug": self.slug})
 
     def get_markdown(self):
         return mark_safe(markdown(self.content, safe_mode='escape'))
@@ -193,5 +187,3 @@ class Answer(models.Model):
         self.save()
         self.question.has_answer = True
         self.question.save()
-
-

@@ -13,7 +13,7 @@ from qa.models import Question, Answer
 from qa.forms import QuestionForm
 
 
-#Done
+# Done
 class QuestionsIndexListView(LoginRequiredMixin, ListView):
     """CBV to render a list view with all the registered questions."""
     model = Question
@@ -30,18 +30,20 @@ class QuestionsIndexListView(LoginRequiredMixin, ListView):
         return context
 
 
-#Done
+# Done
 class TagQuestionListView(QuestionsIndexListView):
     """Overriding the original implementation to call the tag question
     list."""
+
     def get_queryset(self, **kwargs):
         return Question.objects.filter(tags__name=self.kwargs['tag_name']).exclude(status='D').order_by('-total_votes')
 
 
-#Done
+# Done
 class QuestionAnsListView(QuestionsIndexListView):
     """CBV to render a list view with all question which have been already
     marked as answered."""
+
     def get_queryset(self, **kwargs):
         return Question.objects.get_answered()
 
@@ -51,10 +53,11 @@ class QuestionAnsListView(QuestionsIndexListView):
         return context
 
 
-#Done
+# Done
 class QuestionListView(QuestionsIndexListView):
     """CBV to render a list view with all question which haven't been marked
     as answered."""
+
     def get_queryset(self, **kwargs):
         return Question.objects.get_unanswered()
 
@@ -64,7 +67,7 @@ class QuestionListView(QuestionsIndexListView):
         return context
 
 
-#Done
+# Done
 class QuestionDetailView(LoginRequiredMixin, DetailView):
     """View to call a given Question object and to render all the details about
     that Question."""
@@ -72,22 +75,22 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "question"
 
     def get_context_data(self, **kwargs):
-        session_key = 'viewed_question_{}'.format(self.object.pk) 
+        session_key = 'viewed_question_{}'.format(self.object.pk)
         if not self.request.session.get(session_key, False):
             self.object.question_views += 1
             self.object.save()
-            self.request.session[session_key] = True   
+            self.request.session[session_key] = True
         return super().get_context_data(**kwargs)
 
 
-#Done
+# Done
 class QuestionDetaiCloseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Question
     message = _("Your question has been Updated.")
     template_name = "qa/question_close_form.html"
     context_object_name = 'question'
     form_class = QuestionForm
-    
+
     def form_valid(self, form):
         question = form.save(commit=False)
         question.close_question = self.request.user
@@ -100,9 +103,9 @@ class QuestionDetaiCloseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView
         if self.request.user.is_teacher:
             return True
         return False
-    
 
-#Done
+
+# Done
 class CreateQuestionView(LoginRequiredMixin, CreateView):
     """
     View to handle the creation of a new question
@@ -121,7 +124,7 @@ class CreateQuestionView(LoginRequiredMixin, CreateView):
         return reverse("qa:index_noans")
 
 
-#Done
+# Done
 class EditQuestionView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Question
     form_class = QuestionForm
@@ -144,7 +147,7 @@ class EditQuestionView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return False
 
 
-#Done
+# Done
 class DeleteQuestionView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Question
     message = _("Your question has been Deleted.")
@@ -161,7 +164,7 @@ class DeleteQuestionView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
 
 
-#Done
+# Done
 class CreateAnswerView(LoginRequiredMixin, CreateView):
     """
     View to create new answers for a given question
@@ -182,7 +185,7 @@ class CreateAnswerView(LoginRequiredMixin, CreateView):
             "qa:question_detail", kwargs={"pk": self.kwargs["question_id"]})
 
 
-#Done
+# Done
 class EditAnswerView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Answer
     message = _("Your Answer has been updated.")
@@ -206,7 +209,7 @@ class EditAnswerView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return False
 
 
-#Done
+# Done
 class DeleteAnswerView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Answer
     message = _("Your Answer has been Deleted.")
@@ -284,7 +287,7 @@ def answer_vote(request):
         return HttpResponseBadRequest(content=_("Wrong request type."))
 
 
-#Done
+# Done
 @login_required
 @ajax_required
 def accept_answer(request):

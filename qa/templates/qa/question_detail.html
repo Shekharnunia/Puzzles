@@ -4,114 +4,98 @@
 {% block title %}{{ question.title }}{% endblock %}
 
 {% block head %}
-  <link href="{% static 'css/qa.css' %}" rel="stylesheet">
+<link href="{% static 'css/qa.css' %}" rel="stylesheet">
 {% endblock head %}
 
 {% block content %}
 
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'qa:index_all' %}">{% trans 'Q.A' %}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ question.title }}</li>
-      </ol>
-    </nav>
-    <div class="page-header">
-      <a href="{% url 'qa:ask_question' %}" class="btn btn-primary pull-right">
-        <i class="fa fa-pencil" aria-hidden="true"></i> {% trans "Ask a Question" %}
-      </a>
-      <h1>{% if question.status == 'C' %}
-        {{ '[CLOSED]' }}     
-        {% endif %}{{ question.title }}</h1>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'qa:index_all' %}">{% trans 'Q.A' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ question.title }}</li>
+  </ol>
+</nav>
+<div class="page-header">
+  <a href="{% url 'qa:ask_question' %}" class="btn btn-primary pull-right">
+    <i class="fa fa-pencil" aria-hidden="true"></i> {% trans "Ask a Question" %}
+  </a>
+  <h1>{% if question.status == 'C' %}
+    {{ '[CLOSED]' }}
+    {% endif %}{{ question.title }}</h1>
+</div>
+<hr>
+<div class="row question" question-id="{{ question.id }}">
+  <div class="col-md-1">
+    <div class="question-info options">
+      <h3 class="{% if question.has_answer %}bg-success text-white{% endif %}">{{ question.count_answers }}</h3>
+      <small class="text-secondary">{% trans 'Answers' %}</small>
+      <i id="questionUpVote" class="fa fa-chevron-up vote up-vote question-vote{% if request.user in question.get_upvoters %} voted{% endif %}" aria-hidden="true" title="{% trans 'Click to up vote; click again to toggle' %}"></i>
+      <h3 id="questionVotes">{{ question.total_votes }}</h3>
+      <i id="questionDownVote" class="fa fa-chevron-down vote down-vote question-vote{% if request.user in question.get_downvoters %} voted{% endif %}" aria-hidden="true" title="{% trans 'Click to down vote; click again to toggle' %}"></i>
+      <small class="text-secondary">{% trans 'Votes' %}</small>
     </div>
-    <hr>
-    <div class="row question" question-id="{{ question.id }}">
-      <div class="col-md-1">
-        <div class="question-info options">
-          <h3 class="{% if question.has_answer %}bg-success text-white{% endif %}">{{ question.count_answers }}</h3>
-          <small class="text-secondary">{% trans 'Answers' %}</small>
-          <i id="questionUpVote" class="fa fa-chevron-up vote up-vote question-vote{% if request.user in question.get_upvoters %} voted{% endif %}" aria-hidden="true" title="{% trans 'Click to up vote; click again to toggle' %}"></i>
-          <h3 id="questionVotes">{{ question.total_votes }}</h3>
-          <i id="questionDownVote" class="fa fa-chevron-down vote down-vote question-vote{% if request.user in question.get_downvoters %} voted{% endif %}" aria-hidden="true" title="{% trans 'Click to down vote; click again to toggle' %}"></i>
-          <small class="text-secondary">{% trans 'Votes' %}</small>
-        </div>
-      </div>
-      <div class="col-md-8">
-        <p>{{ question.get_markdown|safe }}</p>
-        {% if question.tags.names %}
-          <p>
-            {% for tag in question.tags.names %}
-              <a href="{% url 'qa:tag' tag %}"><span class="badge badge-primary">{{ tag }}</span></a>
-            {% endfor %}
-          </p>
-        {% endif %}
-        <div class="question-user pull-right">
-          <div class="card">
-            <small><span class="text-secondary">{% trans 'asked' %} {{ question.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ question.timestamp|date:"G:i" }}</span></small>
-            <div class="media">
-              {% if question.user.user.image %}
-              <img src="{{ question.user.user.image.url }}" class="mr-2 comment-portrait">
-              {% else %}
-              <img src="{% static 'img/user.png' %}" class="mr-2" height="30" alt="{% trans 'No Profile Picture' %}" />  
-              {% endif %}
-              <div class="media-body">
-                <h5 class="mt-0"><a href="{% url 'users:detail' question.user.username  %}">{{ question.user.username|title }}</a></h5>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p>
-          {% if request.user == question.user %}
-            <a href="{% url 'qa:edit_question' pk=question.pk slug=question.slug %}"><small class="text-muted">edit</small></a>
-            <a href="{% url 'qa:delete_question' pk=question.pk slug=question.slug %}"><small class="text-muted">delete</small></a>            
-          {% endif %}
-          {% if request.user.is_teacher == True %}
-            <a href="{% url 'qa:question_close' pk=question.pk slug=question.slug %}"><small class="text-muted">close</small></a>
-          {% endif %}
-            <a href="#"><small class="text-muted">flag</small></a>
-        </p>
-      </div>
-      <div class="col-md-3"  style="font-size: 15px; font-width: 15px;">
-        <p><span class="text-muted mr-2">{% trans 'asked' %} </span>{{ question.timestamp|naturaltime }}</p>
-        <p><span class="text-muted mr-2">{% trans 'views' %} </span>{{ question.question_views }}</p>
-      </div>
-    </div>
-    <hr>
-    {% if question.status == 'O' %}    
-    <div class="row">
-      <a href="{% url 'qa:propose_answer' question.id %}" class="btn btn-primary pull-right" role="button">{% trans "Submit an answer" %}</a>
-    </div>
+  </div>
+  <div class="col-md-8">
+    <p>{{ question.get_markdown|safe }}</p>
+    {% if question.tags.names %}
+    <p>
+      {% for tag in question.tags.names %}
+      <a href="{% url 'qa:tag' tag %}"><span class="badge badge-primary">{{ tag }}</span></a>
+      {% endfor %}
+    </p>
     {% endif %}
-    <div class="page-header">
-      <div class="">
-        <ul class="nav nav-tabs justify-content-end">
-          <li class="nav-item">
-            <h1>{% trans 'Answers' %}</h1>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="#">Active</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-        </ul>
+    <div class="question-user pull-right">
+      <div class="card">
+        <small><span class="text-secondary">{% trans 'asked' %} {{ question.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ question.timestamp|date:"G:i" }}</span></small>
+        <div class="media">
+          {% if question.user.user.image %}
+          <img src="{{ question.user.user.image.url }}" class="mr-2 comment-portrait">
+          {% else %}
+          <img src="{% static 'img/user.png' %}" class="mr-2" height="30" alt="{% trans 'No Profile Picture' %}" />
+          {% endif %}
+          <div class="media-body">
+            <h5 class="mt-0"><a href="{% url 'users:detail' question.user.username  %}">{{ question.user.username|title }}</a></h5>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <ul class="col-md-12">
-        {% for answer in question.answer_set.all %}
-          {% include 'qa/answer_sample.html' with answer=answer %}
-        {% empty %}
-          <div class="text-center">
-            <h4>{% trans 'There are no answers yet.' %}</h4>
-            <p>{% trans 'Submit your answer now.' %}</p>
-          </div>
-        {% endfor %}
-      </ul>
+    <p>
+      {% if request.user == question.user %}
+      <a href="{% url 'qa:edit_question' pk=question.pk slug=question.slug %}"><small class="text-muted">edit</small></a>
+      <a href="{% url 'qa:delete_question' pk=question.pk slug=question.slug %}"><small class="text-muted">delete</small></a>
+      {% endif %}
+      {% if request.user.is_teacher == True %}
+      <a href="{% url 'qa:question_close' pk=question.pk slug=question.slug %}"><small class="text-muted">close</small></a>
+      {% endif %}
+      <a href="#"><small class="text-muted">flag</small></a>
+    </p>
+  </div>
+  <div class="col-md-3" style="font-size: 15px; font-width: 15px;">
+    <p><span class="text-muted mr-2">{% trans 'asked' %} </span>{{ question.timestamp|naturaltime }}</p>
+    <p><span class="text-muted mr-2">{% trans 'views' %} </span>{{ question.question_views }}</p>
+  </div>
+</div>
+<hr>
+{% if question.status == 'O' %}
+<div class="row">
+  <a href="{% url 'qa:propose_answer' question.id %}" class="btn btn-primary pull-right" role="button">{% trans "Submit an answer" %}</a>
+</div>
+{% endif %}
+<h1>{% trans 'Answers' %}</h1>
+<hr>
+<div class="row">
+  <ul class="col-md-12">
+    {% for answer in question.answer_set.all %}
+    {% include 'qa/answer_sample.html' with answer=answer %}
+    {% empty %}
+    <div class="text-center">
+      <h4>{% trans 'There are no answers yet.' %}</h4>
+      <p>{% trans 'Submit your answer now.' %}</p>
     </div>
+    {% endfor %}
+  </ul>
+</div>
 {% endblock content %}
 
 {% block modal %}
