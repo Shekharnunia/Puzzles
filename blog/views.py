@@ -31,6 +31,7 @@ class ArticlesListView(LoginRequiredMixin, ListView):
 class DraftsListView(ArticlesListView):
     """Overriding the original implementation to call the drafts articles
     list."""
+
     def get_queryset(self, **kwargs):
         return Article.objects.get_drafts()
 
@@ -87,18 +88,18 @@ class DetailArticleView(LoginRequiredMixin, DetailView):
     model = Article
 
     def get_context_data(self, **kwargs):
-        session_key = 'viewed_article_{}'.format(self.object.pk) 
+        session_key = 'viewed_article_{}'.format(self.object.pk)
         if not self.request.session.get(session_key, False):
             self.object.views += 1
             self.object.save()
-            self.request.session[session_key] = True   
+            self.request.session[session_key] = True
         return super().get_context_data(**kwargs)
-
 
 
 class TagArticlesListView(ArticlesListView):
     """Overriding the original implementation to call the tag articles
     list."""
+
     def get_queryset(self, **kwargs):
         return Article.objects.filter(tags__name=self.kwargs['tag_name']).filter(status='P')
 
