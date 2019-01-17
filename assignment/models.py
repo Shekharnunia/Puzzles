@@ -12,8 +12,7 @@ from taggit.managers import TaggableManager
 
 
 def assignment_upload_path(instance, filename):
-	return 'assignment/user_{0}/{1}'.format(instance.uploader.username, filename)
-
+    return 'assignment/user_{0}/{1}'.format(instance.uploader.username, filename)
 
 
 class AssignmentQuerySet(models.query.QuerySet):
@@ -28,6 +27,16 @@ class AssignmentQuerySet(models.query.QuerySet):
         """Returns only items which has not been marked as draft in the
         current queryset"""
         return self.filter(draft=True)
+
+    def get_oldest_student(self):
+        """Returns only items which has been posted oldest and are not draft
+                for students queryset"""
+        return self.filter(draft=False).order_by('timestamp')
+
+    def get_newest_student(self):
+        """Returns only items which has been posted newest and are not draft
+        for students queryset"""
+        return self.filter(draft=False).order_by('-timestamp')
 
     def get_counted_tags(self):
         """Returns a dict element with tags and its count to show on the UI."""
@@ -45,42 +54,42 @@ class AssignmentQuerySet(models.query.QuerySet):
 
 
 class Assignment(models.Model):
-	uploader = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
-	slug = models.SlugField(max_length=50, blank=False)
-	topic = models.CharField(max_length=240, blank=False)
-	description = models.TextField()
-	assignment_file = models.FileField(upload_to=assignment_upload_path, blank=False)
-	timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
-	assignment_views = models.PositiveIntegerField(default=0)
-	draft = models.BooleanField(default=False, null=True)
-	tags = TaggableManager()
-	objects = AssignmentQuerySet.as_manager()
+    uploader = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    slug = models.SlugField(max_length=50, blank=False)
+    topic = models.CharField(max_length=240, blank=False)
+    description = models.TextField()
+    assignment_file = models.FileField(upload_to=assignment_upload_path, blank=False)
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+    assignment_views = models.PositiveIntegerField(default=0)
+    draft = models.BooleanField(default=False, null=True)
+    tags = TaggableManager()
+    objects = AssignmentQuerySet.as_manager()
 
-	class Meta:
-		ordering = ['-timestamp',]
+    class Meta:
+        ordering = ['-timestamp', ]
 
-	def __str__(self):
-		return self.topic
+    def __str__(self):
+        return self.topic
 
-	def save(self, *args, **kwargs):
-		if not self.slug:
-			self.slug = slugify(self.topic[:50])
-		
-		super(Assignment, self).save(*args, **kwargs)  # Call the "real" save() method.
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.topic[:50])
 
-	def delete(self, *args, **kwargs):
-		assignment_file.delete()
-		super().save(*args, **kwargs) 
-	    
-	def get_absolute_url(self, *args, **kwargs):
-		return redirect(reverse('assignment:list', kwargs={self.pk, self.slug}))
+        super(Assignment, self).save(*args, **kwargs)  # Call the "real" save() method.
 
-	def get_description_as_markdown(self):
-		return mark_safe(markdown(self.description, safe_mode='escape'))
+    def delete(self, *args, **kwargs):
+        assignment_file.delete()
+        super().save(*args, **kwargs)
 
-	def get_summary(self):
-		if len(self.get_description_as_markdown()) > 255:
-			return '{0}...'.format(self.get_description_as_markdown()[:255])
+    def get_absolute_url(self, *args, **kwargs):
+        return redirect(reverse('assignment:list', kwargs={self.pk, self.slug}))
 
-		else:
-			return self.get_description_as_markdown()
+    def get_description_as_markdown(self):
+        return mark_safe(markdown(self.description, safe_mode='escape'))
+
+    def get_summary(self):
+        if len(self.get_description_as_markdown()) > 255:
+            return '{0}...'.format(self.get_description_as_markdown()[:255])
+
+        else:
+            return self.get_description_as_markdown()
