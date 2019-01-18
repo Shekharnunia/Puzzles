@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
-from decouple import config, Csv
+from decouple import config
 import dj_database_url
 
 import os
@@ -29,14 +29,14 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-#ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    #'bootstrap_admin',
-    
+    # 'bootstrap_admin',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,20 +44,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'django.contrib.sites', 
-    
-	#local
+    'django.contrib.sites',
+
+    # local
     'main',
     'polls',
     'blog',
-    #'account',
+    # 'account',
     'users',
     'Newsletter',
     'control_panel',
     'qa',
     'assignment',
 
-	#third party
+    # third party
     'widget_tweaks',
     'crispy_forms',
     'sorl.thumbnail',
@@ -74,7 +74,7 @@ INSTALLED_APPS = [
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
 
 GRAPHENE = {
-    'SCHEMA': 'users.schema.schema' # Where your Graphene schema lives
+    'SCHEMA': 'users.schema.schema'  # Where your Graphene schema lives
 }
 
 TAGGIT_CASE_INSENSITIVE = True
@@ -93,7 +93,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
+
 ]
 
 INTERNAL_IPS = '127.0.0.1'
@@ -112,7 +112,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
-                'django.template.context_processors.media', # <-add from tutorial reference
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -196,15 +196,15 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS =[
-    os.path.join(BASE_DIR,"static"),
-    ]
-    #'/var/www/static'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+# '/var/www/static'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-MEDIA_URL='/media/'
-MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
@@ -213,17 +213,15 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 
 
-
 LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'qa:index_noans'
 LOGOUT_REDIRECT_URL = 'account_login'
 
 
-
 # EMAIL_HOST = 'localhost'
 # EMAIL_PORT = 1025
 
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
