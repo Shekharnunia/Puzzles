@@ -1,8 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
-from django.shortcuts import render, reverse
-from django.views.generic import ListView, DeleteView, UpdateView, DetailView, CreateView
+from django.shortcuts import reverse
+from django.views.generic import (
+    ListView,
+    DeleteView,
+    UpdateView,
+    DetailView,
+    CreateView,
+)
 
 from helpers import AuthorRequiredMixin, TeacherRequiredMixin
 from .models import Assignment

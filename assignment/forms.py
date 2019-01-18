@@ -2,6 +2,7 @@ from django import forms
 
 from .models import Assignment
 
+
 class AssignmentForm(forms.ModelForm):
     topic = forms.CharField(
         widget=forms.Textarea(
@@ -18,12 +19,13 @@ class AssignmentForm(forms.ModelForm):
             }
         ),
     )
+
     class Meta:
         model = Assignment
         fields = [
             'topic',
             'description',
             'assignment_file',
-            'tags', 
+            'tags',
             'draft'
         ]

@@ -3,7 +3,6 @@ from django.db import models
 from django.db.models import Count
 from django.urls import reverse
 from django.utils.text import slugify
-from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import redirect
 from django.utils.html import mark_safe
 
@@ -12,7 +11,10 @@ from taggit.managers import TaggableManager
 
 
 def assignment_upload_path(instance, filename):
-    return 'assignment/user_{0}/{1}'.format(instance.uploader.username, filename)
+    return 'assignment/user_{0}/{1}'.format(
+        instance.uploader.username,
+        filename
+    )
 
 
 class AssignmentQuerySet(models.query.QuerySet):
@@ -54,11 +56,17 @@ class AssignmentQuerySet(models.query.QuerySet):
 
 
 class Assignment(models.Model):
-    uploader = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    uploader = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
     slug = models.SlugField(max_length=50, blank=False)
     topic = models.CharField(max_length=240, blank=False)
     description = models.TextField()
-    assignment_file = models.FileField(upload_to=assignment_upload_path, blank=False)
+    assignment_file = models.FileField(
+        upload_to=assignment_upload_path,
+        blank=False
+    )
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     assignment_views = models.PositiveIntegerField(default=0)
     draft = models.BooleanField(default=False, null=True)
@@ -75,14 +83,17 @@ class Assignment(models.Model):
         if not self.slug:
             self.slug = slugify(self.topic[:50])
 
-        super(Assignment, self).save(*args, **kwargs)  # Call the "real" save() method.
+        super(Assignment, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        assignment_file.delete()
+        self.assignment_file.delete()
         super().save(*args, **kwargs)
 
     def get_absolute_url(self, *args, **kwargs):
-        return redirect(reverse('assignment:list', kwargs={self.pk, self.slug}))
+        return redirect(reverse(
+            'assignment:list',
+            kwargs={self.pk, self.slug}
+        ))
 
     def get_description_as_markdown(self):
         return mark_safe(markdown(self.description, safe_mode='escape'))
