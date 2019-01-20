@@ -1,20 +1,24 @@
 @import url(https://fonts.googleapis.com/css?family=Audiowide);
 
 body {
-  padding-top: 80px;
+    padding-top: 80px;
     font-family: 'Libre Baskerville', serif;
+    background-color: #F9F9F9;
+}
+
+a{
+    color: #235789;
+}
+
+a:hover {
+    color: grey;
+    text-decoration: none;
 }
 
 header .navbar-brand {
   font-size: 1.4em;
   font-weight: 200;
-  font-family: "Audiowide", cursive;
-}
-
-.markdownx .markdownx-editor {
-  border-style: none solid solid solid;
-  width: 100%;
-  margin-bottom: 25px;
+  font-family: 'Libre Baskerville', serif;
 }
 
 .page-header {

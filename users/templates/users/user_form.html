@@ -13,7 +13,6 @@
   </div>
     <div class="row profile">
       <div class="col-md-3 user-profile">
-        <h1>{{ user.username|title }}</h1>
         {% if user.first_name %}<p class="lead">{{ user.first_name }}</p>{% endif %}
         {% if user.picture %}
           {% thumbnail user.picture "x190" as im %}

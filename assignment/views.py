@@ -40,7 +40,7 @@ class AssignmentListView(AllAssignmentListView):
         return context
 
 
-class AssignmentDraftListView(TeacherRequiredMixin, AllAssignmentListView):
+class AssignmentDraftListView(AllAssignmentListView, TeacherRequiredMixin):
 
     def get_queryset(self):
         return Assignment.objects.get_draft_assignment().filter(uploader=self.request.user)
@@ -115,10 +115,6 @@ class AssignmentEditView(LoginRequiredMixin, TeacherRequiredMixin, UpdateView):
     fields = ('topic', 'description', 'assignment_file', 'tags',)
 
 
-class AssignmentDeleteView(LoginRequiredMixin, TeacherRequiredMixin, AuthorRequiredMixin, DeleteView):
+class AssignmentDeleteView(LoginRequiredMixin, AuthorRequiredMixin, TeacherRequiredMixin, DeleteView):
     model = Assignment
     context_object_name = 'assignment'
-
-
-class AssignmentDraftDetailView(LoginRequiredMixin, UpdateView):
-    pass
