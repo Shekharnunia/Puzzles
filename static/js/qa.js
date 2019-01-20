@@ -32,6 +32,20 @@ $(function () {
         }
     });
     
+    $("#publish").click(function () {
+        // function to operate the Publish button in the question form, marking
+        // the question status as published.
+        $("input[name='status']").val("O");
+        $("#question-form").submit();
+    });
+
+    $("#close").click(function () {
+        // Function to operate the Close button in the question form, marking
+        // the question status as close.
+        $("input[name='status']").val("C");
+        $("#question-form").submit();
+    });
+
     $(".question-vote").click(function () {
         // Vote on a question.
         var span = $(this);

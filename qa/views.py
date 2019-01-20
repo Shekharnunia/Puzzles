@@ -182,7 +182,7 @@ class CreateAnswerView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         messages.success(self.request, self.message)
         return reverse(
-            "qa:question_detail", kwargs={"pk": self.kwargs["question_id"]})
+            "qa:index_all")
 
 
 # Done
