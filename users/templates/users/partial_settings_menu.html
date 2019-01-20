@@ -2,4 +2,5 @@
 <div class="list-group">
   <a href="{% url 'users:update' %}" class="list-group-item{% if active == 'profile' %} active{% endif %}">{% trans 'Profile' %}</a>
   <a href="{% url 'account_change_password' %}" class="list-group-item{% if active == 'password' %} active{% endif %}">{% trans 'Password' %}</a>
+  <a href="{% url 'account_email' %}" class="list-group-item{% if active == 'email' %} active{% endif %}">{% trans 'Verify email' %}</a>
 </div>

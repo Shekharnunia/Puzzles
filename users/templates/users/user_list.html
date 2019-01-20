@@ -17,7 +17,7 @@
     {% for user in user_list %}
       <li>
         <div class="user-avatar">
-          <a href="{% url 'profile' user.username  %}" class="user-avatar">
+          <a href="{% url 'users:detail' user.username  %}" class="user-avatar">
             {% thumbnail user.picture "x80" as im %}
               <img src="{{ im.url }}" alt="{% trans 'Picture Profile' %}" id="pic">
             {% empty %}

@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.views.generic import DetailView, ListView, RedirectView, UpdateView
 
 from .models import User
+from .forms import UserUpdateForm
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -21,13 +22,12 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
-    fields = ['name', 'email', 'picture', 'job_title', 'location', 'personal_url',
-              'facebook_account', 'twitter_account', 'github_account',
-              'linkedin_account', 'short_bio', 'bio', ]
     model = User
     slug_field = 'username'
     slug_url_kwarg = 'username'
+    form_class = UserUpdateForm
     # send the user back to their own page after a successful update
+
     def get_success_url(self):
         return reverse('users:detail',
                        kwargs={'username': self.request.user.username})
