@@ -1,7 +1,7 @@
 {% extends "qa_base.html" %}
 {% load static i18n %}
 {% load thumbnail %}
-{% block title %}{% trans 'Contacts' %}{% endblock %}
+{% block title %}{% trans 'Users list' %}{% endblock %}
 
 {% block head %}
   <link href="{% static 'css/user_list.css' %}" rel="stylesheet">
@@ -10,14 +10,14 @@
 {% block content %}
 
   <div class="page-header">
-    <h1>{% trans 'Contacts' %}</h1>
+    <h1>{% trans 'All Users' %}</h1>
   </div>
 
   <ul class="user-profiles-list">
     {% for user in user_list %}
       <li>
-        <div class="user-avatar">
-          <a href="{% url 'users:detail' user.username  %}" class="user-avatar">
+        <div class="">
+          <a href="{% url 'users:detail' user.username  %}" >
             {% thumbnail user.picture "x80" as im %}
               <img src="{{ im.url }}" alt="{% trans 'Picture Profile' %}" id="pic">
             {% empty %}
@@ -33,18 +33,30 @@
           <span>
             {% if user.first_name %}
               <i class="fa fa-briefcase" aria-hidden="true"></i>
-              <i>  {{ user.first_name}}</i>
+              <i>  {{ user.get_profile_name}}</i>
             {% endif %}
           </span>
           <span>
             {% if user.last_name %}
               <i class="fa fa-map-marker" aria-hidden="true"></i>
-              <i>  {{ user.last_name }}</i>
+              <i>  {{ user.location }}</i>
+            {% endif %}
+          </span>
+          <span>
+            {% if user.is_teacher %}
+              <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i>
+              <i>  Teacher</i>
+            {% endif %}
+          </span>
+          <span>
+            {% if user.is_student %}
+              <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+              <i>  Student</i>
             {% endif %}
           </span>
         </p>
       </li>
     {% endfor %}
   </ul>
-
+  {% include "includes/pagination.html" %}
 {% endblock content %}

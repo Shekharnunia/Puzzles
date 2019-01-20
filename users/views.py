@@ -40,5 +40,6 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 class UserListView(LoginRequiredMixin, ListView):
     model = User
     # These next two lines tell the view to index lookups by username
+    paginate_by = 20
     slug_field = 'username'
     slug_url_kwarg = 'username'
