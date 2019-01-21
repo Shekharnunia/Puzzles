@@ -66,10 +66,13 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'tellme',
     # 'allauth.socialaccount.providers.google',
     # 'allauth.socialaccount.providers.github',
     'graphene_django',
 ]
+
+TELLME_FEEDBACK_EMAIL = 'shekharnunia@gmail.com'
 
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
 

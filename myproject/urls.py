@@ -11,11 +11,19 @@ from main import views as main_views
 from graphene_django.views import GraphQLView
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='pages/home.html'), name='home'),
-    path('about/', TemplateView.as_view(template_name='pages/about.html'), name='about'),
-    path('privacy-policy/', TemplateView.as_view(template_name='main/privacy_policy.html'), name='privacy_policy'),
-    path('term-and-conditions/', TemplateView.as_view(template_name='pages/about.html'), name='term_and_conditions'),
-    
+    path('', 
+        TemplateView.as_view(template_name='pages/home.html'), 
+        name='home'),
+    path('about/', 
+        TemplateView.as_view(template_name='pages/about.html'), 
+        name='about'),
+    path('privacy-policy/', 
+        TemplateView.as_view(template_name='main/privacy_policy.html'), 
+        name='privacy_policy'),
+    path('term-and-conditions/', 
+        TemplateView.as_view(template_name='pages/about.html'), 
+        name='term_and_conditions'),
+
     path('assignments/', include('assignment.urls')),
     path('polls/', include('polls.urls')),
     path('articles/', include('blog.urls')),
@@ -30,13 +38,14 @@ urlpatterns = [
 
     url(r'^accounts/', include('allauth.urls')),
     url(r'^graphql', GraphQLView.as_view(graphiql=True)),
+    url(r'^tellme/', include("tellme.urls")),
 
-    url(r'^admin/', admin.site.urls),  
+    url(r'^admin/', admin.site.urls),
 
 ]
 
-urlpatterns +=static(settings.STATIC_URL, document_root=settings.STATIC_URL)
-urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_URL)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += [
