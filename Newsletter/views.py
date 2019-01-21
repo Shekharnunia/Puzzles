@@ -9,7 +9,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 
 from django.template.loader import get_template
 
@@ -29,16 +29,16 @@ def newsletter_signup(request):
         instance = form.save(commit=False)
         if NewsLetterUser.objects.filter(email=instance.email).exists():
             messages.warning(request, 'You have already subscibed to our mailing service')
-        
-        else:        
+
+        else:
             instance.save()
             messages.success(request, 'You have successfully subscribed to our mailing service')
             subject = "Thanks for joining our Newsletter"
             from_email = settings.EMAIL_HOST_USER
             to_email = [instance.email]
-            #with open(settings.BASE_DIR + "/templates/newsletter/sign_up_email.txt") as f:
+            # with open(settings.BASE_DIR + "/templates/newsletter/sign_up_email.txt") as f:
             #    signup_message = f.read()
-            signup_message='''Welcome to our website
+            signup_message = '''Welcome to our website
             Thanks for Joining
             To unsubscribe click the this link http://127.0.0.1:8000/newsletter/unsubscribe/'''
             message = EmailMultiAlternatives(subject=subject, body=signup_message, from_email=from_email, to=to_email)
@@ -46,7 +46,7 @@ def newsletter_signup(request):
             message.attach_alternative(html_template, "text/html")
             message.send()
     context = {
-            'form':form,
+        'form': form,
     }
     return render(request, 'newsletter/sign_up.html', context)
 
@@ -62,9 +62,9 @@ def newsletter_unsubscribe(request):
             subject = "You have been unsubscribed"
             from_email = settings.EMAIL_HOST_USER
             to_email = [instance.email]
-            #with open(settings.BASE_DIR + "/templates/newsletter/unsubscribe_email.txt") as f:
+            # with open(settings.BASE_DIR + "/templates/newsletter/unsubscribe_email.txt") as f:
             #    signup_message = f.read()
-            signup_message='''Welcome to our website
+            signup_message = '''Welcome to our website
             Thanks for Joining
             To unsubscribe click the this link http://127.0.0.1:8000/newsletter/unsubscribe/'''
 
@@ -73,17 +73,17 @@ def newsletter_unsubscribe(request):
             message.attach_alternative(html_template, "text/html")
             message.send()
         else:
-            messages.warning(request, 'You email is not subscibed to our mailing service')            
+            messages.warning(request, 'You email is not subscibed to our mailing service')
     context = {
-            'form':form,
+        'form': form,
     }
     return render(request, 'newsletter/unsubscribe.html', context)
-    
+
 
 @staff_member_required
 def control_newsletter(request):
     form = NewsLetterCreationForm(request.POST or None)
-    
+
     if form.is_valid():
         instance = form.save()
         newsletter = NewsLetter.objects.get(id=instance.id)
@@ -97,15 +97,15 @@ def control_newsletter(request):
             return redirect('control_panel:control_newsletter_list')
         messages.success(request, 'Newsletter successfully Saved')
         return redirect('control_panel:control_newsletter_list')
-    
-    context={
-        "form":form,
+
+    context = {
+        "form": form,
     }
     return render(request, "control_panel/control_newsletter.html", context)
-    
 
-#Not in use    
-def control_newsletter_list(request):    
+
+#Not in use
+def control_newsletter_list(request):
     newsletters = NewsLetter.objects.all()
 
     paginator = Paginator(newsletters, 1)
@@ -119,11 +119,11 @@ def control_newsletter_list(request):
         items = paginator.page(paginator.num_pages)
 
     context = {
-        "questions": items, 
-        "newsletters": newsletters, 
+        "questions": items,
+        "newsletters": newsletters,
     }
-    return render(request, 'control_panel/control_newsletter_list.html', context)    
-    
+    return render(request, 'control_panel/control_newsletter_list.html', context)
+
 
 @method_decorator(staff_member_required, name='dispatch')
 class NewsletterListView(ListView):
@@ -137,7 +137,7 @@ class NewsletterListView(ListView):
 def newsletter_detail(request, pk):
     newsletter = get_object_or_404(NewsLetter, pk=pk)
     args = {
-        'newsletter':newsletter,
+        'newsletter': newsletter,
     }
     return render(request, 'control_panel/control_newsletter_detail.html', args)
 
@@ -145,7 +145,7 @@ def newsletter_detail(request, pk):
 # Newsletter Edit view but not in use right now
 class NewsletterEditView(UpdateView):
     model = NewsLetter
-    fields = ['subject', 'body', 'email', 'status',]
+    fields = ['subject', 'body', 'email', 'status', ]
     template_name = 'control_panel/control_newsletter_edit.html'
     pk_url_kwarg = 'pk'
     context_object_name = 'newsletter'
@@ -162,8 +162,8 @@ class NewsletterEditView(UpdateView):
 def control_newsletter_edit(request, pk):
     newsletter = get_object_or_404(NewsLetter, pk=pk)
     if request.method == 'POST':
-        form = NewsLetterCreationForm(request.POST , instance = newsletter)
-    
+        form = NewsLetterCreationForm(request.POST, instance=newsletter)
+
         if form.is_valid():
             newsletter = form.save()
 
@@ -178,9 +178,9 @@ def control_newsletter_edit(request, pk):
             messages.success(request, 'Newsletter successfully Saved')
             return redirect('control_panel:control_newsletter_detail', pk=newsletter.pk)
     else:
-        form = NewsLetterCreationForm(instance = newsletter)    
-        context={
-            "form":form,
+        form = NewsLetterCreationForm(instance=newsletter)
+        context = {
+            "form": form,
         }
         return render(request, "control_panel/control_newsletter_edit.html", context)
 

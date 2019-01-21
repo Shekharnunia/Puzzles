@@ -4,8 +4,8 @@ from . import views
 
 app_name = 'Newsletter'
 
-urlpatterns = [	   
+urlpatterns = [
     path('subscribe/', views.newsletter_signup, name='newsletter_signup'),
     path('unsubscribe/', views.newsletter_unsubscribe, name='newsletter_unsubscribe'),
-    path('list/', views.NewsletterSubscriberListView.as_view(), name='newsletter_subscriber_list'),    
+    path('list/', views.NewsletterSubscriberListView.as_view(), name='newsletter_subscriber_list'),
 ]
