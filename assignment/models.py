@@ -11,7 +11,7 @@ from taggit.managers import TaggableManager
 
 
 def assignment_upload_path(instance, filename):
-    return 'assignment/user_{0}/{1}'.format(
+    return 'assignment/teacher/user_{0}/{1}'.format(
         instance.uploader.username,
         filename
     )
@@ -55,6 +55,13 @@ class AssignmentQuerySet(models.query.QuerySet):
         return tag_dict.items()
 
 
+def student_assignment_upload_path(instance, filename):
+    return 'assignment/student/user_{0}/{1}'.format(
+        instance.user.username,
+        filename
+    )
+
+
 class Assignment(models.Model):
     uploader = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -87,13 +94,11 @@ class Assignment(models.Model):
 
     def delete(self, *args, **kwargs):
         self.assignment_file.delete()
-        super().save(*args, **kwargs)
+        super().delete(*args, **kwargs)
 
     def get_absolute_url(self, *args, **kwargs):
-        return redirect(reverse(
-            'assignment:list',
-            kwargs={self.pk, self.slug}
-        ))
+        return reverse("assignment:detail",
+                       kwargs={"pk": self.pk, "slug": self.slug})
 
     def get_description_as_markdown(self):
         return mark_safe(markdown(self.description, safe_mode='escape'))
@@ -104,3 +109,42 @@ class Assignment(models.Model):
 
         else:
             return self.get_description_as_markdown()
+
+
+class StudentAssignment(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    feedback = models.TextField()
+    assignment_file = models.FileField(
+        upload_to=student_assignment_upload_path,
+        blank=False
+    )
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+
+    class Meta:
+        ordering = ['-timestamp', ]
+
+    def __str__(self):
+        return '{0}{1}...'.format(self.user, self.feedback[:25])
+        return self.user
+
+    def delete(self, *args, **kwargs):
+        self.assignment_file.delete()
+        super().delete(*args, **kwargs)
+
+    def get_feedback_as_markdown(self):
+        return mark_safe(markdown(self.feedback, safe_mode='escape'))
+
+    def get_summary(self):
+        if len(self.get_feedback_as_markdown()) > 255:
+            return '{0}...'.format(self.get_feeback_as_markdown()[:255])
+
+        else:
+            return self.get_feedback_as_markdown()
+
+    def get_absolute_url(self):
+        return reverse("assignment:detail",
+                       kwargs={"pk": self.assignment.pk, "slug": self.assignment.slug})

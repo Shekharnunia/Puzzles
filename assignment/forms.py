@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Assignment
+from .models import Assignment, StudentAssignment
 
 
 class AssignmentForm(forms.ModelForm):
@@ -28,4 +28,13 @@ class AssignmentForm(forms.ModelForm):
             'assignment_file',
             'tags',
             'draft'
+        ]
+
+
+class StudentAssignmentForm(forms.ModelForm):
+    class Meta:
+        model = StudentAssignment
+        fields = [
+            'assignment_file',
+            'feedback',
         ]

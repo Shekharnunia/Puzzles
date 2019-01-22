@@ -1,5 +1,7 @@
 {% extends "qa_base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
 <div class="mb-4">
 	<div>
@@ -23,13 +25,51 @@
 				<p class="card-text">{{ assignment.get_description_as_markdown|safe }}</p>
 				<a target="_blank" class="btn btn-primary" href='{{ assignment.assignment_file.url }}'>Download<i class="fas fa-download ml-2"></i></a>
 			</div>
+			{% if request.user == assignment.uploader %}
+			<div class="card-footer">
+				<a class="btn btn-info pull-right btn-sm" href="{% url 'assignment:edit' assignment.slug assignment.pk %}"><i class="far fa-edit mr-1"></i>Edit</a>
+				<a class="btn btn-danger pull-right mr-4 btn-sm" href="{% url 'assignment:delete' assignment.slug assignment.pk %}"><i class="fas fa-trash-alt mr-1"></i>Delete</a>
+            </div>
+            {% endif %}
 		</div>
 	</div>
 	<br>
-	{% if request.user == assignment.uploader %}
-	<div class="col-sm-4 offset-sm-4">
-		<a class="btn btn-primary mr-4" href="{% url 'assignment:edit' assignment.slug assignment.pk %}">Edit</a>
-		<a class="btn btn-danger" href="{% url 'assignment:delete' assignment.slug assignment.pk %}">Delete</a>
+
+	<div class="col-sm-10 offset-1">
+		{% for assignment in s_assignments %}
+		<hr>
+		<div class="card">
+			<div class="card-header text-center">
+				<i class="fa fa-calendar ml-3 mr-2"></i>{{ assignment.timestamp|date:"M d, Y" }}
+				<i class="lead fa fa-user ml-5 mr-2"></i><a href="{% url 'users:detail' assignment.user.username %}">{{ assignment.user }}</a>
+			</div>
+			<div class="card-body">
+				<p>{{ assignment.feedback }}</p>
+				{% if assignment.assignment_file %}
+					<a class="btn btn-primary" target="_blank" href="{{ assignment.assignment_file.url }}">Check the Assignment</a>
+				{% endif %}
+			</div>
+			{% if request.user == assignment.user %}
+			<div class="card-footer">
+				<a class="btn btn-info btn-sm pull-right" href="{% url 'assignment:edit_assignment' assignment.pk %}"><i class="far fa-edit"> </i>Edit</a>
+
+				<a class="btn btn-danger btn-sm mr-4  pull-right" href="{% url 'assignment:delete_assignment' assignment.pk %}"><i class="fas fa-trash-alt"> </i> Delete</a>
+			</div>
+			{% endif %}
+		</div>
+		{% empty %}
+			<h2 class="text-center">No assignemt by students yet</h2>
+		{% endfor %}
+	</div>
+	{% if request.user.is_student == True %}
+	<div class="row">
+		<div class="col-md-10 offset-1">
+			<form action="" method="POST" enctype="multipart/form-data" novalidate>
+				{% csrf_token %}
+				{{ form|crispy }}
+				<button type="Submit" class="btn btn-success">Submit</button>
+			</form>
+		</div>
 	</div>
 	{% endif %}
 </div>

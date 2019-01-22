@@ -1,6 +1,8 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
+from django.shortcuts import reverse, get_object_or_404, render, redirect
 from django.views.generic import (
     ListView,
     DeleteView,
@@ -9,9 +11,9 @@ from django.views.generic import (
     CreateView,
 )
 
-from helpers import AuthorRequiredMixin, TeacherRequiredMixin
-from .models import Assignment
-from .forms import AssignmentForm
+from helpers import AuthorRequiredMixin, TeacherRequiredMixin, StudentRequiredMixin
+from .models import Assignment, StudentAssignment
+from .forms import AssignmentForm, StudentAssignmentForm
 
 
 class AllAssignmentListView(LoginRequiredMixin, ListView):
@@ -94,6 +96,90 @@ class AssignmentDetailView(LoginRequiredMixin, DetailView):
         return super().get_context_data(**kwargs)
 
 
+@login_required
+def assignment_detail_view(request, pk, slug):
+    form = StudentAssignmentForm(request.POST, request.FILES)
+    t_assignment = get_object_or_404(Assignment, pk=pk)
+    session_key = 'viewed_assignment_{}'.format(t_assignment.pk)
+    if not request.session.get(session_key, False):
+        t_assignment.assignment_views += 1
+        t_assignment.save()
+        request.session[session_key] = True
+    s_assignment = StudentAssignment.objects.filter(assignment=t_assignment)
+    if request.method == 'POST':
+        if form.is_valid() and request.user.is_student:
+            s_assignment = form.save(commit=False)
+            s_assignment.assignment = t_assignment
+            s_assignment.user = request.user
+            s_assignment = form.save()
+
+            messages.success(request, 'assignment successfully submitted')
+            return redirect(s_assignment.get_absolute_url())
+
+            # subject = 'There is a assignment uploaded for your Question'
+            # email_from = 'settings.EMAIL_HOST_USER'
+            # recipient_list = [question.created_by.email, ]
+            # message = "heloo"
+            # context = {
+            #     'question_user': question.created_by,
+            #     'assignment_user': request.user,
+            # }
+            # context_message = get_template('assignment_mail.txt').render(context)
+            # send_mail(subject,
+            # context_message,
+            # email_from,
+            # recipient_list,
+            # fail_silently=True)
+    form = StudentAssignmentForm
+    args = {
+        'assignment': t_assignment,
+        'form': form,
+        's_assignments': s_assignment
+    }
+    return render(request, 'assignment/assignment_detail.html', args)
+
+
+class StudentAssignmentEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = StudentAssignment
+    form_class = StudentAssignmentForm
+    template_name = 'assignment/edit_assignment.html'
+    pk_url_kwarg = 'pk'
+    context_object_name = 'assignment'
+    message = ("assignment successfully updated")
+
+    def get_success_url(self):
+        assignment = self.get_object()
+        messages.success(self.request, self.message)
+        return reverse('assignment:detail',
+                       kwargs={'pk': assignment.assignment.pk,
+                               'slug': assignment.assignment.slug})
+
+    def test_func(self):
+        assignment = self.get_object()
+        if self.request.user == assignment.user:
+            return True
+        return False
+
+
+class StudentAssignmentDeleteView(LoginRequiredMixin, AuthorRequiredMixin, DeleteView):
+    """Basic EditView implementation to edit existing articles."""
+    model = StudentAssignment
+    message = ("Your article has been deleted.")
+    context_object_name = 'assignment'
+    pk_url_kwarg = 'pk'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        assignment = self.get_object()
+        messages.success(self.request, self.message)
+        return reverse('assignment:detail',
+                       kwargs={'pk': assignment.assignment.pk,
+                               'slug': assignment.assignment.slug})
+
+
 class AssignmentCreateView(LoginRequiredMixin, TeacherRequiredMixin, CreateView):
     model = Assignment
     form_class = AssignmentForm
@@ -109,12 +195,38 @@ class AssignmentCreateView(LoginRequiredMixin, TeacherRequiredMixin, CreateView)
         return reverse("assignment:all_list")
 
 
-class AssignmentEditView(LoginRequiredMixin, TeacherRequiredMixin, UpdateView):
+class AssignmentEditView(LoginRequiredMixin, UserPassesTestMixin, TeacherRequiredMixin, UpdateView):
     model = Assignment
     context_object_name = 'assignment'
     fields = ('topic', 'description', 'assignment_file', 'tags',)
+    message = ("assignment successfully updated")
+
+    def get_success_url(self):
+        assignment = self.get_object()
+        messages.success(self.request, self.message)
+        return reverse('assignment:detail',
+                       kwargs={'pk': assignment.pk,
+                               'slug': assignment.slug})
 
 
-class AssignmentDeleteView(LoginRequiredMixin, AuthorRequiredMixin, TeacherRequiredMixin, DeleteView):
+class AssignmentDeleteView(LoginRequiredMixin, UserPassesTestMixin, TeacherRequiredMixin, DeleteView):
     model = Assignment
     context_object_name = 'assignment'
+    message = ("Your article has been deleted.")
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        assignment = self.get_object()
+        messages.success(self.request, self.message)
+        return reverse('assignment:detail',
+                       kwargs={'pk': assignment.pk,
+                               'slug': assignment.slug})
+
+    def test_func(self):
+        assignment = self.get_object()
+        if self.request.user == assignment.uploader:
+            return True
+        return False

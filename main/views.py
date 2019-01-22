@@ -13,7 +13,7 @@ from django.core.mail import send_mail, send_mass_mail
 from django.db.models import Q
 
 from django.template.loader import get_template
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 
 from django.utils.decorators import method_decorator
 from django.utils import timezone
@@ -25,49 +25,18 @@ from main.models import Question, Answer, ContactUs
 from main.forms import QuestionForm, AnswerForm
 
 # This is the format of sending email
+
+
 def email(request):
     subject = 'Thank you for posting question to our site'
     message = ' it  means a world to us '
     email_from = 'shekharnunia@gmail.com'
-    recipient_list = [self.request.user.email,]
+    recipient_list = [self.request.user.email, ]
     if self.request.user.email == email_from:
         return redirect('main:home')
     else:
-        send_mail( subject, message, email_from, recipient_list, fail_silently = False )
+        send_mail(subject, message, email_from, recipient_list, fail_silently=False)
         return redirect('main:home')
-
-
-
-class UserListView(LoginRequiredMixin, ListView):
-    model = User
-    # These next two lines tell the view to index lookups by username
-    template_name = 'users/user_list.html'
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
-
-
-class UserDetailView(LoginRequiredMixin, DetailView):
-    model = User
-    # These next two lines tell the view to index lookups by username
-    template_name='account/profile.html'
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
-
-
-class UserUpdateView(LoginRequiredMixin, UpdateView):
-    fields = ['first_name', 'email',]
-    model = User
-    template_name='users/user_form.html'
-
-    # send the user back to their own page after a successful update
-    def get_success_url(self):
-        return reverse('users:detail',
-                       kwargs={'username': self.request.user.username})
-
-    def get_object(self):
-        # Only get the User record for the user making the request
-        return User.objects.get(username=self.request.user.username)
-
 
 
 def questionlistview(request):
@@ -76,10 +45,10 @@ def questionlistview(request):
     query = request.GET.get("q")
     if query:
         queryset_list = queryset_list.filter(
-                Q(topic__icontains=query)|
-                Q(question__icontains=query)|
-                Q(created_by__username__icontains=query) 
-                ).distinct()
+            Q(topic__icontains=query) |
+            Q(question__icontains=query) |
+            Q(created_by__username__icontains=query)
+        ).distinct()
 
     paginator = Paginator(queryset_list, 10)
     page = request.GET.get('page', 1)
@@ -92,7 +61,7 @@ def questionlistview(request):
         queryset = paginator.page(paginator.num_pages)
 
     context = {
-        "questions": queryset, 
+        "questions": queryset,
     }
     return render(request, 'main/home.html', context)
 
@@ -102,7 +71,7 @@ class CreateQuestionView(CreateView):
     model = Question
     form_class = QuestionForm
     template_name = 'main/ask_question.html'
-    
+
     def form_valid(self, form):
         new_question = form.save(commit=False)
         new_question.created_by = self.request.user
@@ -111,14 +80,14 @@ class CreateQuestionView(CreateView):
 
         subject = 'Thank you for posting question to Website'
         email_from = 'settings.EMAIL_HOST_USER'
-        recipient_list = [self.request.user.email,]
+        recipient_list = [self.request.user.email, ]
 
         context = {
-                'question_user': new_question.created_by,
-                'link': new_question.get_absolute_url()
-            }
+            'question_user': new_question.created_by,
+            'link': new_question.get_absolute_url()
+        }
         context_message = get_template('question_mail.txt').render(context)
-        send_mail( subject, context_message, email_from, recipient_list, fail_silently = True )
+        send_mail(subject, context_message, email_from, recipient_list, fail_silently=True)
         return redirect('main:home')
         # return redirect(new_question.get_absolute_url())
 
@@ -126,12 +95,11 @@ class CreateQuestionView(CreateView):
 def question(request, pk):
     form = AnswerForm(request.POST)
     question = get_object_or_404(Question, pk=pk)
-    session_key = 'viewed_question_{}'.format(question.pk) 
+    session_key = 'viewed_question_{}'.format(question.pk)
     if not request.session.get(session_key, False):
         question.question_views += 1
         question.save()
-        request.session[session_key] = True   
-
+        request.session[session_key] = True
 
     answer = Answer.objects.filter(question_a=question)
     if request.method == 'POST':
@@ -145,23 +113,23 @@ def question(request, pk):
 
             subject = 'There is a Answer uploaded for your Question'
             email_from = 'settings.EMAIL_HOST_USER'
-            recipient_list = [question.created_by.email,]
+            recipient_list = [question.created_by.email, ]
             message = "heloo"
             context = {
                 'question_user': question.created_by,
                 'answer_user': request.user,
             }
             context_message = get_template('answer_mail.txt').render(context)
-            send_mail( subject, context_message, email_from, recipient_list, fail_silently = True)
+            send_mail(subject, context_message, email_from, recipient_list, fail_silently=True)
             return redirect(answer.get_absolute_url())
         else:
             messages.warning(request, 'Login first')
             return redirect(question.get_absolute_url())
     form = AnswerForm()
     args = {
-        'question':question,
-        'form':form,
-        'answers':answer
+        'question': question,
+        'form': form,
+        'answers': answer
     }
     return render(request, 'main/question.html', args)
 
@@ -259,52 +227,39 @@ class DeleteAnswerView(UserPassesTestMixin, DeleteView):
         if self.request.user == answer.answer_by:
             return True
         return False
-        
+
 
 class ContactUs(CreateView):
     model = ContactUs
     template_name = 'main/contact_us.html'
     fields = ('name', 'email', 'subject', 'message',)
-    
+
     def form_valid(self, form):
         contact_us = form.save(commit=False)
         contact_us.save()
 
-
-	# one mail for website admins
+        # one mail for website admins
         subject_for_admin = contact_us.subject
         email_from = 'settings.EMAIL_HOST_USER'
-        recipient_list_for_admin = [settings.EMAIL_HOST_USER,]
+        recipient_list_for_admin = [settings.EMAIL_HOST_USER, ]
         context_message_for_admin = contact_us.message
         #send_mail( subject_for_admin, context_message_for_admin, email_from, recipient_list_for_admin, fail_silently = True )
 
-
-	# one mail for uploader
+        # one mail for uploader
         subject = 'We got your email'
-        recipient_list = [contact_us.email,]
-        context_message = 'We will get your message and we will try to get back to you as fast as possible' 
+        recipient_list = [contact_us.email, ]
+        context_message = 'We will get your message and we will try to get back to you as fast as possible'
  #       send_mail( subject, context_message, email_from, recipient_list, fail_silently = True )
 
         message1 = (subject_for_admin, context_message_for_admin, email_from, recipient_list_for_admin)
         message2 = (subject, context_message, email_from, recipient_list)
-        send_mass_mail((message1, message2),  fail_silently = True)
-
-
+        send_mass_mail((message1, message2), fail_silently=True)
 
         messages.success(self.request, 'Successfully Submitted.')
         return redirect('home')
 
 
-
-
-
-
-
-
-
-
-
-#		Method to send mails in HTML
+#       Method to send mails in HTML
 
 
 #from django.core.mail import EmailMultiAlternatives
@@ -321,11 +276,10 @@ class ContactUs(CreateView):
 #html_content = htmly.render(d)
 #msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
 #msg.attach_alternative(html_content, "text/html")
-#msg.send()
+# msg.send()
 
 
-#		OR
-
+#       OR
 
 
 #from django.core.mail import send_mail
@@ -335,7 +289,7 @@ class ContactUs(CreateView):
 #msg_plain = render_to_string('templates/email.txt', {'some_params': some_params})
 #msg_html = render_to_string('templates/email.html', {'some_params': some_params})
 
-#send_mail(
+# send_mail(
 #    'email title',
 #    msg_plain,
 #    'some@sender.com',

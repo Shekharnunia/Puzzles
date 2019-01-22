@@ -1,0 +1,19 @@
+{% extends "qa_base.html" %}
+
+{% block title %}
+	Delete
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="container">
+	<h1>Delete Answer</h1>
+	<br>
+	<form method="POST" enctype="multipart/form-data" novalidate>
+		{% csrf_token %}
+		<h2>Are you sure you want to delete the post</h2>
+		<button class="btn btn-danger mr-2" type="submit">Yes, Delete</button>
+		<a class="btn btn-secondary" href="{{ assignment.get_absolute_url }}">Cancel</a>
+	</form>
+</div><br><br>	
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "qa_base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+	Edit assignment
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="container">
+	<h1>Edit Assignment</h1>
+	<br>
+	<div class="card">
+		<div class="card-body">
+			<h2 class="card-title"><a href="#">{{ assignment.assignment.topic }}</h2></a>
+			<p>{{ assignment.assignment.get_description_as_markdown }}</p>
+		</div>
+	</div>
+	<hr>
+	<form method="POST" enctype="multipart/form-data" novalidate>
+		{% csrf_token %}
+		{{ form|crispy }}
+		<button class="btn btn-success" type="submit">Save changes</button>
+		<a class="btn btn-secondary" href="{{ assignment.get_absolute_url }}">Cancel</a>
+		
+	</form>
+</div><br><br>	
+{% endblock %}

@@ -44,6 +44,7 @@ def ajax_required(f):
 class AuthorRequiredMixin(View):
     """Mixin to validate than the loggedin user is the creator of the object
     to be edited or updated."""
+
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
         if obj.user != self.request.user:
@@ -54,7 +55,17 @@ class AuthorRequiredMixin(View):
 
 class TeacherRequiredMixin(AccessMixin):
     """Verify that the current user is authenticated."""
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_teacher:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
+
+class StudentRequiredMixin(AccessMixin):
+    """Verify that the current user is authenticated."""
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_student:
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
