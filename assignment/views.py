@@ -100,12 +100,16 @@ class AssignmentDetailView(LoginRequiredMixin, DetailView):
 def assignment_detail_view(request, pk, slug):
     form = StudentAssignmentForm(request.POST, request.FILES)
     t_assignment = get_object_or_404(Assignment, pk=pk)
+
     session_key = 'viewed_assignment_{}'.format(t_assignment.pk)
     if not request.session.get(session_key, False):
         t_assignment.assignment_views += 1
         t_assignment.save()
         request.session[session_key] = True
-    s_assignment = StudentAssignment.objects.filter(assignment=t_assignment)
+    if request.user.is_student == True:
+        s_assignment = StudentAssignment.objects.filter(assignment=t_assignment).filter(user=request.user)
+    elif request.user.is_teacher:
+        s_assignment = StudentAssignment.objects.filter(assignment=t_assignment)
     if request.method == 'POST':
         if form.is_valid() and request.user.is_student:
             s_assignment = form.save(commit=False)
@@ -221,9 +225,7 @@ class AssignmentDeleteView(LoginRequiredMixin, UserPassesTestMixin, TeacherRequi
     def get_success_url(self):
         assignment = self.get_object()
         messages.success(self.request, self.message)
-        return reverse('assignment:detail',
-                       kwargs={'pk': assignment.pk,
-                               'slug': assignment.slug})
+        return reverse('assignment:list')
 
     def test_func(self):
         assignment = self.get_object()
