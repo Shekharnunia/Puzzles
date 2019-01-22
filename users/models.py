@@ -2,6 +2,9 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+from blog.models import Article, ArticleComment
+from qa.models import Question, Answer
+from assignment.models import Assignment
 
 
 class User(AbstractUser):
@@ -41,3 +44,21 @@ class User(AbstractUser):
             return self.name
 
         return self.username
+
+    def get_article_count(self):
+        return Article.objects.filter(user=self).count()
+
+    def get_question_count(self):
+        return Question.objects.filter(user=self).count()
+
+    def get_answer_count(self):
+        return Answer.objects.filter(user=self).count()
+
+    def get_assignment_count(self):
+        if self.is_teacher == True:
+            return Assignment.objects.filter(uploader=self).count()
+        elif self.is_student == True:
+            return 0
+
+    def get_comments_count(self):
+        return ArticleComment.objects.filter(user=self).count()
