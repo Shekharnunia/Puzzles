@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.urls import reverse_lazy
 from django.shortcuts import reverse, get_object_or_404, render, redirect
 from django.views.generic import (
     ListView,
@@ -11,7 +10,7 @@ from django.views.generic import (
     CreateView,
 )
 
-from helpers import AuthorRequiredMixin, TeacherRequiredMixin, StudentRequiredMixin
+from helpers import AuthorRequiredMixin, TeacherRequiredMixin
 from .models import Assignment, StudentAssignment
 from .forms import AssignmentForm, StudentAssignmentForm
 
@@ -22,7 +21,10 @@ class AllAssignmentListView(LoginRequiredMixin, ListView):
     context_object_name = 'assignments'
 
     def get_queryset(self):
-        return Assignment.objects.all().filter(uploader=self.request.user)
+        assignemt = Assignment.objects.get_assignment()
+        all_assignemt = Assignment.objects.all().filter(uploader=self.request.user)
+        union = all_assignemt.union(assignemt).order_by('-timestamp')
+        return union
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -34,7 +36,7 @@ class AllAssignmentListView(LoginRequiredMixin, ListView):
 class AssignmentListView(AllAssignmentListView):
 
     def get_queryset(self):
-        return Assignment.objects.get_assignment()
+        return Assignment.objects.get_assignment().order_by('-timestamp')
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -45,7 +47,7 @@ class AssignmentListView(AllAssignmentListView):
 class AssignmentDraftListView(AllAssignmentListView, TeacherRequiredMixin):
 
     def get_queryset(self):
-        return Assignment.objects.get_draft_assignment().filter(uploader=self.request.user)
+        return Assignment.objects.get_draft_assignment().filter(uploader=self.request.user).order_by('-timestamp')
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -56,7 +58,7 @@ class AssignmentDraftListView(AllAssignmentListView, TeacherRequiredMixin):
 class AssignmentOldestListView(AllAssignmentListView):
 
     def get_queryset(self):
-        return Assignment.objects.get_oldest_student()
+        return Assignment.objects.get_oldest_student().order_by('-timestamp')
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -67,7 +69,7 @@ class AssignmentOldestListView(AllAssignmentListView):
 class AssignmentNewestListView(AllAssignmentListView):
 
     def get_queryset(self):
-        return Assignment.objects.get_newest_student()
+        return Assignment.objects.get_newest_student().order_by('-timestamp')
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -80,7 +82,7 @@ class TagAssignmentListView(AllAssignmentListView):
     list."""
 
     def get_queryset(self, **kwargs):
-        return Assignment.objects.filter(tags__name=self.kwargs['tag_name'])
+        return Assignment.objects.filter(tags__name=self.kwargs['tag_name']).order_by('-timestamp')
 
 
 class AssignmentDetailView(LoginRequiredMixin, DetailView):
@@ -107,9 +109,9 @@ def assignment_detail_view(request, pk, slug):
         t_assignment.save()
         request.session[session_key] = True
     if request.user.is_student == True:
-        s_assignment = StudentAssignment.objects.filter(assignment=t_assignment).filter(user=request.user)
+        s_assignment = StudentAssignment.objects.filter(assignment=t_assignment).filter(user=request.user).order_by('-timestamp')
     elif request.user.is_teacher:
-        s_assignment = StudentAssignment.objects.filter(assignment=t_assignment)
+        s_assignment = StudentAssignment.objects.filter(assignment=t_assignment).order_by('-timestamp')
     if request.method == 'POST':
         if form.is_valid() and request.user.is_student:
             s_assignment = form.save(commit=False)
@@ -223,7 +225,6 @@ class AssignmentDeleteView(LoginRequiredMixin, UserPassesTestMixin, TeacherRequi
         return super().form_valid(form)
 
     def get_success_url(self):
-        assignment = self.get_object()
         messages.success(self.request, self.message)
         return reverse('assignment:list')
 

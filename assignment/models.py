@@ -3,7 +3,6 @@ from django.db import models
 from django.db.models import Count
 from django.urls import reverse
 from django.utils.text import slugify
-from django.shortcuts import redirect
 from django.utils.html import mark_safe
 
 from markdown import markdown
@@ -80,8 +79,8 @@ class Assignment(models.Model):
     tags = TaggableManager()
     objects = AssignmentQuerySet.as_manager()
 
-    class Meta:
-        ordering = ['-timestamp', ]
+    # class Meta:
+    #     ordering = ['-timestamp', ]
 
     def __str__(self):
         return self.topic
