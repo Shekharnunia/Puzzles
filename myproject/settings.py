@@ -70,7 +70,10 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.google',
     # 'allauth.socialaccount.providers.github',
     'graphene_django',
+
+    'postman'
 ]
+
 
 TELLME_FEEDBACK_EMAIL = 'shekharnunia@gmail.com'
 
@@ -116,6 +119,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
 
                 'django.template.context_processors.media',
+                'postman.context_processors.inbox',
             ],
         },
     },
@@ -235,3 +239,9 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
+DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
+
+POSTMAN_DISALLOW_ANONYMOUS = True
+POSTMAN_AUTO_MODERATE_AS = True
+POSTMAN_NAME_USER_AS = 'name'
