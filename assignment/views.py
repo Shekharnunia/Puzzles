@@ -44,7 +44,7 @@ class AssignmentListView(AllAssignmentListView):
         return context
 
 
-class AssignmentDraftListView(AllAssignmentListView, TeacherRequiredMixin):
+class AssignmentDraftListView(TeacherRequiredMixin, AllAssignmentListView):
 
     def get_queryset(self):
         return Assignment.objects.get_draft_assignment().filter(uploader=self.request.user).order_by('-timestamp')
