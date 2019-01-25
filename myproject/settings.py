@@ -71,7 +71,8 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.github',
     'graphene_django',
 
-    'postman'
+    'postman',
+    'notifications',
 ]
 
 

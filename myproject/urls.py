@@ -8,6 +8,7 @@ from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
 from main import views as main_views
 
+import notifications.urls
 from graphene_django.views import GraphQLView
 
 urlpatterns = [
@@ -40,6 +41,7 @@ urlpatterns = [
     url(r'^graphql', GraphQLView.as_view(graphiql=True)),
     url(r'^tellme/', include("tellme.urls")),
     url(r'^messages/', include('postman.urls')),
+    url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 
     url(r'^admin/', admin.site.urls),
 
