@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'control_panel',
     'qa',
     'assignment',
+    'search',
 
     # third party
     'widget_tweaks',

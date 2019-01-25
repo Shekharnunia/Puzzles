@@ -5,7 +5,6 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
-from django.views.decorators.cache import never_cache
 from main import views as main_views
 
 import notifications.urls
@@ -34,6 +33,7 @@ urlpatterns = [
     path('control/', include('control_panel.urls')),
     path('newsletter/', include('Newsletter.urls')),
     url(r'^qa/', include('qa.urls')),
+    url(r'^search/', include('search.urls', namespace='search')),
 
     path('contact-us/', main_views.ContactUs.as_view(), name='contact_us'),
 
