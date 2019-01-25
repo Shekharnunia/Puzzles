@@ -9,6 +9,15 @@
   <link href="{% static 'css/articles.css' %}" rel="stylesheet">
 
     <script src="{% static 'js/comments.js' %}"></script>
+    <style>
+      .pull-right i.fa {
+        display: inline-block;
+        border-radius: 60px;
+        box-shadow: 0px 0px 2px #888;
+        padding: 0.5em 0.6em;
+
+      }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -55,6 +64,17 @@
               {% for tag in article.tags.names %}
                 <a href="{% url 'blog:tag' tag %}" class="ml-2"><span class="badge badge-info">{{ tag }}</span></a>
               {% endfor %}
+              <div class="pull-right">
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&source={{ request.build_absolute_uri }}" target="_blank" title="Share on Linkedin"><i class="ml-2 fa fa-linkedin"></i></a>
+
+                <a href="http://www.reddit.com/submit?url={{ request.build_absolute_uri }}" target="_blank" title="Share on Reddit"><i class="ml-2 fa fa-reddit"></i></a>
+
+                <a href='https://plus.google.com/share?url={{ request.build_absolute_uri }}' target="_blank" title="Share on Google+"><i class="ml-2 fa fa-google-plus"></i></a>
+
+                <a href="https://twitter.com/home?status={{ request.build_absolute_uri }}" target="_blank" title="Share on Twitter"><i class="ml-2 fa fa-twitter"></i></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" title="Share on Facebook">
+                <i class="ml-2 fa fa-facebook"></i></a>
+              </div>
             </div>
           </div>
       
