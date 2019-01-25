@@ -1,9 +1,15 @@
 {% extends "qa_base.html" %}
 
-{% load crispy_forms_tags static %}
+{% load i18n crispy_forms_tags humanize thumbnail static comments %}
 
 {% block head %}
 	<link rel="stylesheet" href="{% static 'css/simplemde.min.css' %}">
+	<link href="{% static 'css/articles.css' %}" rel="stylesheet">
+	<style>
+		#div_id_honeypot, #div_id_url {
+			display: none;   
+		}
+	</style>
 {% endblock head %}
 
 {% block content %}
@@ -15,7 +21,7 @@
 			<li class="breadcrumb-item active" aria-current="page">{{ assignment.topic|title }}</li>
 		</ol>
 	</div>
-
+	
 	<div class="col-sm-10 offset-sm-1">
 		<div class="card">
 			<div class="card-header text-center">
@@ -23,6 +29,8 @@
 				<i class="lead fa fa-user ml-5 mr-2"></i><a href="{% url 'users:detail' assignment.uploader.username %}">{{ assignment.uploader }}</a>
 				<i class="far fa-eye ml-5 mr-2"></i>views
 				{{ assignment.assignment_views }}
+				{% get_comment_count for assignment as comment_count %}
+				<i class="fas fa-comments ml-5 mr-2"></i>{{ comment_count }} {% trans 'comments' %}
 			</div>
 			<div class="card-body">
 				<h2 class="card-title">{{ assignment.topic|capfirst }}</h2>
@@ -37,6 +45,44 @@
             {% endif %}
 		</div>
 	<hr>
+	
+		<!-- Comments Form -->
+		<div class="card my-4">
+	      <h5 class="card-header">{% trans 'Leave a Comment' %}:</h5>
+	      <div class="card-body">
+	          {% get_comment_form for assignment as form %}
+	          <form action="{% comment_form_target %}" method="POST" novalidate>
+	            {% csrf_token %}
+	            {{ form.comment|as_crispy_field }}
+			    {{ form.honeypot|as_crispy_field }}
+			    {{ form.content_type|as_crispy_field }}
+			    {{ form.object_pk|as_crispy_field }}
+			    {{ form.timestamp|as_crispy_field }}
+			    {{ form.security_hash|as_crispy_field }}
+	            <input type="hidden" name="next" value="{% url 'assignment:detail' assignment.slug assignment.pk %}" />
+	            <input class="btn btn-secondary" type="submit" value="{% trans 'Add comment' %}" id="id_submit" />
+	            <input class="btn btn-secondary" type="submit" name="preview" value="Preview">
+	          </form>
+	      </div>
+	    </div>
+		<hr>
+		
+		{% get_comment_list for assignment as comment_list %}
+        {% for comment in comment_list %}
+          <div class="media mb-4">
+            {% thumbnail comment.user.picture "x20" as im %}
+              <img class="d-flex mr-3 " src="{{ im.url }}" alt="{% trans 'Picture Profile' %}" id="pic" />
+            {% empty %}
+              <img class="d-flex mr-3 rounded-circle" src="{% static 'img/user.png' %}" height="50px" alt="{% trans 'No Profile Picture' %}" />
+            {% endthumbnail %}
+            <div class="media-body">
+              <a href="{% url 'users:detail' comment.user.username %}"><h5 class="mt-0">{{ comment.user.get_profile_name|title }}</a>
+              <small>{{ comment.submit_date|naturaltime }}</small></h5>
+              {{ comment.comment }}
+            </div>
+          </div>
+		  <hr>
+        {% endfor %}
 	</div>
 
 	<div class="col-sm-10 offset-1">
@@ -75,7 +121,7 @@
 		<div class="col-md-10 offset-1">
 			<form action="" method="POST" enctype="multipart/form-data" novalidate>
 				{% csrf_token %}
-				{{ form|crispy }}
+				{{ s_form|crispy }}
 				<button type="Submit" class="btn btn-success">Submit</button>
 			</form>
 		</div>
@@ -87,6 +133,6 @@
 {% block modal %}
 	<script src="{% static 'js/simplemde.min.js' %}"></script>
 	<script>
-		var simplemde = new SimpleMDE();
+	var simplemde = new SimpleMDE({ element: document.getElementById("id_feedback") });
 	</script> 
 {% endblock modal %}

@@ -10,11 +10,11 @@
     <div class="user-portrait clearfix">
       <img src="{{ user.picture.url }}">
     </div>
-    {% else %}
+  {% else %}
     <div class="user-portrait clearfix">
       <img src="{% static 'img/avatar.svg' %}">
     </div>
-    {% endif %}
+  {% endif %}
     <div class="comment-input clearfix">
       <textarea class="form-control" rows="1" placeholder="{% trans 'Write a comment...' %}" name="comment" id="comment"></textarea>
     </div>

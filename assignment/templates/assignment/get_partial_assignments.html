@@ -1,5 +1,5 @@
 {% load humanize i18n humanize %}
-{% load thumbnail %}
+{% load thumbnail comments %}
 
 {% for assignment in assignments %}
 <div class="card mb-4">
@@ -12,13 +12,15 @@
       <i class="far fa-eye ml-3 mr-2"></i>{% trans 'views' %}
       {{ assignment.assignment_views }}
       {% if request.user.is_teacher == True %}
-      <i class="fas fa-flag-usa ml-3 mr-2"></i>{% trans 'Status:' %}
-      {% if assignment.draft == True %}
-      <span>Draft</span>
-      {% else %}
-      <span>Open</span>
+        <i class="fas fa-flag-usa ml-3 mr-2"></i>{% trans 'Status:' %}
+        {% if assignment.draft == True %}
+          <span>Draft</span>
+        {% else %}
+          <span>Open</span>
+        {% endif %}
       {% endif %}
-      {% endif %}
+      {% get_comment_count for assignment as comment_count %}
+      <i class="fas fa-comments ml-3 mr-2"></i>{{ comment_count }} {% trans 'comments' %}
     </div>
 
   </div>

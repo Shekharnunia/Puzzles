@@ -73,6 +73,7 @@ INSTALLED_APPS = [
 
     'postman',
     'notifications',
+    'django_comments'
 ]
 
 

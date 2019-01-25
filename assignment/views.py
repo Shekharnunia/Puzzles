@@ -139,7 +139,7 @@ def assignment_detail_view(request, pk, slug):
     form = StudentAssignmentForm
     args = {
         'assignment': t_assignment,
-        'form': form,
+        's_form': form,
         's_assignments': s_assignment
     }
     return render(request, 'assignment/assignment_detail.html', args)
