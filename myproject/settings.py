@@ -73,7 +73,7 @@ INSTALLED_APPS = [
     'graphene_django',
 
     # 'postman',
-    'notifications',
+    # 'notifications',
     'django_comments'
 ]
 
