@@ -67,7 +67,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                   {% if not hide_search %}
-                    <form class="form-inline navbar-left" role="search" action="{% url 'search' %}">
+                    <form class="form-inline navbar-left" role="search" action="{% url 'search:results' %}">
                       <div class="input-group">
                         <input name="query" type="search" id="searchInput" class="form-control" placeholder="{% trans 'Search' %}" aria-label="Search">
                         <div class="input-group-append">

@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
     url(r'^graphql', GraphQLView.as_view(graphiql=True)),
     url(r'^tellme/', include("tellme.urls")),
-    url(r'^messages/', include('postman.urls')),
+    # url(r'^messages/', include('postman.urls')),
     url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
     url(r'^comments/', include('django_comments.urls')),
 

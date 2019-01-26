@@ -72,7 +72,7 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.github',
     'graphene_django',
 
-    'postman',
+    # 'postman',
     'notifications',
     'django_comments'
 ]
@@ -122,7 +122,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
 
                 'django.template.context_processors.media',
-                'postman.context_processors.inbox',
+                # 'postman.context_processors.inbox',
             ],
         },
     },
@@ -245,6 +245,6 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
 
-POSTMAN_DISALLOW_ANONYMOUS = True
-POSTMAN_AUTO_MODERATE_AS = True
-POSTMAN_NAME_USER_AS = 'name'
+# POSTMAN_DISALLOW_ANONYMOUS = True
+# POSTMAN_AUTO_MODERATE_AS = True
+# POSTMAN_NAME_USER_AS = 'name'
