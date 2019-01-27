@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1 class='text-center'>Welcome to Poll List!</h1>
+  <div class="row">
+    <div class="col-sm-8 offset-sm-2">
+
+      {% if messages %}
+          {% for message in messages %}
+          <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+            {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          {% endfor %}
+      {% endif %}
+
+      <a
+          href="?text=True"
+          class="btn btn-{% if 'text' in request.GET %}warning{% else %}primary{% endif %}"
+          style="margin-bottom: 5px">Text
+      </a>
+      <a
+          href="?pub_date=True"
+          class="btn btn-{% if 'pub_date' in request.GET %}warning{% else %}primary{% endif %}"
+          style="margin-bottom: 5px">Pub_date
+      </a>
+      <a
+          href="?num_votes=True"
+          class="btn btn-{% if 'num_votes' in request.GET %}warning{% else %}primary{% endif %}"
+          style="margin-bottom: 5px">Num_votes
+      </a>
+      <a href="{% url 'polls:add' %}" class="btn btn-primary" style="margin-bottom: 5px">Add <i class="fas fa-plus"></i> </a>
+
+      <form class="form-inline my-2 my-lg-1">
+        <input
+            class="form-control mr-sm-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            name='search'
+            value="{{search_term}}">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+
+      <ul class="list-group">
+        {% for poll in polls %}
+        <li class="list-group-item">
+          <a href="{% url 'polls:detail' poll.id %}">{{ poll }}</a>
+          {% if request.user == poll.owner %}
+            <a href="{% url 'polls:edit_poll' poll.id %}" class='float-right'><i class="fas fa-pencil-alt"></i></a>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+
+      <div class="pagination">
+          <span class="step-links">
+              {% if polls.has_previous %}
+                  <a href="?page=1&{{params}}">&laquo; first</a>
+                  <a href="?page={{ polls.previous_page_number }}&{{params}}">previous</a>
+              {% endif %}
+
+              <span class="current">
+                  Page {{ polls.number }} of {{ polls.paginator.num_pages }}.
+              </span>
+
+              {% if polls.has_next %}
+                  <a href="?page={{ polls.next_page_number }}&{{params}}">next</a>
+                  <a href="?page={{ polls.paginator.num_pages }}&{{params}}">last &raquo;</a>
+              {% endif %}
+          </span>
+      </div>
+
+      {% if is_paginated %}
+        <nav aria-label="Topics pagination" class=" mt-4 mb-4">
+          <ul class="pagination justify-content-center">
+            {% if page_obj.number > 1 %}
+              <li class="page-item">
+                <a class="page-link" href="?page=1">First</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link">First</span>
+              </li>
+            {% endif %}
+
+            {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link">Previous</span>
+              </li>
+            {% endif %}
+
+            {% for page_num in paginator.page_range %}
+              {% if page_obj.number == page_num %}
+                <li class="page-item active">
+                  <span class="page-link">
+                    {{ page_num }}
+                    <span class="sr-only">(current)</span>
+                  </span>
+                </li>
+              {% elif page_num > page_obj.number|add:'-3' and page_num < page_obj.number|add:'3' %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link">Next</span>
+              </li>
+            {% endif %}
+
+            {% if page_obj.number != paginator.num_pages %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ paginator.num_pages }}">Last</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link">Last</span>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

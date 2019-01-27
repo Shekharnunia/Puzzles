@@ -2,20 +2,17 @@ from django.urls import path
 
 from . import views
 
-app_name = 'polls'
+app_name = "polls"
 urlpatterns = [
-    path('', views.index, name='poll'),
-    path('create', views.create, name='create'),
-    path('<int:question_id>/', views.detail, name='detail'),
-    path('<int:question_id>/results/', views.results, name='results'),
-    path('<int:question_id>/vote/', views.vote, name='vote'),
+    path('list/', views.polls_list, name="list"),
+    path('add/', views.add_poll, name='add'),
+    path('edit/<int:poll_id>/', views.edit_poll, name='edit_poll'),
+    path('edit/<int:poll_id>/choice/add/', views.add_choice, name="add_choice"),
+    path('edit/choice/<int:choice_id>/', views.edit_choice, name="edit_choice"),
+    path('delete/choice/<int:choice_id>/', views.delete_choice, name='choice_confirm_delete'),
+    path('delete/poll/<int:poll_id>/', views.delete_poll, name='poll_confirm_delete'),
+    # polls/details/1/
+    path('details/<int:poll_id>/', views.poll_detail, name='detail'),
+    # polls/details/1/vote
+    path('details/<int:poll_id>/vote/', views.poll_vote, name='vote')
 ]
-
-
-#app_name = 'polls'
-#urlpatterns = [
-#    path('', views.IndexView.as_view(), name='poll'),
-#    path('<int:pk>/', views.DetailView.as_view(), name='detail'),
-#    path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),
-#    path('<int:question_id>/vote/', views.vote, name='vote'),
-#]

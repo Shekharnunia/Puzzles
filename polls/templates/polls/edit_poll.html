@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+  <h1 class='text-center'>Edit Poll Using Form Below</h1>
+  <div class="row">
+    <div class="col-sm-6 offset-sm-3">
+      <form action="" method="post" novalidate>
+        {% csrf_token %}
+        {% include "includes/form.html" %}
+        <input type="submit" value="submit" class='btn btn-primary'>
+        <a href="{% url 'polls:add_choice' poll.id %}" class='btn btn-warning'>Add Choice</a>
+        <a href="{% url 'polls:poll_confirm_delete' poll.id %}"
+            class='btn btn-danger'>
+            <i class="far fa-trash-alt"></i> Delete
+        </a>
+      </form>
+    <hr>
+    <h3 class='text-center'>Choices</h3>
+    {% for choice in poll.choice_set.all %}
+      <p><a href="{% url 'polls:edit_choice' choice.id %}"><i class="fas fa-pencil-alt"></i></a> {{choice.choice_text}}</p>
+    {% endfor %}
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
