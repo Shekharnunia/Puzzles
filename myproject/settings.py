@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.google',
     # 'allauth.socialaccount.providers.github',
     'graphene_django',
+    # 'channels',
 
     # 'postman',
     # 'notifications',
@@ -245,6 +246,16 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
 
-# POSTMAN_DISALLOW_ANONYMOUS = True
-# POSTMAN_AUTO_MODERATE_AS = True
-# POSTMAN_NAME_USER_AS = 'name'
+# ASGI_APPLICATION = 'myproject.routing.application'
+
+
+# REDIS_URL = f'{config("REDIS_URL", default="redis://127.0.0.1:6379")}/{0}'
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             'hosts': [REDIS_URL, ],
+#         },
+#     }
+# }
