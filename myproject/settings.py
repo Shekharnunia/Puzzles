@@ -78,7 +78,6 @@ INSTALLED_APPS = [
     'django_comments'
 ]
 
-
 TELLME_FEEDBACK_EMAIL = 'shekharnunia@gmail.com'
 
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
@@ -245,7 +244,9 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
-
+MANAGERS = [('Shekhar', 'shekharnunia@gmail.com'), ('Shekhar', 'shekharnunia1992@gmail.com')]
+ADMINS = ('Shekhar', 'shekharnunia@gmail.com')
+EMAIL_SUBJECT_PREFIX = '[Puzzles]'
 # ASGI_APPLICATION = 'myproject.routing.application'
 
 

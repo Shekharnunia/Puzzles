@@ -7,6 +7,7 @@ from django.utils.html import mark_safe
 
 from markdown import markdown
 from taggit.managers import TaggableManager
+from django_comments.moderation import CommentModerator, moderator
 
 
 def assignment_upload_path(instance, filename):
@@ -108,6 +109,16 @@ class Assignment(models.Model):
 
         else:
             return self.get_description_as_markdown()
+
+
+class AssignmentModerator(CommentModerator):
+    email_notification = True
+    auto_close_field = 'timestamp'
+    # Close the comments after 7 days.
+    close_after = 7
+
+
+moderator.register(Assignment, AssignmentModerator)
 
 
 class StudentAssignment(models.Model):

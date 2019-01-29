@@ -1,7 +1,11 @@
 {% extends 'qa_base.html' %}
-{% load i18n crispy_forms_tags %}
+{% load i18n crispy_forms_tags static %}
 
 {% block title %}{% trans 'Answer a question' %}{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/simplemde.min.css' %}">
+{% endblock head %}
 
 {% block content %}
 
@@ -12,7 +16,7 @@
       <li class="breadcrumb-item active" aria-current="page">{% trans 'Answer a question' %}</li>
     </ol>
   </nav>
-  <form action="{% url 'qa:propose_answer' view.kwargs.question_id %}" id="answerForm" method="post" role="form">
+  <form action="{% url 'qa:propose_answer' view.kwargs.question_id %}" id="answerForm" method="post" role="form" novalidate>
     {% csrf_token %}
     {{ form|crispy }}
     <div class="form-group">
@@ -22,3 +26,11 @@
   </form>
 
 {% endblock content %}
+
+{% block modal %}
+  <script src="{% static 'js/qa.js' %}"></script>
+  <script src="{% static 'js/simplemde.min.js' %}"></script>
+  <script>
+    var simplemde = new SimpleMDE({ element: document.getElementById("id_content") });
+  </script>
+{% endblock modal %}

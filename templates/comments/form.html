@@ -1,21 +1,18 @@
-{% load comments i18n %}
-<form action="{% comment_form_target %}" method="post">{% csrf_token %}
+{% load comments i18n crispy_forms_tags %}
+{% block head %}
+  <style>
+    #div_id_honeypot, #div_id_name, #div_id_email, #div_id_url {
+      display: none;   
+    }
+  </style>
+{% endblock head %}
+
+<form action="{% comment_form_target %}" method="post" novalidate>{% csrf_token %}
   {% if next %}
     <div><input type="hidden" name="next" value="{{ next }}"/></div>{% endif %}
-  {% for field in form %}
-    {% if field.is_hidden %}
-      <div>{{ field }}</div>
-    {% else %}
-      {% if field.errors %}{{ field.errors }}{% endif %}
-      <p
-              {% if field.errors %} class="error"{% endif %}
-              {% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}>
-        {{ field.label_tag }} {{ field }}
-      </p>
-    {% endif %}
-  {% endfor %}
+  {{ form|crispy }}
   <p class="submit">
-    <input type="submit" name="post" class="submit-post" value="{% trans "Post" %}"/>
-    <input type="submit" name="preview" class="submit-preview" value="{% trans "Preview" %}"/>
+    <input class="btn btn-secondary" type="submit" name="post" class="submit-post" value="{% trans "Post" %}"/>
+    <input class="btn btn-secondary" type="submit" name="preview" class="submit-preview" value="{% trans "Preview" %}"/>
   </p>
 </form>

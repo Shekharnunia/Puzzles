@@ -16,7 +16,7 @@
   </div>
   <div class="col-md-11">
     <div class="answer-user">
-      {% thumbnail answer.user.user.image "x30" as im %}
+      {% thumbnail answer.user.picture "x30" as im %}
         <img src="{{ im.url }}" style="border-radius: 50%;"  alt="{% trans 'User Image' %}" class="user user-image">
       {% empty %}
         <img src="{% static 'img/user.png' %}" height="30px" alt="{% trans 'No Profile Picture' %}" />
@@ -30,8 +30,8 @@
           <div class="card">
             <small><span class="text-secondary">{% trans 'asked' %} {{ answer.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ answer.timestamp|date:"G:i" }}</span></small>
             <div class="media">
-              {% if answer.user.user.image %}
-              <img src="{{ answer.user.user.image.url }}" class="mr-2 comment-portrait">
+              {% if answer.user.picture %}
+              <img src="{{ answer.user.picture.url }}" alt="{% trans 'User Image' %}" class="mr-2 comment-portrait">
               {% else %}
               <img src="{% static 'img/user.png' %}" class="mr-2" height="30" alt="{% trans 'No Profile Picture' %}" />  
               {% endif %}
