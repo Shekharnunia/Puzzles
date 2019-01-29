@@ -1,13 +1,15 @@
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Count
 from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.html import mark_safe
 
+from comments.models import Comment
+
 from markdown import markdown
 from taggit.managers import TaggableManager
-from django_comments.moderation import CommentModerator, moderator
 
 
 def assignment_upload_path(instance, filename):
@@ -110,15 +112,16 @@ class Assignment(models.Model):
         else:
             return self.get_description_as_markdown()
 
+    @property
+    def comments(self):
+        instance = self
+        qs = Comment.objects.filter_by_instance(instance)
+        return qs
 
-class AssignmentModerator(CommentModerator):
-    email_notification = True
-    auto_close_field = 'timestamp'
-    # Close the comments after 7 days.
-    close_after = 7
-
-
-moderator.register(Assignment, AssignmentModerator)
+    @property
+    def get_content_type(self):
+        content_type = ContentType.objects.get_for_model(self.__class__)
+        return content_type
 
 
 class StudentAssignment(models.Model):

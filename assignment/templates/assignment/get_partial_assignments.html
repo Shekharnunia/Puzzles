@@ -1,5 +1,5 @@
 {% load humanize i18n humanize %}
-{% load thumbnail comments %}
+{% load thumbnail %}
 
 {% for assignment in assignments %}
 <div class="card mb-4">
@@ -19,8 +19,7 @@
           <span>Open</span>
         {% endif %}
       {% endif %}
-      {% get_comment_count for assignment as comment_count %}
-      <i class="fas fa-comments ml-3 mr-2"></i>{{ comment_count }} {% trans 'comments' %}
+      {# <i class="fas fa-comments ml-3 mr-2"></i>{{ comment_count }} {% trans 'comments' %} #}
     </div>
 
   </div>

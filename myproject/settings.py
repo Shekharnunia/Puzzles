@@ -73,9 +73,7 @@ INSTALLED_APPS = [
     'graphene_django',
     # 'channels',
 
-    # 'postman',
-    # 'notifications',
-    'django_comments'
+    'comments'
 ]
 
 TELLME_FEEDBACK_EMAIL = 'shekharnunia@gmail.com'

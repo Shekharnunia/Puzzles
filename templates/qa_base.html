@@ -165,6 +165,23 @@
               });
           });
         </script>
+        <script type="text/javascript">
+
+        $(document).ready(function(){
+
+            $(".comment-reply-btn").click(function(event){
+                event.preventDefault();
+                $(this).parent().next(".comment-reply").fadeToggle();
+            })
+
+            $("#comment_fade").click(function(event){
+              event.preventDefault();
+            $(".comment-div").fadeToggle();
+          });
+
+        })
+      </script>
+
       {% endblock javascript %}
       {%  include 'tellme/js_inc.html' %}
 

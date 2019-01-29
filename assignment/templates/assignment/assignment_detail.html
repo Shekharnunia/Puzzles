@@ -1,6 +1,6 @@
 {% extends "qa_base.html" %}
 
-{% load i18n crispy_forms_tags humanize thumbnail static comments %}
+{% load i18n crispy_forms_tags humanize thumbnail static %}
 
 {% block head %}
 	<link rel="stylesheet" href="{% static 'css/simplemde.min.css' %}">
@@ -9,6 +9,31 @@
 		#div_id_honeypot, #div_id_url {
 			display: none;   
 		}
+		.comment-reply{
+			display: none;
+		}
+		blockquote {
+		  background: #f9f9f9;
+		  border-left: 10px solid #ccc;
+		  margin: 1.5em 10px;
+		  padding: 0.5em 10px;
+		  quotes: "\201C""\201D""\2018""\2019";
+		}
+		blockquote:before {
+		  color: #ccc;
+		  content: open-quote;
+		  font-size: 4em;
+		  line-height: 0.1em;
+		  margin-right: 0.25em;
+		  vertical-align: -0.4em;
+		}
+		blockquote p {
+		  display: inline;
+		}
+		.comment-div{
+			display: none;
+		}
+		
 	</style>
 {% endblock head %}
 
@@ -29,8 +54,8 @@
 				<i class="lead fa fa-user ml-5 mr-2"></i><a href="{% url 'users:detail' assignment.uploader.username %}">{{ assignment.uploader }}</a>
 				<i class="far fa-eye ml-5 mr-2"></i>views
 				{{ assignment.assignment_views }}
-				{% get_comment_count for assignment as comment_count %}
-				<i class="fas fa-comments ml-5 mr-2"></i>{{ comment_count }} {% trans 'comments' %}
+				
+				{# <i class="fas fa-comments ml-5 mr-2"></i>{{ comment_count }} {% trans 'comments' %} #}
 			</div>
 			<div class="card-body">
 				<h2 class="card-title">{{ assignment.topic|capfirst }}</h2>
@@ -44,46 +69,43 @@
             </div>
             {% endif %}
 		</div>
-	<hr>
-	
-		<!-- Comments Form -->
-		<div class="card my-4">
-	      <h5 class="card-header">{% trans 'Leave a Comment' %}:</h5>
-	      <div class="card-body">
-	          {% get_comment_form for assignment as form %}
-	          <form action="{% comment_form_target %}" method="POST" novalidate>
-	            {% csrf_token %}
-	            {{ form.comment|as_crispy_field }}
-			    {{ form.honeypot|as_crispy_field }}
-			    {{ form.content_type|as_crispy_field }}
-			    {{ form.object_pk|as_crispy_field }}
-			    {{ form.timestamp|as_crispy_field }}
-			    {{ form.security_hash|as_crispy_field }}
-	            <input type="hidden" name="next" value="{% url 'assignment:detail' assignment.slug assignment.pk %}" />
-	            <input class="btn btn-secondary" type="submit" value="{% trans 'Add comment' %}" id="id_submit" />
-	            <input class="btn btn-secondary" type="submit" name="preview" value="Preview">
-	          </form>
-	      </div>
-	    </div>
 		<hr>
 		
-		{% get_comment_list for assignment as comment_list %}
-        {% for comment in comment_list %}
-          <div class="media mb-4">
-            {% thumbnail comment.user.picture "x20" as im %}
-              <img class="d-flex mr-3 " src="{{ im.url }}" alt="{% trans 'Picture Profile' %}" id="pic" />
-            {% empty %}
-              <img class="d-flex mr-3 rounded-circle" src="{% static 'img/user.png' %}" height="50px" alt="{% trans 'No Profile Picture' %}" />
-            {% endthumbnail %}
-            <div class="media-body">
-              <a href="{% url 'users:detail' comment.user.username %}"><h5 class="mt-0">{{ comment.user.get_profile_name|title }}</a>
-              <small>{{ comment.submit_date|naturaltime }}</small></h5>
-              {{ comment.comment }}
-            </div>
-          </div>
-		  <hr>
-        {% endfor %}
-	</div>
+
+		<a href="#" class="btn btn-outline-info" id="comment_fade"><i class="fas fa-comments mr-2"></i>{% trans 'Add a comment' %}</a>
+
+		<div class="comment-div">
+			<div class
+		        <p class='lead'>Comments</p>
+		        <form method="POST" action="." novalidate> {% csrf_token %}
+		            {{ comment_form|crispy }}
+		            <input type='submit' value='Post comment' class='btn btn-info btn-sm'>
+		        </form>
+	        </div>
+	        <hr/>
+	        {% for comment in comments %}
+		        <blockquote>
+		          <p>{{ comment.content }}</p>
+		          <footer class="blockquote-footer">via {{ comment.user }} | {{ comment.timestamp|timesince }} ago | {% if comment.children.count > 0 %}{{ comment.children.count }} Comment{% if comment.children.count > 1 %}s{% endif %} | {% endif %} <a class='comment-reply-btn' href='#'>Reply</a> | <a class='' href='{{ comment.get_absolute_url }}'>Thread</a></footer>
+		          <div class='comment-reply'>
+		              	{% for child_comment in comment.children %}
+			                <blockquote class="">
+			                <p>{{ child_comment.content }}</p>
+			                <footer class="blockquote-footer">via {{ child_comment.user }} | {{ child_comment.timestamp|timesince }} ago</footer>
+		                </blockquote>
+			            {% endfor %}
+			            <form method="POST" action="."> {% csrf_token %}
+			                {{ comment_form|crispy }}
+			                <input type='hidden' name='parent_id' value='{{ comment.id }}'>
+			                <input type='submit' value='Reply' class='btn btn-default'>
+			            </form>
+			        </div>
+		        </blockquote>
+		        <hr/>
+	        {% endfor %}
+	    </div>
+    
+    </div>
 
 	<div class="col-sm-10 offset-1">
 		<h3>Assignment Solutions</h3>
