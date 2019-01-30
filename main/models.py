@@ -5,7 +5,7 @@ from django.utils.html import mark_safe
 
 
 class Question(models.Model):
-    topic = models.CharField(max_length=300, unique=True)
+    topic = models.CharField(max_length=255, unique=True)
     question = models.TextField(max_length=4000, blank=False)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_by')
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)

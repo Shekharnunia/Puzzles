@@ -78,7 +78,7 @@ class Question(models.Model):
         (CLOSED, _("Closed")),
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=300, unique=True, blank=False)
+    title = models.CharField(max_length=255, unique=True, blank=False)
     content = models.TextField()
     status = models.CharField(max_length=1, choices=STATUS, default=OPEN)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
