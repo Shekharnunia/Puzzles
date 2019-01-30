@@ -178,14 +178,7 @@
         <!-- Your stuff: Third-party javascript libraries go here -->
       <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js" type="text/javascript"></script>
         <!-- place project specific Javascript in this file -->
-        <script type="text/javascript">
-          var currentUser = "{{ request.user.username }}"
-          $(function() {
-                  source: "{% url 'search:suggestions' %}",
-                  minLength: 2
-              });
-          });
-        </script>
+        
         <script type="text/javascript">
 
         $(document).ready(function(){
