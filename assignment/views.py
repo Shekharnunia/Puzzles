@@ -224,7 +224,7 @@ class AssignmentCreateView(LoginRequiredMixin, TeacherRequiredMixin, CreateView)
         return reverse("assignment:all_list")
 
 
-class AssignmentEditView(LoginRequiredMixin, UserPassesTestMixin, TeacherRequiredMixin, UpdateView):
+class AssignmentEditView(LoginRequiredMixin, TeacherRequiredMixin, UpdateView):
     model = Assignment
     context_object_name = 'assignment'
     fields = ('topic', 'description', 'assignment_file', 'tags',)

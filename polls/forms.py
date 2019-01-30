@@ -8,12 +8,12 @@ class PollForm(forms.ModelForm):
     choice1 = forms.CharField(
         label='First Choice',
         max_length=100,
-        min_length=3,
+        min_length=2,
         widget=forms.TextInput(attrs={'class': 'form-control'}))
     choice2 = forms.CharField(
         label='Second Choice',
         max_length=100,
-        min_length=3,
+        min_length=2,
         widget=forms.TextInput(attrs={'class': 'form-control'}))
     # choice3 = forms.CharField(
     #     label='Third Choice',

@@ -1,7 +1,18 @@
-{% load humanize %}
+{% load humanize static %}
 
 <div class="comment">
-  <a href="{% url 'users:detail' comment.user.username %}"><img src="{{ comment.user.picture.url }}" class="comment-portrait"></a>
+  <a href="{% url 'users:detail' comment.user.username %}">
+  	{% if comment.user.picture %}
+    <div class="user-portrait clearfix">
+    	<img src="{{ comment.user.picture.url }}" class="comment-portrait">
+    </div>
+  {% else %}
+    <div class="user-portrait clearfix">
+      <img src="{% static 'img/user.png' %}">
+    </div>
+  {% endif %}
+  	
+  </a>
   <div class="comment-text">
     <h5>
       <a href="{% url 'users:detail' comment.user.username %}">{{ comment.user.username }}</a> 

@@ -50,8 +50,12 @@
               {% endfor %}
             </div>
           </div>
-        {% empty %}
-          <h4 class="no-data">There is no published article yet <a href="{% url 'blog:write_new' %}"> Be the first one to publish one!</a></h4>
+          {% empty %}          
+          {% if request.user.is_teacher %}
+            <h4 class="no-data">There is no published article yet <a href="{% url 'blog:write_new' %}"> Be the first one to publish one!</a></h4>
+          {% elif request.user.is_student %}
+            <h4 class="no-data">There is no published article yet </h4>
+          {% endif %}
         {% endfor %}
 
         {% include "includes/pagination.html" %}
@@ -60,7 +64,7 @@
       <!-- Sidebar Widgets Column -->
       <div class="col-md-4">
         <!-- Write Article Widget -->
-        {% if request.user.is_authenticated %}
+        {% if request.user.is_teacher %}
           <div class="card my-4">
             <div class="card-body text-center">
               <a class="btn btn-success" href="{% url 'blog:write_new' %}" title="{% trans 'Write a new article' %}"><i class="fa fa-pencil" aria-hidden="true"></i> {% trans 'New Article' %}</a>
