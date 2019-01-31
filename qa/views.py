@@ -10,7 +10,7 @@ from django.shortcuts import redirect
 
 from helpers import ajax_required
 from qa.models import Question, Answer
-from qa.forms import QuestionForm
+from qa.forms import QuestionForm, AnswerForm
 
 
 # Done
@@ -170,7 +170,7 @@ class CreateAnswerView(LoginRequiredMixin, CreateView):
     View to create new answers for a given question
     """
     model = Answer
-    fields = ["content", ]
+    form_class = AnswerForm
     message = _("Thank you! Your answer has been posted.")
     template_name = 'qa/answer_form.html'
 

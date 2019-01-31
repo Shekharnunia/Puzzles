@@ -2,6 +2,8 @@ from django import forms
 
 from .models import Assignment, StudentAssignment
 
+from pagedown.widgets import PagedownWidget
+
 
 class AssignmentForm(forms.ModelForm):
     topic = forms.CharField(
@@ -12,7 +14,7 @@ class AssignmentForm(forms.ModelForm):
         # help_text='The max length of the text is 4000.'
     )
     description = forms.CharField(
-        widget=forms.Textarea(
+        widget=PagedownWidget(
             attrs={
                 'rows': 10,
                 'placeholder': 'What is in your mind?',

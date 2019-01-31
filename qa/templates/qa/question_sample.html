@@ -21,8 +21,8 @@
           <div class="card">
             <small><span class="text-secondary">{% trans 'asked' %} {{ question.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ question.timestamp|date:"G:i" }}</span></small>
             <div class="media">
-              {% if question.user.user.image %}
-              <img src="{{ question.user.user.image.url }}" class="mr-2 comment-portrait">
+              {% if question.user.picture %}
+              <img src="{{ question.user.picture.url }}" class="mr-2 comment-portrait">
               {% else %}
               <img src="{% static 'img/user.png' %}" class="mr-2" height="30" alt="{% trans 'No Profile Picture' %}" />  
               {% endif %}

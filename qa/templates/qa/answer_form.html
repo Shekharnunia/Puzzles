@@ -4,7 +4,7 @@
 {% block title %}{% trans 'Answer a question' %}{% endblock %}
 
 {% block head %}
-  <link rel="stylesheet" href="{% static 'css/simplemde.min.css' %}">
+  {{ form.media}}
 {% endblock head %}
 
 {% block content %}
@@ -29,8 +29,4 @@
 
 {% block modal %}
   <script src="{% static 'js/qa.js' %}"></script>
-  <script src="{% static 'js/simplemde.min.js' %}"></script>
-  <script>
-    var simplemde = new SimpleMDE({ element: document.getElementById("id_content") });
-  </script>
 {% endblock modal %}

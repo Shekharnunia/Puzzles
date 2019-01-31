@@ -2,10 +2,6 @@
 {% load static 	i18n %}
 {% load crispy_forms_tags %}
 
-{% block head %}
-  <link rel="stylesheet" href="{% static 'css/simplemde.min.css' %}">
-{% endblock head %}
-
 {% block content %}
 <div class="container mb-4">
   <form action="{% url 'blog:write_new' %}" enctype="multipart/form-data"  id="article-form" method="POST" role="form">
@@ -24,8 +20,4 @@
 
 {% block modal %}
   <script src="{% static 'js/articles.js' %}"></script>
-  <script src="{% static 'js/simplemde.min.js' %}"></script>
-  <script>
-    var simplemde = new SimpleMDE({ element: document.getElementById("id_content") });
-  </script>
 {% endblock modal %}

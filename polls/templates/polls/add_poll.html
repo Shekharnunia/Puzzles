@@ -10,7 +10,8 @@
     <div class="col-sm-6 offset-sm-3">
       <form action="" method="post" novalidate>
         {% csrf_token %}
-        {% include "includes/form.html" %}
+        {{ form.media }}
+        {{ form|crispy }}
         <input type="submit" value="submit" class='btn btn-primary'>
       </form>
     </div>

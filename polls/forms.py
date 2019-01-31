@@ -2,9 +2,11 @@ from django import forms
 
 from .models import Choice, Poll
 
+from pagedown.widgets import PagedownWidget
+
 
 class PollForm(forms.ModelForm):
-
+    text = forms.CharField(widget=PagedownWidget())
     choice1 = forms.CharField(
         label='First Choice',
         max_length=100,

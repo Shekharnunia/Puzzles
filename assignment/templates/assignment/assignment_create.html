@@ -3,10 +3,6 @@
 
 {% block title %}{% trans 'Create an assignment' %}{% endblock %}
 
-{% block head %}
-  <link rel="stylesheet" href="{% static 'css/simplemde.min.css' %}">
-{% endblock head %}
-
 {% block content %}
 	<a class="btn btn-info mb-4 pull-right" href="{% url 'assignment:create' %}">Create new assignment</a> <br>
 	<form action="" class="mb-4" method="POST" enctype="multipart/form-data" novalidate>
@@ -20,7 +16,4 @@
 
 {% block modal %}
   <script src="{% static 'js/simplemde.min.js' %}"></script>
-  <script>
-    var simplemde = new SimpleMDE({ element: document.getElementById("id_description") });
-  </script>
 {% endblock modal %}
