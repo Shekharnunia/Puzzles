@@ -24,7 +24,7 @@ urlpatterns = [
     path('assignments/', include('assignment.urls')),
     path('polls/', include('polls.urls')),
     path('articles/', include('blog.urls')),
-    path('main/', include('main.urls')),
+    # path('main/', include('main.urls')),
     #url(r'^account/', include('account.urls')),
     url(r'^users/', include('users.urls')),
     path('control/', include('control_panel.urls')),

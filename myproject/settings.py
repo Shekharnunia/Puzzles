@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     # local
-    'main',
+    # 'main',
     'polls',
     'blog',
     # 'account',
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'qa',
     'assignment',
     'search',
+    'comments',
 
     # third party
     'widget_tweaks',
@@ -70,13 +71,18 @@ INSTALLED_APPS = [
     'tellme',
     # 'allauth.socialaccount.providers.google',
     # 'allauth.socialaccount.providers.github',
-    'graphene_django',
+    # 'graphene_django',
     # 'channels',
 
-    'comments',
     'pagedown',
     'contact_form',
+    'django_extensions',
 ]
+
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
+}
 
 TELLME_FEEDBACK_EMAIL = 'shekharnunia@gmail.com'
 
