@@ -75,6 +75,7 @@ INSTALLED_APPS = [
 
     'comments',
     'pagedown',
+    'contact_form',
 ]
 
 TELLME_FEEDBACK_EMAIL = 'shekharnunia@gmail.com'

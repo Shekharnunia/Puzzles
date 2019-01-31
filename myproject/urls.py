@@ -5,10 +5,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
-from main import views as main_views
 
-# import notifications.urls
-from graphene_django.views import GraphQLView
 
 urlpatterns = [
     path('',
@@ -35,13 +32,10 @@ urlpatterns = [
     url(r'^qa/', include('qa.urls')),
     url(r'^search/', include('search.urls', namespace='search')),
 
-    path('contact-us/', main_views.ContactUs.as_view(), name='contact_us'),
 
     url(r'^accounts/', include('allauth.urls')),
-    url(r'^graphql', GraphQLView.as_view(graphiql=True)),
     url(r'^tellme/', include("tellme.urls")),
-    # url(r'^messages/', include('postman.urls')),
-    # url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
+    url(r'^contact/', include('contact_form.urls')),
     url(r'^comments/', include("comments.urls", namespace='comments')),
 
     url(r'^admin/', admin.site.urls),

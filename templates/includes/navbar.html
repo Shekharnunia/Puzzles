@@ -1,45 +1,98 @@
-<nav class="navbar navbar-expand-lg sticky-top fixed-top navbar-expand-md navbar-dark bg-dark">
-	<div class="container ">
-		<a class="navbar-brand" href="{% url 'main:home' %}">PUZZLES</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-			{% if user.is_authenticated %}
-                                
-			<ul class="navbar-nav ">
-                                <li class="nav-item">
-					<a class="nav-link" href="{% url 'blog:list' %}">Blog</i></a>
-				</li>
-                                <li class="nav-item">
-					<a class="nav-link" href="{% url 'polls:poll' %}">Polls</i></a>
-				</li>
-                                <li class="nav-item">
-					<a class="nav-link" href="{% url 'main:search' %}">Search</i></a>
-				</li>
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"> {{ request.user.username|title }}</i></a>
-					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="{% url 'account:profile' request.user.username %}">Profile</a>
-						<a class="dropdown-item" href="{% url 'account:change_password' %}">Change Password</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="{% url 'account:logout' %}">Logout</a>
-					</div>
-				</li>
-			</ul>
-			{% else %}	
-			<ul class="navbar-nav ">
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'account:register' %}"><i class="fas fa-user-plus"> Sign-Up</i></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'account:login' %}"><i class="fas fa-user"> Log-In</i></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'account:password_reset' %}">Reset Password</a>
-				</li>
-			</ul>
-			{% endif %}
-		</div>
-	</div>
-</nav>
+{% load static i18n thumbnail %}
+<div class="m-b-1 mt-4">
+    {% if request.user.is_authenticated %}
+      <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+          <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'home' %}"><img height="60" src="{% static "img/puzzles-logo.png" %}" alt="Puzzles"></a>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="btn btn-md" href="#" id="notifications" data-toggle="popover" data-title="{% trans 'Notifications' %}">
+                    <i class="fa fa-bell-o" aria-hidden="true"></i>
+                </a>
+              </li>
+            </ul>
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item"><a class="nav-link" href="{% url 'polls:list' %}">{% trans 'Poll' %} <span class="sr-only">(current)</span></a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'blog:list' %}">{% trans 'Blog' %}</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'qa:index_noans' %}">{% trans 'Q&A' %}</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'Newsletter:newsletter_signup' %}">{% trans 'Newsletter' %}</a></li>
+              {% if request.user.is_teacher == True %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'assignment:list' %}">{% trans 'Assignments' %}</a></li>
+              {% elif request.user.is_student == True %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'assignment:new_list' %}">{% trans 'Assignments' %}</a></li>
+              {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              {% if not hide_search %}
+                <form class="form-inline navbar-left" role="search" action="{% url 'search:results' %}">
+                  <div class="input-group">
+                    <input name="query" type="search" id="searchInput" class="form-control" placeholder="{% trans 'Search' %}" aria-label="Search">
+                    <div class="input-group-append">
+                      <span class="input-group-text"><i class="fa fa-search" aria-hidden="true"></i></span>
+                    </div>
+                  </div>
+                </form>
+              {% endif %}
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {% thumbnail request.user.picture "x30" as im %}
+                    <img src="{{ im.url }}" style="border-radius: 50%;" alt="{% trans 'User Image' %}" class="user-image">
+                  {% empty %}
+                    <img src="{% static 'img/user.png' %}" height="30px" alt="{% trans 'No Profile Picture' %}" />
+                  {% endthumbnail %}
+                  {{ request.user.username }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="{% url 'users:detail' request.user.username  %}"><i class="far fa-user fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile' %}</a>
+                  <a class="dropdown-item" href="{% url 'users:update'  %}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile Settings' %}</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="{% url 'account_logout' %}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>&nbsp; {% trans "Log Out" %}</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    {% else %}
+      <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+          <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'home' %}"><img height="60" src="{% static "img/puzzles-logo.png" %}" alt="Puzzles"></a>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="btn btn-md" href="#" id="notifications" data-toggle="popover" data-title="{% trans 'Notifications' %}">
+                    <i class="fa fa-bell-o" aria-hidden="true"></i>
+                </a>
+              </li>
+            </ul>
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item"><a class="nav-link" href="{% url 'polls:list' %}">{% trans 'Poll' %} <span class="sr-only">(current)</span></a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'blog:list' %}">{% trans 'Blog' %}</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'qa:index_noans' %}">{% trans 'Q&A' %}</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'Newsletter:newsletter_signup' %}">{% trans 'Newsletter' %}</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'assignment:list' %}">{% trans 'Assignments' %}</a></li>
+            </ul>
+            <ul class="navbar-nav ">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'account_signup' %}"><i class="fas fa-user-plus"> Sign-Up</i></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'account_login' %}"><i class="fas fa-user"> Log-In</i></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'account_reset_password' %}">Reset Password</a>
+              </li>
+            </ul>                
+          </div>
+        </div>
+      </nav>
+    {% endif %}
+</div>
