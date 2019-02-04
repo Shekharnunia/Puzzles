@@ -3,6 +3,16 @@ from . import views
 
 app_name = 'blog'
 urlpatterns = [
+    url(r'^categories/(?P<slug>[-\w]+)/$',
+        views.CategoryDetailView.as_view(),
+        name='category_detail'
+        ),
+
+    url(r'^categories/$',
+        views.CategoryListView.as_view(),
+        name='category_list'
+        ),
+
     url(r'^$',
         views.ArticlesListView.as_view(),
         name='list'),

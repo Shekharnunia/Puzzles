@@ -15,8 +15,20 @@ from django.views.generic import (
 
 from decorators import ajax_required
 from helpers import AuthorRequiredMixin, TeacherRequiredMixin
-from .models import Article, ArticleComment
+from .models import Article, ArticleComment, Category
 from .forms import ArticleForm, ArticleCommentForm
+
+
+class CategoryListView(LoginRequiredMixin, ListView):
+    """Basic ListView implementation to call the published articles list."""
+    model = Category
+    paginate_by = 5
+    context_object_name = "categorys"
+
+
+class CategoryDetailView(LoginRequiredMixin, DetailView):
+    """Basic DetailView implementation to call an individual article."""
+    model = Category
 
 
 class ArticlesListView(LoginRequiredMixin, ListView):

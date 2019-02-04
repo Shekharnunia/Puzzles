@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% load i18n thumbnail static %}
+
+{% block title %}{% trans "Post categories" %}{% endblock %}
+{% block body_class %}{{ block.super }} category_list{% endblock %}
+
+
+{% block content_title %}
+  <h2>{% trans "Post categories" %}</h2>
+{% endblock %}
+
+
+{% block content %}
+    {% for category in categorys %}
+    <div class="col-sm-4">
+		<div class="card mb-4">
+            <div class="card-header text-center">
+              <a class="card-title" href="{{ category.get_absolute_url }}" title="{% trans "View posts in this category" %}">{{ category.title|title }}</a>
+			</div>
+			<div class="card-body mb-0">
+		        {% thumbnail category.thumbnail "1000x600" as im %}
+		          <img src="{{ im.url }}" alt="{% trans 'Thumbnail Image' %}" class="card-img-top">
+		        {% empty %}
+		          <img class="img-fluid rounded" src="{% static 'img/avatar.svg' %}" alt="Card Image">
+		        {% endthumbnail %}
+				<p>{{ category.summary }}</p>
+            </div>
+		</div>
+    </div>
+    {% endfor %}
+{% endblock %}

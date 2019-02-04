@@ -5,8 +5,9 @@ from django.db import models
 from django.db.models import Count
 from django.utils import timezone
 from django.urls import reverse
-from django.utils.text import slugify
 from django.utils.html import mark_safe
+from django.utils.text import slugify
+from django.utils.translation import ugettext_lazy as _
 
 from markdown import markdown
 import readtime
@@ -39,6 +40,26 @@ class ArticleQuerySet(models.query.QuerySet):
         return tag_dict.items()
 
 
+class Category(models.Model):
+    """Category model."""
+    title = models.CharField(_('title'), max_length=100)
+    slug = models.SlugField(_('slug'), unique=True)
+    summary = models.TextField(max_length=600)
+    thumbnail = models.ImageField(
+        ('Category image'), upload_to='category/')
+
+    class Meta:
+        verbose_name = _('category')
+        verbose_name_plural = _('categories')
+        ordering = ('title',)
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('blog:category_detail', kwargs={'slug': self.slug})
+
+
 class Article(models.Model):
     DRAFT = "D"
     PUBLISHED = "P"
@@ -59,6 +80,7 @@ class Article(models.Model):
     edited = models.BooleanField(default=False)
     tags = TaggableManager()
     updated_date = models.DateTimeField(auto_now=True, auto_now_add=False)
+    categories = models.ForeignKey(Category, on_delete=models.CASCADE)
     views = models.PositiveIntegerField(default=0)
 
     objects = ArticleQuerySet.as_manager()
