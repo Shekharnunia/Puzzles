@@ -54,6 +54,7 @@ class CreateArticleView(LoginRequiredMixin, TeacherRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
+        article = self.get_object()
         messages.success(self.request, self.message)
         return reverse('blog:list')
 

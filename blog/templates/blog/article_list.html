@@ -22,13 +22,13 @@
           <!-- Blog Post -->
           <div class="card mb-4">
             <div class="card-header text-center">
-              <h2 class="card-title"><a href="{% url 'blog:article' article.slug %}">{{ article.title|title }}</a></h2>
+              <h2 class="card-title"><a href="{{ article.get_absolute_url }}">{{ article.title|title }}</a></h2>
               <div class="text-muted text-center mt-4 mb-2">
                  <i class="fa fa-calendar ml-3 mr-2"></i>{{ article.timestamp|date:"M d, Y" }}
                 <i class="lead fa fa-user ml-3 mr-1"></i>
                 <a href="{% url 'users:detail' article.user.username %}"> {{ article.user|title }}</a>
                 <i class="fa fa-clock-o ml-3 mr-2"></i>{{ article.get_readtime }}
-                <i class="fas fa-comments ml-3 mr-2"></i><a href="{% url 'blog:article' article.slug %}#comments-link">{{ article.get_comments.count }} {% trans 'comments' %}</a>
+                <i class="fas fa-comments ml-3 mr-2"></i><a href="{{ article.get_absolute_url }}#comments-link">{{ article.get_comments.count }} {% trans 'comments' %}</a>
                 <i class="far fa-eye ml-3 mr-2"></i>{% trans 'views' %}
                 {{ article.views }}
               </div>
@@ -41,7 +41,7 @@
             {% endthumbnail %}
             <div class="card-body">
               <p class="card-text">{{ article.get_summary|safe }}</p>
-              <a href="{% url 'blog:article' article.slug %}" class="btn btn-primary"> {% trans 'Read More' %} &rarr;</a>
+              <a href="{{ article.get_absolute_url }}" class="btn btn-primary"> {% trans 'Read More' %} &rarr;</a>
             </div>
 
             <div class="card-footer text-muted">

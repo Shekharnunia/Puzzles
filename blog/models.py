@@ -1,9 +1,10 @@
 import datetime
 from django.conf import settings
-from django.db import models
-from django.utils import timezone
-from django.db.models import Count
 from django.contrib.auth.models import User
+from django.db import models
+from django.db.models import Count
+from django.utils import timezone
+from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.html import mark_safe
 
@@ -38,7 +39,6 @@ class ArticleQuerySet(models.query.QuerySet):
         return tag_dict.items()
 
 
-
 class Article(models.Model):
     DRAFT = "D"
     PUBLISHED = "P"
@@ -59,11 +59,9 @@ class Article(models.Model):
     edited = models.BooleanField(default=False)
     tags = TaggableManager()
     updated_date = models.DateTimeField(auto_now=True, auto_now_add=False)
-    views = models.PositiveIntegerField(default = 0)
-    
+    views = models.PositiveIntegerField(default=0)
+
     objects = ArticleQuerySet.as_manager()
-
-
 
     class Meta:
         verbose_name = ("Article")
@@ -73,12 +71,16 @@ class Article(models.Model):
     def __str__(self):
         return self.title
 
-    def publish(self):
-        self.published_date = timezone.now()
-        self.save()
+    # def get_absolute_url(self):
+        # return reverse("qa:question_detail", kwargs={"pk": self.pk, "slug": self.slug})
 
-    def __str__(self):
-        return self.title
+    def get_absolute_url(self):
+        return reverse('blog:article', kwargs={
+            'year': self.timestamp.year,
+            'month': self.timestamp.strftime("%m"),
+            'day': self.timestamp.strftime("%d"),
+            'slug': self.slug
+        })
 
     def save(self, *args, **kwargs):
         if not self.slug:
