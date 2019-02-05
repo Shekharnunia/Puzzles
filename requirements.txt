@@ -18,8 +18,10 @@ dj-database-url==0.5.0
 Django==2.1.5
 django-allauth==0.38.0
 django-appconf==1.0.2
+django-contact-form==1.6
 django-crispy-forms==1.7.2
 django-debug-toolbar==1.11
+django-extensions==2.1.5
 django-model-utils==3.1.2
 django-notifications-hq==1.5.0
 django-pagedown==1.0.6
@@ -31,6 +33,7 @@ graphene==2.1.3
 graphene-django==2.2.0
 graphql-core==2.1
 graphql-relay==0.4.5
+graphviz==0.10.1
 hiredis==1.0.0
 hyperlink==18.0.0
 idna==2.7
@@ -47,8 +50,10 @@ Pillow==5.2.0
 promise==2.2.1
 psycopg2==2.7.6.1
 psycopg2-binary==2.7.6.1
+pydot==1.4.1
 PyHamcrest==1.9.0
 PyMySQL==0.9.3
+pyparsing==2.3.1
 pyquery==1.4.0
 python-decouple==3.1
 python3-openid==3.1.0
