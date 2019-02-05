@@ -59,6 +59,9 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('blog:category_detail', kwargs={'slug': self.slug})
 
+    def get_articles(self):
+        return Article.objects.filter(categories=self)
+
 
 class Article(models.Model):
     DRAFT = "D"

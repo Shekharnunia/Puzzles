@@ -29,6 +29,7 @@ class CategoryListView(LoginRequiredMixin, ListView):
 class CategoryDetailView(LoginRequiredMixin, DetailView):
     """Basic DetailView implementation to call an individual article."""
     model = Category
+    context_object_name = "category"
 
 
 class ArticlesListView(LoginRequiredMixin, ListView):
@@ -40,6 +41,7 @@ class ArticlesListView(LoginRequiredMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['popular_tags'] = Article.objects.get_counted_tags()
+        context['categories'] = Category.objects.all()
         return context
 
     def get_queryset(self, **kwargs):
@@ -106,13 +108,15 @@ class DetailArticleView(LoginRequiredMixin, DetailView):
     """Basic DetailView implementation to call an individual article."""
     model = Article
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, *args, **kwargs):
         session_key = 'viewed_article_{}'.format(self.object.pk)
         if not self.request.session.get(session_key, False):
             self.object.views += 1
             self.object.save()
             self.request.session[session_key] = True
-        return super().get_context_data(**kwargs)
+        context = super().get_context_data(*args, **kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 
 class TagArticlesListView(ArticlesListView):

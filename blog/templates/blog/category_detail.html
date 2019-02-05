@@ -3,23 +3,21 @@
 {% load i18n %}
 
 {% block title %}{% trans "Posts for" %} {{ category.title }}{% endblock %}
-{% block body_class %}{{ block.super }} category_detail{% endblock %}
-{% block body_id %}category_{{ category.id }}{% endblock %}
-
-
-{% block content_title %}
-  <h2>{% trans "Posts for" %} {{ category.title }}</h2>
-{% endblock %}
-
 
 {% block content %}
+
+  <h2>{% trans "Posts for" %} {{ category.title }}</h2>
+  <hr>
   <div class="post_list">
-    {% for post in object_list %}
-    <div>
-      <h3 class="title"><a href="{{ post.get_absolute_url }}" title="{% trans "View this post" %}">{{ post.title }}</a></h3>
-      <p class="date">{{ post.publish|date:"Y F d" }}</p>
-      <p class="tease">{{ post.tease|safe }}</p>
+    <div class="mt-4">
+      {% for post in category.get_articles %}
+          <h3 class="title"><a href="{{ post.get_absolute_url }}" title="{% trans "View this post" %}">{{ post.title }}</a></h3>
+          <small class="text-muted">
+            <p class="date">{{ post.timestamp|date:"M d, Y" }} • {{ post.get_readtime }} • {{ post.get_comments.count }} {% trans 'comment' %} • {{ post.views }} {% trans 'views' %}</p>
+          </small>
+      {% empty %}
+        <h2>No Articles in this category</h2>
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
 {% endblock %}

@@ -12,21 +12,27 @@
 
 
 {% block content %}
-    {% for category in categorys %}
-    <div class="col-sm-4">
-		<div class="card mb-4">
-            <div class="card-header text-center">
-              <a class="card-title" href="{{ category.get_absolute_url }}" title="{% trans "View posts in this category" %}">{{ category.title|title }}</a>
-			</div>
-			<div class="card-body mb-0">
-		        {% thumbnail category.thumbnail "1000x600" as im %}
-		          <img src="{{ im.url }}" alt="{% trans 'Thumbnail Image' %}" class="card-img-top">
-		        {% empty %}
-		          <img class="img-fluid rounded" src="{% static 'img/avatar.svg' %}" alt="Card Image">
-		        {% endthumbnail %}
-				<p>{{ category.summary }}</p>
-            </div>
-		</div>
-    </div>
-    {% endfor %}
+    <div class="row">
+		    {% for category in categorys %}
+	    <div class="col-md-6">
+				<div class="card mb-4">
+		            <div class="card-header text-center">
+		              <h3>
+		              	<a class="card-title" href="{{ category.get_absolute_url }}" title="{% trans "View posts in this category" %}">{{ category.title|title }}</a>
+	              	  </h3>
+					</div>
+					<div class="card-body mb-0">
+						<div class="text-center">
+							{% if category.thumbnail %}
+								<img src="{{ category.thumbnail.url }}" alt="{% trans 'Thumbnail Image' %}" class="img-fluid">
+							{% else %}
+					          <img class="img-fluid rounded" src="{% static 'img/avatar.svg' %}" alt="Card Image">
+							{% endif %}
+						</div>
+						<p>{{ category.summary }}</p>
+		            </div>
+				</div>
+	    </div>
+		    {% endfor %}
+	</div>
 {% endblock %}

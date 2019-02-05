@@ -97,15 +97,34 @@
             </div>
           </div>
         {% endif %}
+
+        <!-- Categories -->
+        <div class="card">
+          <h5 class="card-header"><a href="{% url 'blog:category_list' %}">{% trans 'Categories' %}</a></h5>
+          <div class="card-body">
+            <table class="table table-striped">
+              <tbody>
+              {% for category in categories %}
+                <tr>
+                  <td>
+                    <div class="d-flex justify-content-between"><a href="{{ category.get_absolute_url }}">{{ category }}</a>{{ category.article_set.all.count }}</div>
+                  </td>
+                </tr>
+            {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
         <!-- Cloud Tag Widget -->
-        <div class="card my-4">
+        <!-- <div class="card my-4">
           <h5 class="card-header">{% trans 'Cloud tag' %}</h5>
           <div class="card-body">
             {% for tag in article.tags.all %}
               <a href="{% url 'blog:tag' tag %}"><span class="badge badge-info">{{ tag }}</span></a>
             {% endfor %}
           </div>
-        </div>
+        </div>-->
       </div>
       </div>
     </div>
