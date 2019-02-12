@@ -15,7 +15,7 @@ class QuestionForm(forms.ModelForm):
 
 
 class AnswerForm(forms.ModelForm):
-    content = forms.CharField(widget=PagedownWidget())
+    content = forms.CharField(widget=PagedownWidget(), label='Your Answer')
 
     class Meta:
         model = Answer

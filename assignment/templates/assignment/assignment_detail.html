@@ -6,9 +6,6 @@
 	<link rel="stylesheet" href="{% static 'css/simplemde.min.css' %}">
 	<link href="{% static 'css/articles.css' %}" rel="stylesheet">
 	<style>
-		#div_id_honeypot, #div_id_url {
-			display: none;   
-		}
 		.comment-reply{
 			display: none;
 		}		
@@ -50,7 +47,7 @@
 		<hr>
 		
 		<div class="comment-div">
-			<div class
+			<div class="">
 		        <p class='lead'>Comments</p>
 		        <form method="POST" action="." novalidate> {% csrf_token %}
 		            {{ comment_form|crispy }}
