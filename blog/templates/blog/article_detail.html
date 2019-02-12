@@ -39,6 +39,8 @@
 
           <div class="card mb-4">
             <div class="card-header text-center">
+              <h2 class="card-title">{{ article.categories|title }}</h2>
+              <hr>
               <h2 class="card-title">{{ article.title|title }}</h2>
               <div class="text-muted text-center mt-4 mb-2">
                 <i class="fa fa-calendar ml-3 mr-2"></i>{{ article.timestamp|date:"M d, Y" }}
@@ -51,7 +53,7 @@
               </div>
             </div>
         {% thumbnail article.thumbnail "900x300" as im %}
-          <img src="{{ im.url }}" alt="{% trans 'Thumbnail Image' %}" class="card-img-top">
+          <img src="{{ im.url }}" alt="{% trans 'Thumbnail Image' %}" class="card-img-top img-thumbnail">
         {% empty %}
           <img class="img-fluid rounded" src="{% static 'img/avatar.svg' %}" alt="Card Image">
         {% endthumbnail %}

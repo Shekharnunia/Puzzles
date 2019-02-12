@@ -22,6 +22,8 @@
           <!-- Blog Post -->
           <div class="card mb-4">
             <div class="card-header text-center">
+              <h2 class="card-title">{{ article.categories|title }}</h2>
+              <hr>
               <h2 class="card-title"><a href="{{ article.get_absolute_url }}">{{ article.title|title }}</a></h2>
               <div class="text-muted text-center mt-4 mb-2">
                  <i class="fa fa-calendar ml-3 mr-2"></i>{{ article.timestamp|date:"M d, Y" }}
@@ -35,7 +37,7 @@
 
             </div>
             {% thumbnail article.thumbnail "750x300" as im %}
-              <img src="{{ im.url }}" alt="{% trans 'Thumbnail Image' %}" class="card-img-top">
+              <img src="{{ im.url }}" alt="{% trans 'Thumbnail Image' %}" class="card-img-top img-thumbnail">
             {% empty %}
               <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
             {% endthumbnail %}

@@ -1,18 +1,8 @@
-aioredis==1.2.0
 aniso8601==3.0.2
-asgiref==2.3.2
-async-timeout==3.0.1
-attrs==18.2.0
-autobahn==19.1.1
-Automat==0.7.0
 beautifulsoup4==4.7.1
 certifi==2018.11.29
-channels==2.1.6
-channels-redis==2.3.3
 chardet==3.0.4
-constantly==15.1.0
 cssselect==1.0.3
-daphne==2.2.4
 defusedxml==0.5.0
 dj-database-url==0.5.0
 Django==2.1.5
@@ -23,9 +13,7 @@ django-crispy-forms==1.7.2
 django-debug-toolbar==1.11
 django-extensions==2.1.5
 django-model-utils==3.1.2
-django-notifications-hq==1.5.0
 django-pagedown==1.0.6
-django-redis==4.10.0
 django-taggit==0.23.0
 -e git://github.com/Shekharnunia/django-tellme.git@ced4aaed92f8d2fb6dbb898b957d804fa9a5161e#egg=django_tellme
 django-widget-tweaks==1.4.2
@@ -34,16 +22,12 @@ graphene-django==2.2.0
 graphql-core==2.1
 graphql-relay==0.4.5
 graphviz==0.10.1
-hiredis==1.0.0
-hyperlink==18.0.0
 idna==2.7
-incremental==17.5.0
 jsonfield==2.0.2
 lxml==4.3.0
 Markdown==3.0.1
 markdown2==2.3.7
 mock==2.0.0
-msgpack==0.6.1
 oauthlib==2.1.0
 pbr==5.1.1
 Pillow==5.2.0
@@ -51,7 +35,6 @@ promise==2.2.1
 psycopg2==2.7.6.1
 psycopg2-binary==2.7.6.1
 pydot==1.4.1
-PyHamcrest==1.9.0
 PyMySQL==0.9.3
 pyparsing==2.3.1
 pyquery==1.4.0
@@ -59,7 +42,6 @@ python-decouple==3.1
 python3-openid==3.1.0
 pytz==2018.5
 readtime==1.0.6
-redis==3.0.1
 requests==2.21.0
 requests-oauthlib==1.1.0
 Rx==1.6.1
@@ -68,8 +50,5 @@ six==1.12.0
 sorl-thumbnail==12.5.0
 soupsieve==1.6.2
 sqlparse==0.2.4
-Twisted==18.9.0
-txaio==18.8.1
 Unidecode==0.4.21
 urllib3==1.24.1
-zope.interface==4.6.0
