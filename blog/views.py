@@ -10,8 +10,10 @@ from django.views.generic import (
     ListView,
     UpdateView,
     DetailView,
-    DeleteView
+    DeleteView,
+    RedirectView
 )
+from django.shortcuts import get_object_or_404, redirect
 
 from decorators import ajax_required
 from helpers import AuthorRequiredMixin, TeacherRequiredMixin
@@ -152,3 +154,17 @@ def comment(request):
 
     except Exception:   # pragma: no cover
         return HttpResponseBadRequest()
+
+
+class PostLikeToggle(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        pk = self.kwargs.get("pk")
+        obj = get_object_or_404(Article, pk=pk)
+        url_ = obj.get_absolute_url()
+        user = self.request.user
+        if user.is_authenticated:
+            if user in obj.likes.all():
+                obj.likes.remove(user)
+            else:
+                obj.likes.add(user)
+        return url_

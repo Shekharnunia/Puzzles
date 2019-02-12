@@ -22,7 +22,6 @@
       <div class="col-md-3">
         <div class="list-group" id="list-tab" role="tablist">
           <a class="list-group-item list-group-item-action active" id="list-articles-list" data-toggle="list" href="#list-articles" role="tab" aria-controls="articles">{% trans 'Articles' %}<span class="badge badge-primary pull-right">{{ articles_count }}</span></a>
-          <a class="list-group-item list-group-item-action" id="list-news-list" data-toggle="list" href="#list-news" role="tab" aria-controls="news">{% trans 'News' %}<span class="badge badge-primary pull-right">{{ news_count }}</span></a>
           <a class="list-group-item list-group-item-action" id="list-questions-list" data-toggle="list" href="#list-questions" role="tab" aria-controls="questions">{% trans 'Questions' %}<span class="badge badge-primary pull-right">{{ questions_count }}</span></a>
           <a class="list-group-item list-group-item-action" id="list-users-list" data-toggle="list" href="#list-users" role="tab" aria-controls="users">{% trans 'Users' %}<span class="badge badge-primary pull-right">{{ users_count }}</span></a>
           <a class="list-group-item list-group-item-action" id="list-tags-list" data-toggle="list" href="#list-tags" role="tab" aria-controls="tags">{% trans 'Tags' %}<span class="badge badge-primary pull-right">{{ tags_count }}</span></a>
@@ -43,13 +42,6 @@
                   <p class="card-text">{{ article.get_message_as_markdown|truncatechars:250 }}</p>
                 </div>
               </div>
-            {% empty %}
-              <h4 class="no-data">{% trans 'There are no results related to your search' %}.</h4>
-            {% endfor %}
-          </div>
-          <div class="tab-pane fade" id="list-news" role="tabpanel" aria-labelledby="list-news-list">
-            {% for news in news_list %}
-              {% include 'news/news_single.html' with news=news %}
             {% empty %}
               <h4 class="no-data">{% trans 'There are no results related to your search' %}.</h4>
             {% endfor %}

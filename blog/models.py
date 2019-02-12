@@ -1,6 +1,5 @@
 import datetime
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Count
 from django.utils import timezone
@@ -85,6 +84,7 @@ class Article(models.Model):
     updated_date = models.DateTimeField(auto_now=True, auto_now_add=False)
     categories = models.ForeignKey(Category, on_delete=models.CASCADE)
     views = models.PositiveIntegerField(default=0)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='likes')
 
     objects = ArticleQuerySet.as_manager()
 
@@ -95,9 +95,6 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
-
-    # def get_absolute_url(self):
-        # return reverse("qa:question_detail", kwargs={"pk": self.pk, "slug": self.slug})
 
     def get_absolute_url(self):
         return reverse('blog:article', kwargs={
@@ -131,6 +128,9 @@ class Article(models.Model):
 
     def get_readtime(self):
         return readtime.of_html(self.content)
+
+    def get_like_url(self):
+        return reverse("blog:like-toggle", kwargs={"pk": self.pk})
 
 
 class ArticleComment(models.Model):
