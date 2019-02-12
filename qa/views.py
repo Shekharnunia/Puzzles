@@ -6,7 +6,9 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404, render
+from django.template.loader import get_template
+from django.core.mail import send_mail, send_mass_mail
 
 from helpers import ajax_required
 from qa.models import Question, Answer
@@ -177,6 +179,43 @@ class CreateAnswerView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         form.instance.question_id = self.kwargs["question_id"]
+
+        question = get_object_or_404(Question, pk=form.instance.question_id)
+        subject = '[Puzzles.com] {}'.format(question.title)
+        email_from = 'settings.EMAIL_HOST_USER'
+        recipient_list = [question.user.email, ]
+        message = "heloo"
+
+        context = {
+            'question_user': question.user,
+            'answer_user': self.request.user,
+            'url': question.get_absolute_url,
+            'title': question.title,
+            'content': question.content,
+        }
+        context_message = get_template('email/answer_mail.txt').render(context)
+
+        send_mail(subject, context_message, email_from, recipient_list, fail_silently=True)
+
+        subject = '[Puzzles.com] {}'.format(question.title)
+        email_from = 'settings.EMAIL_HOST_USER'
+
+        a = set()
+        for x in question.answer_set.all():
+            a.add(x.user.email)
+
+        recipient_list = []
+        for i in a:
+            recipient_list.append(i)
+        message = "heloo"
+        context = {
+            'url': question.get_absolute_url,
+            'title': question.title,
+            'content': question.content,
+        }
+
+        context_message = get_template('email/answer_uploader_mail.txt').render(context)
+        send_mail(subject, context_message, email_from, recipient_list, fail_silently=True)
         return super().form_valid(form)
 
     def get_success_url(self):

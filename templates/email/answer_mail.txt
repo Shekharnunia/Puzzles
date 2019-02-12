@@ -1,7 +1,13 @@
 Hello {{ question_user }},
 
 {{ answer_user }} just post a answer for your question.
-Hopefully you got your Answer
+
+Title:{{ title }}
+
+Content:{{ content }}
+
+Hopefully you got your Answer.
+To directly jump onto your question visit http://127.0.0.1:8000{{ url }}
 
 Thanks and Regards,
 PUZZLES
