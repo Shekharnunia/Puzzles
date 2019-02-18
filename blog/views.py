@@ -116,6 +116,7 @@ class DetailArticleView(LoginRequiredMixin, DetailView):
             self.request.session[session_key] = True
         context = super().get_context_data(*args, **kwargs)
         context['categories'] = Category.objects.all()
+        context['is_liked'] = self.object.likes.filter(id=self.request.user.id).exists()
         return context
 
 
