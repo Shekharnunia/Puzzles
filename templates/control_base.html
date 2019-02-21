@@ -66,13 +66,14 @@
         </ul>
       </div>
     </nav>
-    <div class="col-md-9 ml-sm-auto col-lg-10 px-4">
-      {% include "includes/messages.html" %}
-      <h1 class="text-center logo my-4">
-        <a href="#">Puzzles</a>
-      </h1>
-      {% block content %}
-      {% endblock %}
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+
+        {% include "includes/messages.html" %}
+
+        {% block content %}
+        {% endblock %}
+      </div>
+    </main>
     </div>
-  </div>  
 {% endblock %}
