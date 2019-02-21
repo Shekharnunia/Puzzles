@@ -1,53 +1,20 @@
+{% extends "qa_base.html" %}
+
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville">
+{% block head %}
+  <link href="https://fonts.googleapis.com/css?family=Peralta" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/register.css' %}">
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
 
-	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-	<link rel="stylesheet" href="{% static 'css/style.css' %}">
-	<link rel="icon" href="{% static 'img/favicon.png' %}">
-        <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
-    <!-- Custom styles for this template -->
-
-  </head>
-  <body>
-    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'blog:list' %}">Puzzles</a>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-  <ul class="navbar-nav px-3">
-    <li class="nav-item text-nowrap">
-      <a class="nav-link" href="{% url 'account_logout' %}">Sign out</a>
-    </li>
-  </ul>
-</nav>
-
-<div class="container-fluid">
-  <div class="row">
-    {% if request.user.is_staff %}
-      
-    
+{% block body %}
+  <div class="container">
     <nav class="col-md-2 d-none d-md-block bg-light sidebar">
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="{% url 'control_panel:control_newsletter_list' %}">
+            <a class="nav-link" href="{% url 'control_panel:control_newsletter_list' %}">
               Newsletter
             </a>
           </li>
@@ -58,12 +25,12 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'control_panel:control_newsletter_list' %}">
-              <i class="fas fa-clipboard-list-check"></i>Newsletter List
+              Newsletter List
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'Newsletter:newsletter_subscriber_list' %}">
-              <i class="fas fa-clipboard-list-check"></i>Newsletter Subscriber List
+              Newsletter Subscriber List
             </a>
           </li>
           <li class="nav-item">
@@ -77,41 +44,35 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url "qa:index_noans" %}">
+            <a class="nav-link" href="{% url 'qa:index_noans' %}">
               Q&A
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url "blog:list" %}">
+            <a class="nav-link" href="{% url 'blog:list' %}">
               Blog
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url "polls:list" %}">
+            <a class="nav-link" href="{% url 'polls:list' %}">
               Polls
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url "admin:index" %}">
+            <a class="nav-link" href="{% url 'admin:index' %}">
               Admin
             </a>
           </li>
         </ul>
       </div>
     </nav>
-    {% endif %}
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-	{% block content %}
-	{% endblock %}
-
-      </div>
-    </main>
-  </div>
-</div>
-<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-<script src="{% static 'js/popper.min.js' %}"></script>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
-</body>
-</html>
-
+    <div class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      {% include "includes/messages.html" %}
+      <h1 class="text-center logo my-4">
+        <a href="#">Puzzles</a>
+      </h1>
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>  
+{% endblock %}

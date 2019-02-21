@@ -1,11 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.contrib.auth.models import User
 
-from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -16,7 +12,7 @@ from django.template.loader import get_template
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 
-from django.views.generic import UpdateView, ListView, CreateView, DeleteView
+from django.views.generic import UpdateView, ListView, DeleteView
 
 from .models import NewsLetterUser, NewsLetter
 from .forms import NewsLetterUserSignupForm, NewsLetterCreationForm
@@ -68,7 +64,7 @@ def newsletter_unsubscribe(request):
             Thanks for Joining
             To unsubscribe click the this link http://127.0.0.1:8000/newsletter/unsubscribe/'''
 
-            message = EmailMultiAlternatives(subject=subject, body=signup_message, from_email=from_email, to=to_email, fail_silently=True)
+            message = EmailMultiAlternatives(subject=subject, body=signup_message, from_email=from_email, to=to_email)
             html_template = get_template("newsletter/unsubscribe_email.html").render()
             message.attach_alternative(html_template, "text/html")
             message.send()
