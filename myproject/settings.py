@@ -69,28 +69,16 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'tellme',
-    # 'allauth.socialaccount.providers.google',
-    # 'allauth.socialaccount.providers.github',
-    # 'graphene_django',
-    # 'channels',
 
     'pagedown',
     'contact_form',
     'django_extensions',
+    'storages',
 ]
-
-GRAPH_MODELS = {
-    'all_applications': True,
-    'group_models': True,
-}
 
 TELLME_FEEDBACK_EMAIL = 'shekharnunia@gmail.com'
 
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
-
-GRAPHENE = {
-    'SCHEMA': 'users.schema.schema'  # Where your Graphene schema lives
-}
 
 TAGGIT_CASE_INSENSITIVE = True
 
@@ -128,7 +116,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
 
                 'django.template.context_processors.media',
-                # 'postman.context_processors.inbox',
             ],
         },
     },
@@ -256,16 +243,3 @@ DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
 MANAGERS = [('Shekhar', 'shekharnunia@gmail.com'), ('Shekhar', 'shekharnunia1992@gmail.com')]
 ADMINS = ('Shekhar', 'shekharnunia@gmail.com')
 EMAIL_SUBJECT_PREFIX = '[Puzzles]'
-# ASGI_APPLICATION = 'myproject.routing.application'
-
-
-# REDIS_URL = f'{config("REDIS_URL", default="redis://127.0.0.1:6379")}/{0}'
-
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-#         'CONFIG': {
-#             'hosts': [REDIS_URL, ],
-#         },
-#     }
-# }
