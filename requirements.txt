@@ -1,5 +1,4 @@
 aniso8601==3.0.2
-beautifulsoup4==4.7.1
 certifi==2018.11.29
 chardet==3.0.4
 cssselect==1.0.3
@@ -17,11 +16,6 @@ django-pagedown==1.0.6
 django-taggit==0.23.0
 -e git://github.com/Shekharnunia/django-tellme.git@ced4aaed92f8d2fb6dbb898b957d804fa9a5161e#egg=django_tellme
 django-widget-tweaks==1.4.2
-graphene==2.1.3
-graphene-django==2.2.0
-graphql-core==2.1
-graphql-relay==0.4.5
-graphviz==0.10.1
 idna==2.7
 jsonfield==2.0.2
 lxml==4.3.0
