@@ -1,4 +1,6 @@
 aniso8601==3.0.2
+boto3==1.9.102
+botocore==1.12.102
 certifi==2018.11.29
 chardet==3.0.4
 cssselect==1.0.3
@@ -13,10 +15,13 @@ django-debug-toolbar==1.11
 django-extensions==2.1.5
 django-model-utils==3.1.2
 django-pagedown==1.0.6
+django-storages==1.7.1
 django-taggit==0.23.0
 -e git://github.com/Shekharnunia/django-tellme.git@ced4aaed92f8d2fb6dbb898b957d804fa9a5161e#egg=django_tellme
 django-widget-tweaks==1.4.2
+docutils==0.14
 idna==2.7
+jmespath==0.9.4
 jsonfield==2.0.2
 lxml==4.3.0
 Markdown==3.0.1
@@ -32,6 +37,7 @@ pydot==1.4.1
 PyMySQL==0.9.3
 pyparsing==2.3.1
 pyquery==1.4.0
+python-dateutil==2.8.0
 python-decouple==3.1
 python3-openid==3.1.0
 pytz==2018.5
@@ -39,6 +45,7 @@ readtime==1.0.6
 requests==2.21.0
 requests-oauthlib==1.1.0
 Rx==1.6.1
+s3transfer==0.2.0
 singledispatch==3.4.0.3
 six==1.12.0
 sorl-thumbnail==12.5.0
