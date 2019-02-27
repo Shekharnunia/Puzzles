@@ -65,7 +65,7 @@
   </div>
   {% if request.user.username == object.username %}
     <!-- Data tiles -->
-    <div class="row tile_count">
+    <!-- <div class="row tile_count">
       <div class="col-md-2 col-sm-3 col-xs-4 tile_stats_count">
         <span class="count_top"><i class="fas fa-tasks"></i> {% trans 'Assignments Uploaded' %}</span>
         <div class="count">{{ object.get_assignment_count }}</div>
@@ -90,7 +90,7 @@
         <span class="count_top"><i class="fab fa-free-code-camp"></i> {% trans 'Global Interactions' %}</span>
         <div class="count">0</div>
       </div>
-    </div>
+    </div> -->
     <!-- /data tiles -->
   {% endif %}
 {% endblock content %}
