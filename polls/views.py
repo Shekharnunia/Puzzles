@@ -37,7 +37,7 @@ def polls_list(request):
         search_term = request.GET['search']
         polls = polls.filter(text__icontains=search_term)
 
-    paginator = Paginator(polls, 1)
+    paginator = Paginator(polls, 10)
 
     page = request.GET.get('page')
     polls = paginator.get_page(page)
