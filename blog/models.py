@@ -24,6 +24,14 @@ class ArticleQuerySet(models.query.QuerySet):
         """Returns only the items marked as DRAFT in the current queryset."""
         return self.filter(status="D")
 
+    def get_5_popular_post(self):
+        """Returns only the popular items as in the current queryset."""
+        return self.order_by('-views')[:5]
+
+    def get_popular_post(self):
+        """Returns only the popular items as in the current queryset."""
+        return self.order_by('-views')
+
     def get_counted_tags(self):
         tag_dict = {}
         query = self.filter(status='P').annotate(

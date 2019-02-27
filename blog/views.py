@@ -38,6 +38,7 @@ class ArticlesListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(*args, **kwargs)
         context['popular_tags'] = Article.objects.get_counted_tags()
         context['categories'] = Category.objects.all()
+        context['popular'] = Article.objects.get_5_popular_post()
         return context
 
     def get_queryset(self, **kwargs):
@@ -50,6 +51,14 @@ class DraftsListView(ArticlesListView):
 
     def get_queryset(self, **kwargs):
         return Article.objects.get_drafts()
+
+
+class PopularListView(ArticlesListView):
+    """Overriding the original implementation to call the popular articles
+    list."""
+
+    def get_queryset(self, **kwargs):
+        return Article.objects.get_popular_post()
 
 
 class CreateArticleView(LoginRequiredMixin, TeacherRequiredMixin, CreateView):
@@ -112,6 +121,7 @@ class DetailArticleView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(*args, **kwargs)
         context['categories'] = Category.objects.all()
         context['is_liked'] = self.object.likes.filter(id=self.request.user.id).exists()
+        context['popular'] = Article.objects.get_popular_post()
         return context
 
 

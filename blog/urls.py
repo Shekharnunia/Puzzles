@@ -26,6 +26,10 @@ urlpatterns = [
         views.DraftsListView.as_view(),
         name='drafts'),
 
+    url(r'^popular/$',
+        views.PopularListView.as_view(),
+        name='popular'),
+
     url(r'^comment/$',
         views.comment,
         name='comment'),

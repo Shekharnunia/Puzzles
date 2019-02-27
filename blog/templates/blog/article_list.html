@@ -92,6 +92,26 @@
             </table>
           </div>
         </div>
+        <br>
+
+        <!-- Popular posts -->
+        <div class="card">
+          <h5 class="card-header"><a href="{% url 'blog:popular' %}">{% trans 'Popular Posts' %}</a></h5>
+          <div class="card-body">
+              {% for pop in popular %}
+                {% if pop.thumbnail %}
+                  <a href="{{ pop.get_absolute_url }}"><img src="{{ pop.thumbnail.url }}" alt="{% trans 'Thumbnail Image' %}" class="card-img-top mb-2"></a>
+                {% else %}
+                  <a href="{{ pop.get_absolute_url }}"><img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap"></a>
+                {% endif %}
+                <div class="d-flex justify-content-between"><a href="{{ pop.get_absolute_url }}">{{ pop }}</a></div>
+                {% if not forloop.last %}
+                  <hr>
+                {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
         <!-- Cloud Tag Widget -->
         <div class="card my-4">
           <h5 class="card-header">{% trans 'Cloud tag' %}</h5>
