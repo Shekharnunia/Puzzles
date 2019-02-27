@@ -4,11 +4,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import JsonResponse
 from django.views.generic import ListView
-
 from taggit.models import Tag
 
-from blog.models import Article
 from assignment.models import Assignment
+from blog.models import Article
 from helpers import ajax_required
 from qa.models import Question
 

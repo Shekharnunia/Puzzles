@@ -1,8 +1,8 @@
 from django.conf.urls import url
+
 from main import views
 
 from .models import Question
-
 
 app_name = 'main'
 urlpatterns = [	   

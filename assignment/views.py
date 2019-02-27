@@ -2,20 +2,16 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import reverse, get_object_or_404, render, redirect
-from django.views.generic import (
-    ListView,
-    DeleteView,
-    UpdateView,
-    DetailView,
-    CreateView,
-)
+from django.shortcuts import get_object_or_404, redirect, render, reverse
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
 
-from helpers import AuthorRequiredMixin, TeacherRequiredMixin
-from .models import Assignment, StudentAssignment
-from .forms import AssignmentForm, StudentAssignmentForm
 from comments.forms import CommentForm
 from comments.models import Comment
+from helpers import AuthorRequiredMixin, TeacherRequiredMixin
+
+from .forms import AssignmentForm, StudentAssignmentForm
+from .models import Assignment, StudentAssignment
 
 
 class AllAssignmentListView(LoginRequiredMixin, ListView):

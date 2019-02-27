@@ -1,21 +1,16 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
-
-from django.core.mail import send_mail, EmailMultiAlternatives
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-from django.shortcuts import render, redirect, get_object_or_404
-
+from django.core.mail import EmailMultiAlternatives, send_mail
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
-
 from django.utils import timezone
 from django.utils.decorators import method_decorator
+from django.views.generic import DeleteView, ListView, UpdateView
 
-from django.views.generic import UpdateView, ListView, DeleteView
-
-from .models import NewsLetterUser, NewsLetter
-from .forms import NewsLetterUserSignupForm, NewsLetterCreationForm
+from .forms import NewsLetterCreationForm, NewsLetterUserSignupForm
+from .models import NewsLetter, NewsLetterUser
 
 
 def newsletter_signup(request):

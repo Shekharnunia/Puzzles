@@ -1,28 +1,20 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import UserPassesTestMixin
-
-from django.conf import settings
-
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin
-
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail, send_mass_mail
-
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
-
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
-from django.shortcuts import render, redirect, get_object_or_404
-
-from django.utils.decorators import method_decorator
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
 
-from django.views.generic import UpdateView, CreateView, DeleteView, ListView, DetailView
-
-
-from main.models import Question, Answer, ContactUs
-from main.forms import QuestionForm, AnswerForm
+from main.forms import AnswerForm, QuestionForm
+from main.models import Answer, ContactUs, Question
 
 # This is the format of sending email
 

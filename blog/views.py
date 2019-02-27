@@ -2,23 +2,18 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseBadRequest
+from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import (
-    CreateView,
-    ListView,
-    UpdateView,
-    DetailView,
-    DeleteView,
-    RedirectView
-)
-from django.shortcuts import get_object_or_404, redirect
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  RedirectView, UpdateView)
 
 from decorators import ajax_required
 from helpers import AuthorRequiredMixin, TeacherRequiredMixin
+
+from .forms import ArticleCommentForm, ArticleForm
 from .models import Article, ArticleComment, Category
-from .forms import ArticleForm, ArticleCommentForm
 
 
 class CategoryListView(LoginRequiredMixin, ListView):

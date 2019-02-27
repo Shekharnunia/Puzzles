@@ -1,18 +1,19 @@
-from django.db.utils import IntegrityError
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib import messages
+from django.core.mail import send_mail, send_mass_mail
+from django.db.utils import IntegrityError
 from django.http import HttpResponseBadRequest, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import get_template
 from django.urls import reverse
 from django.utils.translation import ugettext as _
-from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, RedirectView
-from django.shortcuts import redirect, get_object_or_404, render
-from django.template.loader import get_template
-from django.core.mail import send_mail, send_mass_mail
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  RedirectView, UpdateView)
 
 from helpers import ajax_required
-from qa.models import Question, Answer
-from qa.forms import QuestionForm, AnswerForm
+from qa.forms import AnswerForm, QuestionForm
+from qa.models import Answer, Question
 
 
 # Done
