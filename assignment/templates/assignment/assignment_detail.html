@@ -3,7 +3,6 @@
 {% load i18n crispy_forms_tags humanize thumbnail static %}
 
 {% block head %}
-	<link rel="stylesheet" href="{% static 'css/simplemde.min.css' %}">
 	<link href="{% static 'css/articles.css' %}" rel="stylesheet">
 	<style>
 		.comment-reply{
@@ -123,10 +122,3 @@
 	{% endif %}
 </div>
 {% endblock content %}
-
-{% block modal %}
-	<script src="{% static 'js/simplemde.min.js' %}"></script>
-	<script>
-	var simplemde = new SimpleMDE({ element: document.getElementById("id_feedback") });
-	</script> 
-{% endblock modal %}

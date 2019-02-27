@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.urls import reverse
 from django.utils.translation import ugettext as _
-from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, RedirectView
 from django.shortcuts import redirect, get_object_or_404, render
 from django.template.loader import get_template
 from django.core.mail import send_mail, send_mass_mail
@@ -264,6 +264,17 @@ class DeleteAnswerView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == answer.user:
             return True
         return False
+
+
+def q_flag(request, pk):
+    question = get_object_or_404(Question, pk=pk)
+    print('1')
+    if request.user in question.flag.all():
+        message.warning(request, 'You already flag this question')
+        return redirect(question.get_absolute_url())
+    question.flag.add(request.user)
+    message.success(request, 'You request for flag has been considered question')
+    return redirect(question.get_absolute_url())
 
 
 @login_required

@@ -1,10 +1,6 @@
 {% extends "qa_base.html" %}
 {% load static crispy_forms_tags %}
 
-{% block head %}
-  <link rel="stylesheet" href="{% static 'css/simplemde.min.css' %}">
-{% endblock head %}
-
 {% block content %}
 
 <div>
@@ -26,10 +22,3 @@
 	</form>
 </div>
 {% endblock content %}
-
-{% block modal %}
-  <script src="{% static 'js/simplemde.min.js' %}"></script>
-  <script>
-    var simplemde = new SimpleMDE({ element: document.getElementById("id_description") });
-  </script>
-{% endblock modal %}

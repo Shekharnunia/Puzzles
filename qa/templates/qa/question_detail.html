@@ -68,7 +68,7 @@
       {% if request.user.is_teacher == True %}
       <a href="{% url 'qa:question_close' pk=question.pk slug=question.slug %}"><small class="text-muted">close</small></a>
       {% endif %}
-      <a href="#"><small class="text-muted">flag</small></a>
+      <a href="{% url 'qa:flag_question' question.pk %}"><small class="text-muted">flag</small></a>
     </p>
   </div>
   <div class="col-md-3" style="font-size: 15px; font-width: 15px;">
