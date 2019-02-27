@@ -217,15 +217,26 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
+ACCOUNT_USERNAME_BLACKLIST = ['admin', 'settings', 'news', 'about', 'help',
+                              'signin', 'signup', 'signout', 'terms', 'privacy',
+                              'cookie', 'new', 'login', 'logout', 'administrator',
+                              'join', 'account', 'username', 'root', 'blog',
+                              'user', 'users', 'billing', 'subscribe', 'reviews',
+                              'review', 'blog', 'blogs', 'edit', 'mail', 'email',
+                              'home', 'job', 'jobs', 'contribute', 'newsletter',
+                              'shop', 'profile', 'register', 'auth',
+                              'authentication', 'campaign', 'config', 'delete',
+                              'remove', 'forum', 'forums', 'download',
+                              'downloads', 'contact', 'blogs', 'feed', 'feeds',
+                              'faq', 'intranet', 'log', 'registration', 'search',
+                              'explore', 'rss', 'support', 'status', 'static',
+                              'media', 'setting', 'css', 'js', 'follow',
+                              'activity', 'questions', 'articles', 'network', ]
 
 
 LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'qa:index_noans'
 LOGOUT_REDIRECT_URL = 'account_login'
-
-
-# EMAIL_HOST = 'localhost'
-# EMAIL_PORT = 1025
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
