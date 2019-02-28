@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
@@ -14,6 +15,8 @@ from helpers import AuthorRequiredMixin, TeacherRequiredMixin
 
 from .forms import ArticleCommentForm, ArticleForm
 from .models import Article, ArticleComment, Category
+
+from taggit.models import Tag
 
 
 class CategoryListView(LoginRequiredMixin, ListView):
@@ -59,6 +62,30 @@ class PopularListView(ArticlesListView):
 
     def get_queryset(self, **kwargs):
         return Article.objects.get_popular_post()
+
+
+class SearchListView(LoginRequiredMixin, ListView):
+    """CBV to contain all the search results"""
+    model = Article
+    # template_name = "blog/search_results.html"
+    context_object_name = "articles"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        if self.request.GET.get("query"):
+
+            query = self.request.GET.get("query")
+            context['search'] = True
+
+            context["articles"] = Article.objects.filter(Q(
+                title__icontains=query) | Q(content__icontains=query) | Q(
+                tags__name__icontains=query) | Q(
+                user__username__icontains=query) | Q(
+                categories__title__icontains=query), status="P").distinct()
+
+            context["articles_count"] = context["articles"].count()
+            return context
+        return context
 
 
 class CreateArticleView(LoginRequiredMixin, TeacherRequiredMixin, CreateView):

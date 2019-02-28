@@ -12,9 +12,24 @@
     <li class="breadcrumb-item active"><a href="{% url 'blog:list' %}">{% trans 'Articles' %}</a></li>
 	</ol>
 </div>
-
   <!-- Page Content -->
+
   <div class="container">
+
+    
+      <form class="form-inline navbar-left" role="search" action="{% url 'blog:results' %}">
+        <div class="input-group">
+          <input name="query" type="search" value="{{ request.GET.query }}" id="searchInput" class="form-control" placeholder="{% trans 'Search' %}" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-info my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"> Search</i></button>
+          </div>
+        </div>
+      </form>      
+    <br>
+    
+    {% if articles_count %}
+      <p class="font-weight-bold">Total no. of articles found : {{ articles_count }}</p>
+    {% endif %}
     <div class="row">
       <!-- Blog Entries Column -->
       <div class="col-md-8">
@@ -65,63 +80,66 @@
       </div>
 
       <!-- Sidebar Widgets Column -->
-      <div class="col-md-4">  
-        <!-- Write Article Widget -->
-        {% if request.user.is_teacher %}
-          <div class="card my-4">
-            <div class="card-body text-center">
-              <a class="btn btn-success" href="{% url 'blog:write_new' %}" title="{% trans 'Write a new article' %}"><i class="fa fa-pencil" aria-hidden="true"></i> {% trans 'New Article' %}</a>
-              <a class="btn btn-primary" href="{% url 'blog:drafts' %}" title="{% trans 'Drafts' %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> {% trans 'Drafts' %}</a>
+      {% if not search %}
+        <div class="col-md-4">  
+          <!-- Write Article Widget -->
+          {% if request.user.is_teacher %}
+            <div class="card my-4">
+              <div class="card-body text-center">
+                <a class="btn btn-success" href="{% url 'blog:write_new' %}" title="{% trans 'Write a new article' %}"><i class="fa fa-pencil" aria-hidden="true"></i> {% trans 'New Article' %}</a>
+                <a class="btn btn-primary" href="{% url 'blog:drafts' %}" title="{% trans 'Drafts' %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> {% trans 'Drafts' %}</a>
+              </div>
+            </div>
+          {% endif %}
+
+          <!-- Categories -->
+          <div class="card">
+            <h5 class="card-header"><a href="{% url 'blog:category_list' %}">{% trans 'Categories' %}</a></h5>
+            <div class="card-body">
+              <table class="table table-striped">
+                <tbody>
+                {% for category in categories %}
+                  <tr>
+                    <td>
+                      <div class="d-flex justify-content-between"><a href="{{ category.get_absolute_url }}">{{ category }}</a>{{ category.article_set.all.count }}</div>
+                    </td>
+                  </tr>
+              {% endfor %}
+                </tbody>
+              </table>
             </div>
           </div>
-        {% endif %}
-        <!-- Categories -->
-        <div class="card">
-          <h5 class="card-header"><a href="{% url 'blog:category_list' %}">{% trans 'Categories' %}</a></h5>
-          <div class="card-body">
-            <table class="table table-striped">
-              <tbody>
-              {% for category in categories %}
-                <tr>
-                  <td>
-                    <div class="d-flex justify-content-between"><a href="{{ category.get_absolute_url }}">{{ category }}</a>{{ category.article_set.all.count }}</div>
-                  </td>
-                </tr>
-            {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <br>
+          <br>
 
-        <!-- Popular posts -->
-        <div class="card">
-          <h5 class="card-header"><a href="{% url 'blog:popular' %}">{% trans 'Popular Posts' %}</a></h5>
-          <div class="card-body">
-              {% for pop in popular %}
-                {% if pop.thumbnail %}
-                  <a href="{{ pop.get_absolute_url }}"><img src="{{ pop.thumbnail.url }}" alt="{% trans 'Thumbnail Image' %}" class="card-img-top mb-2"></a>
-                {% else %}
-                  <a href="{{ pop.get_absolute_url }}"><img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap"></a>
-                {% endif %}
-                <div class="d-flex justify-content-between"><a href="{{ pop.get_absolute_url }}">{{ pop }}</a></div>
-                {% if not forloop.last %}
-                  <hr>
-                {% endif %}
-            {% endfor %}
+          <!-- Popular posts -->
+          <div class="card">
+            <h5 class="card-header"><a href="{% url 'blog:popular' %}">{% trans 'Popular Posts' %}</a></h5>
+            <div class="card-body">
+                {% for pop in popular %}
+                  {% if pop.thumbnail %}
+                    <a href="{{ pop.get_absolute_url }}"><img src="{{ pop.thumbnail.url }}" alt="{% trans 'Thumbnail Image' %}" class="card-img-top mb-2"></a>
+                  {% else %}
+                    <a href="{{ pop.get_absolute_url }}"><img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap"></a>
+                  {% endif %}
+                  <div class="d-flex justify-content-between"><a href="{{ pop.get_absolute_url }}">{{ pop }}</a></div>
+                  {% if not forloop.last %}
+                    <hr>
+                  {% endif %}
+              {% endfor %}
+            </div>
           </div>
-        </div>
 
-        <!-- Cloud Tag Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">{% trans 'Cloud tag' %}</h5>
-          <div class="card-body">
-            {% for tag, count in popular_tags %}
-              <a href="{% url 'blog:tag' tag %}"><span class="badge badge-info">{{ count }} {{ tag }}</span></a>
-            {% endfor %}
+          <!-- Cloud Tag Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">{% trans 'Cloud tag' %}</h5>
+            <div class="card-body">
+              {% for tag, count in popular_tags %}
+                <a href="{% url 'blog:tag' tag %}"><span class="badge badge-info">{{ count }} {{ tag }}</span></a>
+              {% endfor %}
+            </div>
           </div>
         </div>
-      </div>
+      {% endif %}
     </div>
     <!-- /.row -->
   </div>

@@ -9,6 +9,9 @@ urlpatterns = [
         name='category_detail'
         ),
 
+    url(r'^search/$', views.SearchListView.as_view(), name='results'),
+
+
     url(r'^categories/$',
         views.CategoryListView.as_view(),
         name='category_list'
