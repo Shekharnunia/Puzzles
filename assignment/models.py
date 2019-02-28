@@ -130,7 +130,7 @@ class StudentAssignment(models.Model):
         on_delete=models.CASCADE
     )
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
-    feedback = models.TextField()
+    feedback = models.TextField(null=True, blank=True)
     assignment_file = models.FileField(
         upload_to=student_assignment_upload_path,
         blank=False

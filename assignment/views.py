@@ -15,6 +15,9 @@ from .models import Assignment, StudentAssignment
 
 
 class AllAssignmentListView(LoginRequiredMixin, ListView):
+    """ View to get all the assignment of a particluar 
+    user which can be in draft or not"""
+
     model = Assignment
     paginate_by = 10
     context_object_name = 'assignments'
@@ -33,6 +36,8 @@ class AllAssignmentListView(LoginRequiredMixin, ListView):
 
 
 class AssignmentListView(AllAssignmentListView):
+    """ View to get all the assignment of all the
+    user which are not in draft or open to see"""
 
     def get_queryset(self):
         return Assignment.objects.get_assignment().order_by('-timestamp')
@@ -44,6 +49,8 @@ class AssignmentListView(AllAssignmentListView):
 
 
 class AssignmentDraftListView(TeacherRequiredMixin, AllAssignmentListView):
+    """ View to get all the assignment of a particular
+    user which are in draft"""
 
     def get_queryset(self):
         return Assignment.objects.get_draft_assignment().filter(uploader=self.request.user).order_by('-timestamp')
@@ -55,6 +62,8 @@ class AssignmentDraftListView(TeacherRequiredMixin, AllAssignmentListView):
 
 
 class AssignmentOldestListView(AllAssignmentListView):
+    """ View to get all the assignment in a oldest 
+    order which can be seen by students"""
 
     def get_queryset(self):
         return Assignment.objects.get_oldest_student().order_by('-timestamp')
@@ -66,6 +75,8 @@ class AssignmentOldestListView(AllAssignmentListView):
 
 
 class AssignmentNewestListView(AllAssignmentListView):
+    """ View to get all the assignment in a newest
+    order which can be seen by students"""
 
     def get_queryset(self):
         return Assignment.objects.get_newest_student().order_by('-timestamp')
