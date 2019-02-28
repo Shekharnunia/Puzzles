@@ -18,49 +18,54 @@
 	<h1>{% trans "Assignments" %}</h1>
 </div>
 
-<div class="card my-4">
-	<h5 class="card-header">{% trans 'Assignments by tags' %}</h5>
-	<div class="card-body">
-		{% for tag, count in popular_tags %}
-		<a href="{% url 'assignment:tag' tag %}"><span class="badge badge-info">{{ count }} {{ tag }}</span></a>
-		{% endfor %}
+<div class="row">
+	<div class="col-md-9">
+		{% if request.user.is_teacher == True %}
+		<ul class="nav nav-tabs">
+			<li class="nav-item">
+				<a class="nav-link{% if active == 'assignment' %} active{% endif %}" href="{% url 'assignment:list' %}">
+					{% trans "Assignment" %}
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link{% if active == 'draft' %} active{% endif %}" href="{% url 'assignment:draft_list' %}">
+					{% trans "Draft" %}
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link{% if active == 'all' %} active{% endif %}" href="{% url 'assignment:all_list' %}">
+					{% trans "All assignment" %}
+				</a>
+			</li>
+		</ul>
+		{% elif request.user.is_student == True %}
+		<ul class="nav nav-tabs">
+			<li class="nav-item">
+				<a class="nav-link{% if active == 'oldest' %} active{% endif %}" href="{% url 'assignment:old_list' %}">
+					{% trans "Oldest" %}
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link{% if active == 'newest' %} active{% endif %}" href="{% url 'assignment:new_list' %}">
+					{% trans "Newest" %}
+				</a>
+			</li>
+		</ul>
+		{% endif %}
+	
+		{% include 'assignment/get_partial_assignments.html' with assignment=assignment %}
+
+		{% include 'includes/pagination.html' %}
+	</div>
+	<div class="col-md-3">
+		<div class="card my-4" style="overflow:auto">
+			<h5 class="card-header">{% trans 'Assignments by tags' %}</h5>
+			<div class="card-body">
+				{% for tag, count in popular_tags %}
+				<a href="{% url 'assignment:tag' tag %}"><span class="badge badge-info">{{ count }} {{ tag }}</span></a>
+				{% endfor %}
+			</div>
+		</div>
 	</div>
 </div>
-
-{% if request.user.is_teacher == True %}
-<ul class="nav nav-tabs">
-	<li class="nav-item">
-		<a class="nav-link{% if active == 'assignment' %} active{% endif %}" href="{% url 'assignment:list' %}">
-			{% trans "Assignment" %}
-		</a>
-	</li>
-	<li class="nav-item">
-		<a class="nav-link{% if active == 'draft' %} active{% endif %}" href="{% url 'assignment:draft_list' %}">
-			{% trans "Draft" %}
-		</a>
-	</li>
-	<li class="nav-item">
-		<a class="nav-link{% if active == 'all' %} active{% endif %}" href="{% url 'assignment:all_list' %}">
-			{% trans "All assignment" %}
-		</a>
-	</li>
-</ul>
-{% elif request.user.is_student == True %}
-<ul class="nav nav-tabs">
-	<li class="nav-item">
-		<a class="nav-link{% if active == 'oldest' %} active{% endif %}" href="{% url 'assignment:old_list' %}">
-			{% trans "Oldest" %}
-		</a>
-	</li>
-	<li class="nav-item">
-		<a class="nav-link{% if active == 'newest' %} active{% endif %}" href="{% url 'assignment:new_list' %}">
-			{% trans "Newest" %}
-		</a>
-	</li>
-</ul>
-{% endif %}
-{% include 'assignment/get_partial_assignments.html' with assignment=assignment %}
-
-{% include 'includes/pagination.html' %}
-
 {% endblock content %}
