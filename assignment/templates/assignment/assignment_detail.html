@@ -57,7 +57,7 @@
 	        {% for comment in comments %}
 		        <blockquote>
 		          <p>{{ comment.content }}</p>
-		          <footer class="blockquote-footer">via {{ comment.user }} | {{ comment.timestamp|timesince }} ago | {% if comment.children.count > 0 %}{{ comment.children.count }} Comment{% if comment.children.count > 1 %}s{% endif %} | {% endif %} <a class='comment-reply-btn' href='#'>Reply</a> | <a class='' href='{{ comment.get_absolute_url }}'>Thread</a></footer>
+		          <footer class="blockquote-footer">via <a href="{% url 'users:detail' comment.user %}">{{ comment.user }}</a> | {{ comment.timestamp|timesince }} ago | {% if comment.children.count > 0 %}{{ comment.children.count }} Comment{% if comment.children.count > 1 %}s{% endif %} | {% endif %} <a class='comment-reply-btn' href='#'>Reply</a> | <a class='' href='{{ comment.get_absolute_url }}'>Thread</a></footer>
 		          <div class='comment-reply'>
 		              	{% for child_comment in comment.children %}
 			                <blockquote class="">
@@ -79,7 +79,9 @@
     </div>
 
 	<div class="col-sm-10 offset-1">
+		{% if request.user.is_teacher == True and request.user == assignment.uploader %}
 		<h3>Assignment Solutions</h3>
+		{% endif %}
 		{% for assignment in s_assignments %}
 		<hr>
 		<div class="card">
@@ -102,7 +104,7 @@
 			{% endif %}
 		</div>
 		{% empty %}
-			{% if request.user.is_teacher == True %}
+			{% if request.user.is_teacher == True and request.user == assignment.uploader %}
 				<h2 class="text-center">No assignemt by students yet</h2>
 			{% elif request.user.is_student == True %}
 				<h2 class="text-center">You didn't upload assignment yet</h2>

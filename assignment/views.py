@@ -120,8 +120,10 @@ def assignment_detail_view(request, pk, slug):
         request.session[session_key] = True
     if request.user.is_student == True:
         s_assignment = StudentAssignment.objects.filter(assignment=t_assignment).filter(user=request.user).order_by('-timestamp')
-    elif request.user.is_teacher:
+    elif request.user.is_teacher and t_assignment.uploader == request.user:
         s_assignment = StudentAssignment.objects.filter(assignment=t_assignment).order_by('-timestamp')
+    else:
+        s_assignment = None
 
     initial_data = {
         "content_type": t_assignment.get_content_type,
@@ -163,7 +165,7 @@ def assignment_detail_view(request, pk, slug):
                 parent=parent_obj,
             )
             return redirect(new_comment.content_object.get_absolute_url())
-    form = StudentAssignmentForm
+    form = StudentAssignmentForm()
     comments = t_assignment.comments
     args = {
         'assignment': t_assignment,

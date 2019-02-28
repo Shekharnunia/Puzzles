@@ -32,6 +32,11 @@ class AssignmentQuerySet(models.query.QuerySet):
         current queryset"""
         return self.filter(draft=True)
 
+    def get_assignment_of_a_teacher(self):
+        """Returns only items which has not been marked as draft in the current
+        queryset"""
+        return self.filter(draft=False).filter(uploader=self.uploader)
+
     def get_oldest_student(self):
         """Returns only items which has been posted oldest and are not draft
                 for students queryset"""
