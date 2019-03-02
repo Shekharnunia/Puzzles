@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -191,6 +192,7 @@ class CreateAnswerView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
             'question_user': question.user,
             'answer_user': self.request.user,
             'url': question.get_absolute_url,
+            'domain': settings.SITE_URL,
             'title': question.title,
             'content': question.content,
         }
