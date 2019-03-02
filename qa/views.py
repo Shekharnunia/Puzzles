@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail, send_mass_mail
 from django.db.utils import IntegrityError
 from django.http import HttpResponseBadRequest, JsonResponse
@@ -181,18 +182,18 @@ class CreateAnswerView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         form.instance.question_id = self.kwargs["question_id"]
-
         question = get_object_or_404(Question, pk=form.instance.question_id)
         subject = '[Puzzles.com] {}'.format(question.title)
         email_from = 'settings.EMAIL_HOST_USER'
         recipient_list = [question.user.email, ]
         message = "heloo"
 
+        current_site = get_current_site(self.request)
         context = {
             'question_user': question.user,
             'answer_user': self.request.user,
             'url': question.get_absolute_url,
-            'domain': settings.SITE_URL,
+            'domain': current_site.domain,
             'title': question.title,
             'content': question.content,
         }
@@ -214,7 +215,7 @@ class CreateAnswerView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         context = {
             'url': question.get_absolute_url,
             'title': question.title,
-            'domain': settings.SITE_URL,
+            'domain': current_site.domain,
             'content': question.content,
         }
 
