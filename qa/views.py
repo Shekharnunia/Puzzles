@@ -168,7 +168,7 @@ class DeleteQuestionView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 # Done
-class CreateAnswerView(LoginRequiredMixin, CreateView):
+class CreateAnswerView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     """
     View to create new answers for a given question
     """
@@ -223,6 +223,13 @@ class CreateAnswerView(LoginRequiredMixin, CreateView):
         messages.success(self.request, self.message)
         return reverse(
             "qa:index_all")
+
+    def test_func(self):
+        question_id = self.kwargs["question_id"]
+        question = get_object_or_404(Question, pk=question_id)
+        if not question.status == 'C':
+            return True
+        return False
 
 
 # Done
