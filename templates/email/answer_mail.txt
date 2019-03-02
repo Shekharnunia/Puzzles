@@ -7,7 +7,7 @@ Title:{{ title }}
 Content:{{ content }}
 
 Hopefully you got your Answer.
-To directly jump onto your question visit domain{{ url }}
+To directly jump onto your question visit {{ domain }}{{ url }}
 
 Thanks and Regards,
 PUZZLES
