@@ -26,10 +26,12 @@
           </a>
         </div>
         <p>
-          <i class="fa fa-envelope" aria-hidden="true"></i>
-          <a class="email" href="mailto:{{ user.email }}">
-            {{ user.username|title }}
+          {% if user.email_public %}
+            <i class="fa fa-envelope" aria-hidden="true"></i>
+            <a class="email" href="mailto:{{ user.email }}">
+              {{ user.username|title }}
           </a>
+          {% endif %}
           <span>
             {% if user.first_name %}
               <i class="fa fa-briefcase" aria-hidden="true"></i>

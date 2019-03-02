@@ -32,6 +32,7 @@ class User(AbstractUser):
         _('Short bio'), max_length=280, blank=True, null=True)
     is_student = models.BooleanField('student status', default=False)
     is_teacher = models.BooleanField('teacher status', default=False)
+    email_public = models.BooleanField(default=True)
 
     def __str__(self):
         return self.username

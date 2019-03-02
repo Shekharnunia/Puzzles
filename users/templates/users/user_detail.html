@@ -27,7 +27,9 @@
           <i class="fa fa-user-circle-o" aria-hidden="true"></i>
           {{ object.get_profile_name|title }}
           <br />
-          <i class="fa fa-envelope" aria-hidden="true"></i><a class="email" href="mailto:{{ object.email }}">   {{ object.email }}</a><br />
+          {% if object.email_public %}
+            <i class="fa fa-envelope" aria-hidden="true"></i><a class="email" href="mailto:{{ object.email }}">   {{ object.email }}</a><br />
+          {% endif %}
           {% if object.job_title %}
             <i class="fa fa-briefcase" aria-hidden="true"></i>  {{ object.job_title }} <br />
           {% endif %}
