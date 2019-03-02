@@ -6,7 +6,8 @@ from pagedown.widgets import PagedownWidget
 
 
 class PollForm(forms.ModelForm):
-    text = forms.CharField(widget=PagedownWidget())
+    text = forms.CharField(widget=PagedownWidget(),
+                           help_text='The max length of the text is 255.')
     choice1 = forms.CharField(
         label='First Choice',
         max_length=100,
@@ -32,6 +33,8 @@ class PollForm(forms.ModelForm):
 
 
 class EditPollForm(forms.ModelForm):
+    text = forms.CharField(widget=PagedownWidget(),
+                           help_text='The max length of the text is 255.')
 
     class Meta:
         model = Poll

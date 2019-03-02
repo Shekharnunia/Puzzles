@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="container mb-5">
   <h1 class='text-center'>Welcome to Poll List!</h1>
   <div class="row">
     <div class="col-sm-8 offset-sm-2">
@@ -48,7 +48,7 @@
       <ul class="list-group">
         {% for poll in polls %}
         <li class="list-group-item">
-          <a href="{% url 'polls:detail' poll.id %}">{{ poll }}</a>
+          <a href="{% url 'polls:detail' poll.id %}">{{ poll }}</a> - via <a href="{% url 'users:detail' poll.owner %}">{{ poll.owner }}</a>
           {% if request.user == poll.owner %}
             <a href="{% url 'polls:edit_poll' poll.id %}" class='float-right'><i class="fas fa-pencil-alt"></i></a>
           {% endif %}

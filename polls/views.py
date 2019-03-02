@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -35,7 +35,8 @@ def polls_list(request):
 
     if 'search' in request.GET:
         search_term = request.GET['search']
-        polls = polls.filter(text__icontains=search_term)
+        polls = polls.filter(Q(text__icontains=search_term) | Q(
+            owner__username__icontains=search_term)).distinct()
 
     paginator = Paginator(polls, 10)
 
