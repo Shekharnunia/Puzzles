@@ -214,6 +214,7 @@ class CreateAnswerView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         context = {
             'url': question.get_absolute_url,
             'title': question.title,
+            'domain': settings.SITE_URL,
             'content': question.content,
         }
 

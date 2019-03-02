@@ -5,7 +5,7 @@ Their is a answer posted for {{ title }}.
 Content:{{ content }}
 
 You receive this email because you were posted a solution for this question.
-To directly jump onto this question visit http://127.0.0.1:8000{{ url }}
+To directly jump onto this question visit {{ domain }}{{ url }}
 
 Thanks and Regards,
 PUZZLES
