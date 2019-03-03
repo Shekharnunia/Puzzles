@@ -166,7 +166,10 @@ def assignment_detail_view(request, pk, slug):
             )
             messages.success(request, 'comment successfully submitted')
             return redirect(new_comment.content_object.get_absolute_url())
+        else:
+            messages.warning(request, 'Form containing error')
     form = StudentAssignmentForm()
+    comment_form = CommentForm(initial=initial_data)
     comments = t_assignment.comments
     args = {
         'assignment': t_assignment,
