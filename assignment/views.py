@@ -129,7 +129,6 @@ def assignment_detail_view(request, pk, slug):
         "content_type": t_assignment.get_content_type,
         "object_id": t_assignment.id
     }
-    comment_form = CommentForm(request.POST or None, initial=initial_data)
 
     if request.method == 'POST':
         if form.is_valid() and request.user.is_student:
@@ -140,6 +139,31 @@ def assignment_detail_view(request, pk, slug):
 
             messages.success(request, 'assignment successfully submitted')
             return redirect(s_assignment.get_absolute_url())
+        else:
+            messages.warning(request, 'Form containing error')
+
+    form = StudentAssignmentForm()
+    comment_form = CommentForm(initial=initial_data)
+    comments = t_assignment.comments
+    args = {
+        'assignment': t_assignment,
+        's_form': form,
+        's_assignments': s_assignment,
+        "comments": comments,
+        "comment_form": comment_form,
+    }
+    return render(request, 'assignment/assignment_detail.html', args)
+
+
+def comment(request, slug, pk):
+    if request.method == 'POST':
+        t_assignment = get_object_or_404(Assignment, pk=pk)
+
+        initial_data = {
+            "content_type": t_assignment.get_content_type,
+            "object_id": t_assignment.id
+        }
+        comment_form = CommentForm(request.POST or None, initial=initial_data)
 
         if comment_form.is_valid():
             c_type = comment_form.cleaned_data.get("content_type")
@@ -168,17 +192,7 @@ def assignment_detail_view(request, pk, slug):
             return redirect(new_comment.content_object.get_absolute_url())
         else:
             messages.warning(request, 'Form containing error')
-    form = StudentAssignmentForm()
-    comment_form = CommentForm(initial=initial_data)
-    comments = t_assignment.comments
-    args = {
-        'assignment': t_assignment,
-        's_form': form,
-        's_assignments': s_assignment,
-        "comments": comments,
-        "comment_form": comment_form,
-    }
-    return render(request, 'assignment/assignment_detail.html', args)
+            return redirect(t_assignment.get_absolute_url())
 
 
 class StudentAssignmentEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):

@@ -25,6 +25,11 @@ urlpatterns = [
          name='detail'
          ),
 
+    path('<slug:slug>/<int:pk>/comment/',
+         views.comment,
+         name='comment'
+         ),
+
     path('<slug:slug>/<int:int>/edit/',
          views.AssignmentEditView.as_view(),
          name='edit'
