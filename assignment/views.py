@@ -164,6 +164,7 @@ def assignment_detail_view(request, pk, slug):
                 content=content_data,
                 parent=parent_obj,
             )
+            messages.success(request, 'comment successfully submitted')
             return redirect(new_comment.content_object.get_absolute_url())
     form = StudentAssignmentForm()
     comments = t_assignment.comments
