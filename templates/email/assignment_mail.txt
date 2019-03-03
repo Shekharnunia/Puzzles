@@ -1,0 +1,11 @@
+Hello {{ assignment_user }},
+
+{{ solution_uploader_user }} just post a solution for your assignment.
+
+Title:{{ title }}
+
+You can verify the solution.
+To directly jump onto your Assignment visit {{ domain }}{{ url }}
+
+Thanks and Regards,
+PUZZLES

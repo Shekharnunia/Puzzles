@@ -2,10 +2,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render, reverse
+from django.template.loader import get_template
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
-
 from comments.forms import CommentForm
 from comments.models import Comment
 from helpers import AuthorRequiredMixin, TeacherRequiredMixin
@@ -136,6 +138,22 @@ def assignment_detail_view(request, pk, slug):
             s_assignment.assignment = t_assignment
             s_assignment.user = request.user
             s_assignment = form.save()
+
+            subject = '{} uploaded an assignment solution'.format(s_assignment.user)
+            email_from = 'settings.EMAIL_HOST_USER'
+            recipient_list = [t_assignment.uploader.email, ]
+
+            current_site = get_current_site(request)
+            context = {
+                'assignment_user': t_assignment.uploader,
+                'solution_uploader_user': request.user,
+                'url': t_assignment.get_absolute_url,
+                'domain': current_site.domain,
+                'title': t_assignment.topic,
+            }
+            context_message = get_template('email/assignment_mail.txt').render(context)
+
+            send_mail(subject, context_message, email_from, recipient_list, fail_silently=True)
 
             messages.success(request, 'assignment successfully submitted')
             return redirect(s_assignment.get_absolute_url())
