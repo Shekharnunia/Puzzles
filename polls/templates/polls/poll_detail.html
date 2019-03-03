@@ -1,43 +1,66 @@
 {% extends 'base.html' %}
-
-{% block content %}
+{% load static %}
+{% block head %}
+  <style>
+    body{
+      background-image: url('{% static "img/light-grey-terrazzo.png" %}');
+      margin-bottom: 30px;
+    }
+  </style>
+{% endblock head %}
+{% block body %}
+  {% include 'includes/navbar.html' %}
 <div class="container">
+  {% include 'includes/messages.html' %}
+</div>
 
-<p>{{poll}} - {{poll.num_votes}} votes</p>
-
-<form action="{% url 'polls:vote' poll.id %}" method="post">
-{% csrf_token %}
-
-{% for choice in poll.choice_set.all %}
-
-  <input type="radio"
-         name="choice"
-         id="choice{{ forloop.counter }}"
-         value="{{choice.id}}"/>
-  <label for="choice{{ forloop.counter }}">{{ choice.choice_text }} - {{ choice.num_votes }}</label>
-  <br/>
-
-{% endfor %}
-<input class='btn btn-primary mb-2' type="submit" value="Vote" {% if not user_can_vote %}disabled{% endif %}/>
-
-</form>
-
-{% if not user_can_vote %}
-
-    {% for choice_dict in results %}
-    <div class="row">
-        <div class="col-sm-6">
-        {{choice_dict.text}}
-        <div class="progress mb-1">
-          <div class="progress-bar" role="progressbar" style="width: {{choice_dict.percentage}}%;">{{choice_dict.num_votes}}</div>
-        </div>
-      </div>
+<div class="row">
+  <div class="col-sm-6 offset-3">
+  <div class="card">
+    <div class="card-header">
+      <p><b>Question : </b>{{ poll|capfirst }}{% if not user_can_vote %} - {{poll.num_votes}} votes{% endif %}</p>
     </div>
-    {% endfor %}
+    <div class="card-body">
+      <form action="{% url 'polls:vote' poll.id %}" method="post">
+        {% csrf_token %}
 
-{% else %}
-  <p>Vote to see results!</p>
-{% endif %}
+        {% for choice in poll.choice_set.all %}
+          <span class="card-text">
+          <input type="radio"
+                 name="choice"
+                 id="choice{{ forloop.counter }}"
+                 value="{{choice.id}}"/>
+          <label for="choice{{ forloop.counter }}"> <b>{{ forloop.counter }}.</b> {{ choice.choice_text|capfirst }}</label></span><br>
+
+        {% endfor %}
+        {% if not user_can_vote %}
+        <hr>
+        <p class="text-danger">Result Of User Votes :</p>
+        <hr>
+        {% for choice_dict in results %}
+          <div class="row">
+              <div class="col">
+              {{choice_dict.text|capfirst}} ({{choice_dict.percentage}}%;)
+              <div class="progress mb-1">
+                <div class="progress-bar {% if forloop.counter|divisibleby:2 %}
+                  bg-success
+                  {% else %}bg-danger
+                {% endif %}" role="progressbar" style="width: {{choice_dict.percentage}}%;">{{choice_dict.num_votes}}</div>
+              </div>
+            </div>
+          </div><br>
+        {% endfor %}
+          {% endif %}
+          
+        </div>
+        <div class="card-footer text-muted">
+          <input class='btn btn-primary mb-2' type="submit" value="Mark Your Vote" {% if not user_can_vote %}disabled{% endif %}/> {% if user_can_vote %} <p>Vote to see results!</p>{% endif %}
+        </form>
+    </div>
+  </div>
+  
 
 </div>
+</div>
+{% include 'includes/javascript.html' %}
 {% endblock %}
