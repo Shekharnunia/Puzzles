@@ -26,7 +26,7 @@
 </div>
 <hr>
 <div class="row question" question-id="{{ question.id }}">
-  <div class="col-md-1">
+  <div class="col-1 col-sm-1  col-md-1  col-lg-1">
     <div class="question-info options">
       <h3 class="{% if question.has_answer %}bg-success text-white{% endif %}">{{ question.count_answers }}</h3>
       <small class="text-secondary">{% trans 'Answers' %}</small>
@@ -36,7 +36,7 @@
       <small class="text-secondary">{% trans 'Votes' %}</small>
     </div>
   </div>
-  <div class="col-md-8">
+  <div class="col-10 offset-1 col-sm-10 offset-sm-1 col-md-8 offset-md-1 col-lg-8 offset-lg-0">
     <p>{{ question.get_markdown|safe }}</p>
     {% if question.tags.names %}
     <p>
@@ -74,7 +74,7 @@
       <div class="card"><div class="card-footer"><b>closed</b> as {{ question.close_question_reason }} by <a href="{% url 'users:detail' question.close_question_user.username  %}">{{ question.close_question_user.username|title }}</a> {{ question.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ question.timestamp|date:"G:i" }}</div></div>
     {% endif %}
   </div>
-  <div class="col-md-3" style="font-size: 15px; font-width: 15px;">
+  <div class="col-12 col-sm-12 col-md-2 col-lg-3" style="font-size: 15px; font-width: 15px;">
     <p><span class="text-muted mr-2">{% trans 'asked' %} </span>{{ question.timestamp|naturaltime }}</p>
     <p><span class="text-muted mr-2">{% trans 'views' %} </span>{{ question.question_views }}</p>
   </div>
