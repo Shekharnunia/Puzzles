@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^answer/vote/$', views.answer_vote, name='answer_vote'),
     url(r'^accept-answer/$', views.accept_answer, name='accept_answer'),
     url(r'^tag/(?P<tag_name>.+)/$', views.TagQuestionListView.as_view(), name='tag'),
+    url(r'^search/$', views.SearchListView.as_view(), name='results'),
 ]

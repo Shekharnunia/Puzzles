@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail, send_mass_mail
+from django.db.models import Q
 from django.db.utils import IntegrityError
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -32,6 +33,7 @@ class QuestionsIndexListView(LoginRequiredMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context["popular_tags"] = Question.objects.get_counted_tags()
+        context["search_url"] = reverse('qa:results')
         context["active"] = "all"
         return context
 
@@ -70,6 +72,30 @@ class QuestionListView(QuestionsIndexListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context["active"] = "unanswered"
+        return context
+
+
+class SearchListView(LoginRequiredMixin, ListView):
+    """CBV to contain all the search results"""
+    model = Question
+    context_object_name = "questions"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        if self.request.GET.get("query"):
+
+            query = self.request.GET.get("query")
+            context['search'] = True
+
+            context["questions"] = Question.objects.filter(Q(
+                title__icontains=query) | Q(content__icontains=query) | Q(
+                tags__name__icontains=query) | Q(
+                user__username__icontains=query),
+                status="O").distinct()
+
+            context["question_count"] = context["questions"].count()
+            context["active"] = 'all'
+            return context
         return context
 
 

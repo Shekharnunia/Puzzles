@@ -22,6 +22,10 @@
     </a>
     <h1>{% trans "Questions" %}</h1>
   </div>
+  {% include "snippits/search.html" with query='query' url=search_url %}   
+  {% if question_count %}
+      <p class="font-weight-bold">Total no. of articles found : {{ question_count }}</p>
+    {% endif %}
   <div class="row">
     <div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9">
         <ul class="nav nav-tabs">
@@ -50,14 +54,16 @@
         {% include "includes/pagination.html" %}
         
     </div>
-    <div class="card col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3 my-4">
-      <h5 class="card-header">{% trans 'Questions by topic' %}</h5>
-      <div class="card-body">
-        {% for tag, count in popular_tags %}
-          <a href="{% url 'qa:tag' tag %}"><span class="badge badge-info">{{ count }} {{ tag }}</span></a>
-        {% endfor %}
+    {% if not question_count %}
+      <div class="card col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3 my-4">
+        <h5 class="card-header">{% trans 'Questions by topic' %}</h5>
+        <div class="card-body">
+          {% for tag, count in popular_tags %}
+            <a href="{% url 'qa:tag' tag %}"><span class="badge badge-info">{{ count }} {{ tag }}</span></a>
+          {% endfor %}
+        </div>
       </div>
-    </div>
+    {% endif %}
   </div>
 {% endblock content %}
 
