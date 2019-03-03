@@ -42,6 +42,7 @@ class ArticlesListView(LoginRequiredMixin, ListView):
         context['popular_tags'] = Article.objects.get_counted_tags()
         context['categories'] = Category.objects.all()
         context['popular'] = Article.objects.get_5_popular_post()
+        context['search_url'] = reverse('blog:results')
         return context
 
     def get_queryset(self, **kwargs):

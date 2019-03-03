@@ -16,17 +16,8 @@
 
   <div class="container">
 
-    
-      <form class="form-inline navbar-left" role="search" action="{% url 'blog:results' %}">
-        <div class="input-group">
-          <input name="query" type="search" value="{{ request.GET.query }}" id="searchInput" class="form-control" placeholder="{% trans 'Search' %}" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-info my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"> Search</i></button>
-          </div>
-        </div>
-      </form>      
-    <br>
-    
+    {% include "snippits/search.html" with query='query' url=search_url %}   
+        
     {% if articles_count %}
       <p class="font-weight-bold">Total no. of articles found : {{ articles_count }}</p>
     {% endif %}
@@ -67,11 +58,15 @@
               {% endfor %}
             </div>
           </div>
-          {% empty %}          
-          {% if request.user.is_teacher %}
-            <h4 class="no-data">There is no published article yet <a href="{% url 'blog:write_new' %}"> Be the first one to publish one!</a></h4>
-          {% elif request.user.is_student %}
-            <h4 class="no-data">There is no published article yet </h4>
+          {% empty %}  
+          {% if not search %}
+            {% if request.user.is_teacher %}
+              <h4 class="no-data">There is no published article yet <a href="{% url 'blog:write_new' %}"> Be the first one to publish one!</a></h4>
+            {% elif request.user.is_student %}
+              <h4 class="no-data">There is no published article yet </h4>
+            {% endif %}
+          {% else %}
+            <h4 class="no-data">No article matched</h4>
           {% endif %}
         {% endfor %}
 
