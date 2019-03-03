@@ -38,7 +38,7 @@
                   {% empty %}
                     <img src="{% static 'img/user.png' %}" height="30px" alt="{% trans 'No Profile Picture' %}" />
                   {% endthumbnail %}
-                  {{ request.user.username }}
+                  {{ request.user.username|title }}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" href="{% url 'users:detail' request.user.username  %}"><i class="far fa-user fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile' %}</a>
