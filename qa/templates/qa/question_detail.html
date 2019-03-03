@@ -45,7 +45,7 @@
       {% endfor %}
     </p>
     {% endif %}
-    <div class="question-user pull-right">
+    <div class="question-user pull-right ml-5">
       <div class="card">
         <small><span class="text-secondary">{% trans 'asked' %} {{ question.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ question.timestamp|date:"G:i" }}</span></small>
         <div class="media">
@@ -65,11 +65,14 @@
       <a href="{% url 'qa:edit_question' pk=question.pk slug=question.slug %}"><small class="text-muted">edit</small></a>
       <a href="{% url 'qa:delete_question' pk=question.pk slug=question.slug %}"><small class="text-muted">delete</small></a>
       {% endif %}
-      {% if request.user.is_teacher == True %}
+      {% if request.user.is_teacher == True and question.status == 'O' %}
       <a href="{% url 'qa:question_close' pk=question.pk slug=question.slug %}"><small class="text-muted">close</small></a>
       {% endif %}
       <a href="{% url 'qa:flag_question' question.pk question.slug %}"><small class="text-muted">flag</small></a>
     </p>
+    {% if question.status == 'C' %}
+      <div class="card"><div class="card-footer"><b>closed</b> as {{ question.close_question_reason }} by <a href="{% url 'users:detail' question.close_question_user.username  %}">{{ question.close_question_user.username|title }}</a> {{ question.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ question.timestamp|date:"G:i" }}</div></div>
+    {% endif %}
   </div>
   <div class="col-md-3" style="font-size: 15px; font-width: 15px;">
     <p><span class="text-muted mr-2">{% trans 'asked' %} </span>{{ question.timestamp|naturaltime }}</p>

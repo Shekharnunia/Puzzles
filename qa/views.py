@@ -9,12 +9,13 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   RedirectView, UpdateView)
 
 from helpers import ajax_required
-from qa.forms import AnswerForm, QuestionForm
+from qa.forms import AnswerForm, QuestionForm, QuestionCloseForm
 from qa.models import Answer, Question
 
 
@@ -91,21 +92,22 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
 # Done
 class QuestionDetaiCloseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Question
-    message = _("Your question has been Updated.")
     template_name = "qa/question_close_form.html"
+    form_class = QuestionCloseForm
     context_object_name = 'question'
-    form_class = QuestionForm
 
     def form_valid(self, form):
         question = form.save(commit=False)
-        question.close_question = self.request.user
+        question.close_question_user = self.request.user
         question.status = 'C'
-        question.save(update_fields=["status", "close_question"])
-        messages.success(self.request, 'Your question has been Updated.')
+        question.close_question_date = timezone.now()
+        question.save(update_fields=["status", "close_question_user", 'close_question_date', 'close_question_reason'])
+        messages.success(self.request, "This question has been Closed.")
         return redirect(reverse("qa:index_noans"))
 
     def test_func(self):
-        if self.request.user.is_teacher:
+        question = self.get_object()
+        if self.request.user.is_teacher and question.status == 'O':
             return True
         return False
 

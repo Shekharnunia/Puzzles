@@ -91,8 +91,10 @@ class Question(models.Model):
     has_answer = models.BooleanField(default=False)
     tags = TaggableManager()
     objects = QuestionQuerySet.as_manager()
-    close_question = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
-                                       default='1', related_name='question_close_user', null=True, blank=True)
+    close_question_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                                            related_name='question_close_user', null=True, blank=True)
+    close_question_date = models.DateTimeField(blank=True, null=True)
+    close_question_reason = models.CharField(blank=True, null=True, max_length=50)
     flag = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='flag_question', blank=True)
 
     class Meta:

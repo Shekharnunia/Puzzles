@@ -4,10 +4,6 @@
 
 {% block title %}{% trans 'Close question' %}{% endblock %}
 
-{% block head %}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-{% endblock head %}
-
 {% block content %}
 
   <nav aria-label="breadcrumb">
@@ -17,12 +13,15 @@
       <li class="breadcrumb-item active" aria-current="page">{% trans 'Close this question' %}</li>
     </ol>
   </nav>
-  <form action="{% url 'qa:question_close' question.pk question.slug %}" enctype="multipart/form-data"  id="question-form" method="post" role="form">
+  <form action="{% url 'qa:question_close' question.pk question.slug %}" enctype="multipart/form-data"  id="question-form" method="post" role="form" novalidate>
     {% csrf_token %}
-    <h1>{% if question.status == 'C' %}
-        {{ '[CLOSED]' }}     
-        {% endif %}{{ question.title }}</h1>
+    <div class="row">
+      <div class="col-md-10">
+        <h1>{{ question.title }}</h1>
+        <p>{{ question.content }}</p>
         {{ form|crispy }}
+      </div>
+    </div>  
     <div class="form-group">
       <button id="close" type submit type="button" class="btn btn-primary">{% trans 'Close this question' %}</button>
       <a href="{% url 'qa:question_detail' question.pk question.slug %}" class="btn btn-default">{% trans 'Cancel' %}</a>
@@ -34,8 +33,4 @@
 
 {% block modal %}
   <script src="{% static 'js/qa.js' %}"></script>
-  <script src="{% static 'js/simplemde.min.js' %}"></script>
-  <script>
-    var simplemde = new SimpleMDE({ element: document.getElementById("id_content") });
-  </script>
 {% endblock modal %}
