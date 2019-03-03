@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.template.loader import get_template
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
@@ -34,6 +35,7 @@ class AllAssignmentListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(*args, **kwargs)
         context["popular_tags"] = Assignment.objects.get_counted_tags()
         context["active"] = "all"
+        context['search_url'] = reverse('assignment:results')
         return context
 
 
@@ -94,7 +96,32 @@ class TagAssignmentListView(AllAssignmentListView):
     list."""
 
     def get_queryset(self, **kwargs):
-        return Assignment.objects.filter(tags__name=self.kwargs['tag_name']).order_by('-timestamp')
+        return Assignment.objects.filter(
+            tags__name=self.kwargs['tag_name']).order_by('-timestamp')
+
+
+class SearchListView(LoginRequiredMixin, ListView):
+    """CBV to contain all the search results"""
+    model = Assignment
+    # template_name = "blog/search_results.html"
+    context_object_name = "assignments"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        if self.request.GET.get("query"):
+
+            query = self.request.GET.get("query")
+            context['search'] = True
+
+            context["assignments"] = Assignment.objects.filter(Q(
+                topic__icontains=query) | Q(description__icontains=query) | Q(
+                tags__name__icontains=query) | Q(
+                uploader__username__icontains=query), draft=False).distinct()
+
+            context["assignments_count"] = context["assignments"].count()
+            context["active"] = "all"
+            return context
+        return context
 
 
 class AssignmentDetailView(LoginRequiredMixin, DetailView):

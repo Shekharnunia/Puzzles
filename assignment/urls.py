@@ -44,4 +44,8 @@ urlpatterns = [
         views.TagAssignmentListView.as_view(),
         name='tag'
         ),
+
+    url(r'^search/$',
+        views.SearchListView.as_view(),
+        name='results'),
 ]

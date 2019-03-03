@@ -17,7 +17,11 @@
 	{% endif %}
 	<h1>{% trans "Assignments" %}</h1>
 </div>
-
+    {% include "snippits/search.html" with query='query' url=search_url %}   
+        
+    {% if assignments_count %}
+      <p class="font-weight-bold">Total no. of assignment found : {{ assignments_count }}</p>
+    {% endif %}
 <div class="row">
 	<div class="col-md-9">
 		{% if request.user.is_teacher == True %}
@@ -57,15 +61,17 @@
 
 		{% include 'includes/pagination.html' %}
 	</div>
-	<div class="col-md-3">
-		<div class="card my-4" style="overflow:auto">
-			<h5 class="card-header">{% trans 'Assignments by tags' %}</h5>
-			<div class="card-body">
-				{% for tag, count in popular_tags %}
-				<a href="{% url 'assignment:tag' tag %}"><span class="badge badge-info">{{ count }} {{ tag }}</span></a>
-				{% endfor %}
+	{% if not assignments_count %}
+		<div class="col-md-3">
+			<div class="card my-4" style="overflow:auto">
+				<h5 class="card-header">{% trans 'Assignments by tags' %}</h5>
+				<div class="card-body">
+					{% for tag, count in popular_tags %}
+					<a href="{% url 'assignment:tag' tag %}"><span class="badge badge-info">{{ count }} {{ tag }}</span></a>
+					{% endfor %}
+				</div>
 			</div>
 		</div>
-	</div>
+	{% endif %}
 </div>
 {% endblock content %}
