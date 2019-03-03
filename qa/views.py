@@ -243,7 +243,7 @@ class EditAnswerView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Answer
     message = _("Your Answer has been updated.")
     context_object_name = 'answer'
-    fields = ["content", ]
+    form_class = AnswerForm
     pk_url_kwarg = 'answer_id'
     template_name = 'qa/answer_edit_form.html'
 

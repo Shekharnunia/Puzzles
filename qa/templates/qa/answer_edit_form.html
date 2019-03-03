@@ -3,10 +3,6 @@
 
 {% block title %}{% trans 'Update Answer' %}{% endblock %}
 
-{% block head %}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-{% endblock head %}
-
 {% block content %}
 
   <nav aria-label="breadcrumb">
@@ -19,6 +15,7 @@
   <form id="answerForm" method="post" role="form">
     {% csrf_token %}
     {{ form|crispy }}
+    {{ form.media }}
     <div class="form-group">
       <button id="answer" type="submit" class="btn btn-primary">{% trans 'Answer' %}</button>
       <a href="{% url 'qa:index_all' %}" class="btn btn-default">{% trans 'Cancel' %}</a>
@@ -26,10 +23,3 @@
   </form>
 
 {% endblock content %}
-
-{% block modal %}
-  <script src="{% static 'js/simplemde.min.js' %}"></script>
-  <script>
-    var simplemde = new SimpleMDE({ element: document.getElementById("id_content") });
-  </script>
-{% endblock modal %}
