@@ -20,7 +20,7 @@
 			{% csrf_token %}
 			<h2>Are you sure you want to delete the post</h2><br>
 			<button class="btn btn-outline-danger mr-2" type="submit">Yes, Delete</button>
-			<a class="btn btn-outline-secondary" href="{% url 'blog:article' article.slug %}">Cancel</a>
+			<a class="btn btn-outline-secondary" href="{{ article.get_absolute_url }}">Cancel</a>
 		</form>
 	</div>	
 {% endblock %}
