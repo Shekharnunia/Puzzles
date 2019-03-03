@@ -183,7 +183,7 @@ class CreateAnswerView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         form.instance.user = self.request.user
         form.instance.question_id = self.kwargs["question_id"]
         question = get_object_or_404(Question, pk=form.instance.question_id)
-        subject = '[Puzzles.com] {}'.format(question.title)
+        subject = '{}'.format(question.title)
         email_from = 'settings.EMAIL_HOST_USER'
         recipient_list = [question.user.email, ]
         message = "heloo"
@@ -201,7 +201,7 @@ class CreateAnswerView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
         send_mail(subject, context_message, email_from, recipient_list, fail_silently=True)
 
-        subject = '[Puzzles.com] {}'.format(question.title)
+        subject = '{}'.format(question.title)
         email_from = 'settings.EMAIL_HOST_USER'
 
         a = set()
@@ -278,15 +278,61 @@ class DeleteAnswerView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
 
 
-def q_flag(request, pk):
+def q_flag(request, pk, slug):
     question = get_object_or_404(Question, pk=pk)
-    print('1')
-    if request.user in question.flag.all():
-        message.warning(request, 'You already flag this question')
+    if request.method == 'GET':
+        return render(request, 'qa/flag_question.html', {'question': question})
+    if request.method == 'POST':
+        if request.user in question.flag.all():
+            messages.warning(request, 'You already flag this question')
+            return redirect(question.get_absolute_url())
+        question.flag.add(request.user)
+        messages.success(request, 'You request for flag has been considered for this question')
+        subject = 'Question has been flaged'
+        email_from = 'settings.EMAIL_HOST_USER'
+        recipient_list = [mail_tuple[1] for mail_tuple in settings.MANAGERS]
+        message = "A question has been flaged"
+
+        current_site = get_current_site(request)
+        context = {
+            'title': question.title,
+            'content': question.content,
+            'url': question.get_absolute_url,
+            'domain': current_site.domain,
+        }
+        context_message = get_template('email/flag_question.txt').render(context)
+
+        send_mail(subject, context_message, email_from, recipient_list, fail_silently=True)
         return redirect(question.get_absolute_url())
-    question.flag.add(request.user)
-    message.success(request, 'You request for flag has been considered question')
-    return redirect(question.get_absolute_url())
+
+
+def a_flag(request, pk, slug, answer_id):
+    question = get_object_or_404(Question, pk=pk)
+    answer = Answer.objects.get(uuid_id=answer_id)
+    if request.method == 'GET':
+        return render(request, 'qa/flag_answer.html', {'question': question, 'answer': answer})
+    if request.method == 'POST':
+        if request.user in answer.flag.all():
+            messages.warning(request, 'You already flag this answer')
+            return redirect(question.get_absolute_url())
+        answer.flag.add(request.user)
+        messages.success(request, 'You request for flag has been considered for this answer')
+        subject = 'An answer has been flaged'
+        email_from = 'settings.EMAIL_HOST_USER'
+        recipient_list = [mail_tuple[1] for mail_tuple in settings.MANAGERS]
+        message = "A question has been flaged"
+
+        current_site = get_current_site(request)
+        context = {
+            'title': question.title,
+            'content': answer.content,
+            'url': question.get_absolute_url,
+            'domain': current_site.domain,
+        }
+        context_message = get_template('email/flag_answer.txt').render(context)
+
+        send_mail(subject, context_message, email_from, recipient_list, fail_silently=True)
+        return redirect(question.get_absolute_url())
 
 
 @login_required

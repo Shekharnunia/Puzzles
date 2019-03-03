@@ -93,7 +93,7 @@ class Question(models.Model):
     objects = QuestionQuerySet.as_manager()
     close_question = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                                        default='1', related_name='question_close_user', null=True, blank=True)
-    flag = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='flag_question')
+    flag = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='flag_question', blank=True)
 
     class Meta:
         ordering = ["total_votes", "-timestamp"]
@@ -154,7 +154,7 @@ class Answer(models.Model):
     is_answer = models.BooleanField(default=False)
     votes = GenericRelation(Vote)
     views = models.PositiveIntegerField(default=0)
-    flag = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='flag_answer')
+    flag = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='flag_answer', blank=True)
 
     class Meta:
         ordering = ["-is_answer", "-timestamp"]

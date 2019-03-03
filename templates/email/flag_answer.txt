@@ -1,0 +1,11 @@
+Hello,
+
+Their is a flag posted for an answer of this "{{ title }}" question.
+
+Content:{{ content }}
+
+You receive this email because you are manager for our website and you can look after why this post has been flagged.
+To directly jump onto this question visit {{ domain }}{{ url }}
+
+Thanks and Regards,
+PUZZLES

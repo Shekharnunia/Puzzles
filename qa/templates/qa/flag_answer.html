@@ -1,0 +1,27 @@
+{% extends "qa_base.html" %}
+{% load i18n %}
+{% block title %}
+	Flag answer
+{% endblock %}
+
+{% block content %}
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+		  <li class="breadcrumb-item"><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
+		  <li class="breadcrumb-item"><a href="{% url 'qa:index_all' %}">{% trans 'Q&A' %}</a></li>
+		  <li class="breadcrumb-item active" aria-current="page">{% trans 'Flag Question' %}</li>
+		</ol>
+		</nav>
+	<div class="container mb-5">
+		<br>
+		<h4>Topic: {{ answer.question.title }}</h4><br>
+		<p>Answer : {{ answer.content|safe }}</p>
+		
+		<form method="POST">
+			{% csrf_token %}
+			<h2>Are you sure you want to flag this answer</h2><br>
+			<button class="btn btn-outline-danger mr-2" type="submit">Yes, Delete</button>
+			<a class="btn btn-outline-secondary" href="{{ question.get_absolute_url }}">Cancel</a>
+		</form>
+	</div>
+{% endblock %}
