@@ -5,6 +5,7 @@ from django.core.mail import EmailMultiAlternatives, send_mail
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import DeleteView, ListView, UpdateView
@@ -14,28 +15,29 @@ from .models import NewsLetter, NewsLetterUser
 
 
 def newsletter_signup(request):
-    form = NewsLetterUserSignupForm(request.POST or None)
+    if request.method == 'POST':
+        form = NewsLetterUserSignupForm(request.POST or None)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            if NewsLetterUser.objects.filter(email=instance.email).exists():
+                messages.warning(request, 'You have already subscibed to our mailing service')
 
-    if form.is_valid():
-        instance = form.save(commit=False)
-        if NewsLetterUser.objects.filter(email=instance.email).exists():
-            messages.warning(request, 'You have already subscibed to our mailing service')
-
-        else:
-            instance.save()
-            messages.success(request, 'You have successfully subscribed to our mailing service')
-            subject = "Thanks for joining our Newsletter"
-            from_email = settings.EMAIL_HOST_USER
-            to_email = [instance.email]
-            # with open(settings.BASE_DIR + "/templates/newsletter/sign_up_email.txt") as f:
-            #    signup_message = f.read()
-            signup_message = '''Welcome to our website
-            Thanks for Joining
-            To unsubscribe click the this link http://127.0.0.1:8000/newsletter/unsubscribe/'''
-            message = EmailMultiAlternatives(subject=subject, body=signup_message, from_email=from_email, to=to_email)
-            html_template = get_template("newsletter/sign_up_email.html").render()
-            message.attach_alternative(html_template, "text/html")
-            message.send()
+            else:
+                instance.save()
+                messages.success(request, 'You have successfully subscribed to our mailing service')
+                subject = "Thanks for joining our Newsletter"
+                from_email = settings.EMAIL_HOST_USER
+                to_email = [instance.email]
+                # with open(settings.BASE_DIR + "/templates/newsletter/sign_up_email.txt") as f:
+                #    signup_message = f.read()
+                signup_message = '''Welcome to our website
+                Thanks for Joining
+                To unsubscribe click the this link http://127.0.0.1:8000/newsletter/unsubscribe/'''
+                message = EmailMultiAlternatives(subject=subject, body=signup_message, from_email=from_email, to=to_email)
+                html_template = get_template("newsletter/sign_up_email.html").render()
+                message.attach_alternative(html_template, "text/html")
+                message.send()
+    form = NewsLetterUserSignupForm()
     context = {
         'form': form,
     }
@@ -44,27 +46,28 @@ def newsletter_signup(request):
 
 def newsletter_unsubscribe(request):
     form = NewsLetterUserSignupForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            instance = form.save(commit=False)
+            if NewsLetterUser.objects.filter(email=instance.email).exists():
+                NewsLetterUser.objects.filter(email=instance.email).delete()
+                messages.success(request, 'Your email has successfully removed from our mailing service')
+                subject = "You have been unsubscribed"
+                from_email = settings.EMAIL_HOST_USER
+                to_email = [instance.email]
+                # with open(settings.BASE_DIR + "/templates/newsletter/unsubscribe_email.txt") as f:
+                #    signup_message = f.read()
+                signup_message = '''Welcome to our website
+                Thanks for Joining
+                To unsubscribe click the this link http://127.0.0.1:8000/newsletter/unsubscribe/'''
 
-    if form.is_valid():
-        instance = form.save(commit=False)
-        if NewsLetterUser.objects.filter(email=instance.email).exists():
-            NewsLetterUser.objects.filter(email=instance.email).delete()
-            messages.success(request, 'Your email has successfully removed from our mailing service')
-            subject = "You have been unsubscribed"
-            from_email = settings.EMAIL_HOST_USER
-            to_email = [instance.email]
-            # with open(settings.BASE_DIR + "/templates/newsletter/unsubscribe_email.txt") as f:
-            #    signup_message = f.read()
-            signup_message = '''Welcome to our website
-            Thanks for Joining
-            To unsubscribe click the this link http://127.0.0.1:8000/newsletter/unsubscribe/'''
-
-            message = EmailMultiAlternatives(subject=subject, body=signup_message, from_email=from_email, to=to_email)
-            html_template = get_template("newsletter/unsubscribe_email.html").render()
-            message.attach_alternative(html_template, "text/html")
-            message.send()
-        else:
-            messages.warning(request, 'You email is not subscibed to our mailing service')
+                message = EmailMultiAlternatives(subject=subject, body=signup_message, from_email=from_email, to=to_email)
+                html_template = get_template("newsletter/unsubscribe_email.html").render()
+                message.attach_alternative(html_template, "text/html")
+                message.send()
+            else:
+                messages.warning(request, 'You email is not subscibed to our mailing service')
+    form = NewsLetterUserSignupForm()
     context = {
         'form': form,
     }
@@ -181,7 +184,7 @@ def control_newsletter_edit(request, pk):
 @method_decorator(staff_member_required, name='dispatch')
 class NewsletterDeleteView(DeleteView):
     model = NewsLetter
-    success_url = '/'
+    success_url = reverse_lazy('control_panel:control_newsletter_list')
     template_name = 'control_panel/control_newsletter_delete.html'
 
 

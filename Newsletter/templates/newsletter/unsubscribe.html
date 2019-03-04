@@ -2,16 +2,17 @@
 {% load static crispy_forms_tags %}
 {% crispy form form.helper %}
 
-{% block content %}	
+{% block content_base %}	
       
       <div class="row justify-content-center">
+        {% include "includes/messages.html" %}
         <div class="{% if not request.user.is_staff %}col-lg-6 col-md-10 col-sm-12{% else %}col-lg-10 col-md-12 col-sm-12{% endif %}">
           <h1 class="text-center logo my-4">
             <a href="{% url 'home' %}">Puzzles</a>
           </h1>
           <div class="card">
             <div class="card-body bg-light">
-              <h3 class="card-title">Unsubscribe from our mailing service</h3>
+              <h3 class="card-title">Unsubscribe for our mailing service</h3>
                   <form method="post" novalidate>
                     {% csrf_token %}
                     {{ form|crispy }}
