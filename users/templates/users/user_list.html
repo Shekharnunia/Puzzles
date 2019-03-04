@@ -30,7 +30,11 @@
             <i class="fa fa-envelope" aria-hidden="true"></i>
             <a class="email" href="mailto:{{ user.email }}">
               {{ user.username|title }}
-          </a>
+            </a>
+          {% else %}
+            <i class="fa fa-envelope" aria-hidden="true"></i>
+              {{ user.username|title }}
+            </a>
           {% endif %}
           <span>
             {% if user.first_name %}
