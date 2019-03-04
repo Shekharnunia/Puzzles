@@ -120,7 +120,7 @@
               {% for category in categories %}
                 <tr>
                   <td>
-                    <div class="d-flex justify-content-between"><a href="{{ category.get_absolute_url }}">{{ category }}</a>{{ category.article_set.all.count }}</div>
+                    <div class="d-flex justify-content-between"><a href="{{ category.get_absolute_url }}">{{ category }}</a>{{ category.get_articles.count }}</div>
                   </td>
                 </tr>
             {% endfor %}

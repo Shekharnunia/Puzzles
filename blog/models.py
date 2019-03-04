@@ -26,11 +26,11 @@ class ArticleQuerySet(models.query.QuerySet):
 
     def get_5_popular_post(self):
         """Returns only the popular items as in the current queryset."""
-        return self.order_by('-views')[:5]
+        return self.filter(status="P").order_by('-views')[:5]
 
     def get_popular_post(self):
         """Returns only the popular items as in the current queryset."""
-        return self.order_by('-views')
+        return self.filter(status="P").order_by('-views')
 
     def get_counted_tags(self):
         tag_dict = {}
@@ -67,7 +67,7 @@ class Category(models.Model):
         return reverse('blog:category_detail', kwargs={'slug': self.slug})
 
     def get_articles(self):
-        return Article.objects.filter(categories=self)
+        return Article.objects.filter(categories=self, status="P")
 
 
 class Article(models.Model):
