@@ -2,18 +2,15 @@ import uuid
 from collections import Counter
 
 from django.conf import settings
-from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.fields import (GenericForeignKey,
+                                                GenericRelation)
 from django.contrib.contenttypes.models import ContentType
-
 from django.db import models
 from django.db.models import Count
-
 from django.urls import reverse
-
+from django.utils.html import mark_safe
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
-from django.utils.html import mark_safe
-
 from markdown import markdown
 from taggit.managers import TaggableManager
 

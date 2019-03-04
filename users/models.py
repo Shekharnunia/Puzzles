@@ -2,9 +2,10 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from blog.models import Article, ArticleComment
-from qa.models import Question, Answer
+
 from assignment.models import Assignment
+from blog.models import Article, ArticleComment
+from qa.models import Answer, Question
 
 
 class User(AbstractUser):

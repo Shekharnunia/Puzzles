@@ -3,13 +3,12 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Count
 from django.urls import reverse
-from django.utils.text import slugify
 from django.utils.html import mark_safe
-
-from comments.models import Comment
-
+from django.utils.text import slugify
 from markdown import markdown
 from taggit.managers import TaggableManager
+
+from comments.models import Comment
 
 
 def assignment_upload_path(instance, filename):

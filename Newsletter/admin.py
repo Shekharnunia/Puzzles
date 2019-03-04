@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import NewsLetterUser, NewsLetter
+from .models import NewsLetter, NewsLetterUser
+
 
 class NewsLetterUserAdmin(admin.ModelAdmin):
     list_display = ('email', 'date_added',)
@@ -9,4 +10,3 @@ class NewsLetterUserAdmin(admin.ModelAdmin):
 admin.site.register(NewsLetterUser, NewsLetterUserAdmin)
 
 admin.site.register(NewsLetter)
-

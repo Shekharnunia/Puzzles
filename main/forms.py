@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from main.models import Question, Answer
+from main.models import Answer, Question
+
 
 class QuestionForm(forms.ModelForm):
     topic = forms.CharField(
@@ -41,4 +42,3 @@ class AnswerForm(forms.ModelForm):
         fields = [
             'answer'
         ]
-

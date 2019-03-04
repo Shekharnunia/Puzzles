@@ -1,8 +1,7 @@
 from django import forms
+from pagedown.widgets import PagedownWidget
 
 from qa.models import Answer, Question
-
-from pagedown.widgets import PagedownWidget
 
 
 class QuestionForm(forms.ModelForm):

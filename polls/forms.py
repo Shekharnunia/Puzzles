@@ -1,8 +1,7 @@
 from django import forms
+from pagedown.widgets import PagedownWidget
 
 from .models import Choice, Poll
-
-from pagedown.widgets import PagedownWidget
 
 
 class PollForm(forms.ModelForm):

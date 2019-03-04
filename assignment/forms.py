@@ -1,8 +1,7 @@
 from django import forms
+from pagedown.widgets import PagedownWidget
 
 from .models import Assignment, StudentAssignment
-
-from pagedown.widgets import PagedownWidget
 
 
 class AssignmentForm(forms.ModelForm):

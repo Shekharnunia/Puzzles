@@ -1,8 +1,7 @@
 from django import forms
+from pagedown.widgets import PagedownWidget
 
 from .models import Article, ArticleComment
-
-from pagedown.widgets import PagedownWidget
 
 
 class ArticleForm(forms.ModelForm):

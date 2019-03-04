@@ -1,15 +1,15 @@
 import datetime
+
+import readtime
 from django.conf import settings
 from django.db import models
 from django.db.models import Count
-from django.utils import timezone
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.html import mark_safe
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
-
 from markdown import markdown
-import readtime
 from taggit.managers import TaggableManager
 
 

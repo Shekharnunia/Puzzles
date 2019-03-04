@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.template.loader import get_template
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
+
 from comments.forms import CommentForm
 from comments.models import Comment
 from helpers import AuthorRequiredMixin, TeacherRequiredMixin

@@ -9,14 +9,13 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   RedirectView, UpdateView)
+from taggit.models import Tag
 
 from decorators import ajax_required
 from helpers import AuthorRequiredMixin, TeacherRequiredMixin
 
 from .forms import ArticleCommentForm, ArticleForm
 from .models import Article, ArticleComment, Category
-
-from taggit.models import Tag
 
 
 class CategoryListView(LoginRequiredMixin, ListView):

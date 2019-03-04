@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from qa.models import Question, Answer, Vote
+from qa.models import Answer, Question, Vote
 
 
 class QuestionAdmin(admin.ModelAdmin):

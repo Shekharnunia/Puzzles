@@ -1,8 +1,8 @@
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Column, Layout, Row, Submit
 from django import forms
 
-from .models import NewsLetterUser, NewsLetter
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
+from .models import NewsLetter, NewsLetterUser
 
 
 class NewsLetterUserSignupForm(forms.ModelForm):
