@@ -59,7 +59,7 @@
 	
 		{% include 'assignment/get_partial_assignments.html' with assignment=assignment %}
 
-		{% include 'includes/pagination.html' %}
+		{% include "includes/pagination.html" with extra=extra %}
 	</div>
 	{% if not search %}
 		<div class="col-md-3">

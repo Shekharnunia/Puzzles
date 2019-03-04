@@ -51,7 +51,7 @@
           <h4 class="no-data">{% trans "No question to display" %}</h4>
         {% endfor %}
 
-        {% include "includes/pagination.html" %}
+        {% include "includes/pagination.html" with extra=extra %}
         
     </div>
     {% if not search %}

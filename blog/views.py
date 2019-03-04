@@ -67,23 +67,28 @@ class PopularListView(ArticlesListView):
 class SearchListView(LoginRequiredMixin, ListView):
     """CBV to contain all the search results"""
     model = Article
-    # template_name = "blog/search_results.html"
+    paginate_by = 10
     context_object_name = "articles"
+
+    def get_queryset(self, *args, **kwargs):
+        if self.request.GET.get("query"):
+            query = self.request.GET.get("query")
+            return Article.objects.filter(Q(
+                title__icontains=query) | Q(content__icontains=query) | Q(
+                tags__name__icontains=query) | Q(
+                user__username__icontains=query) | Q(
+                categories__title__icontains=query), status="P").distinct()
+        else:
+            return Article.objects.get_published()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['search'] = True
         if self.request.GET.get("query"):
-
             query = self.request.GET.get("query")
-
-            context["articles"] = Article.objects.filter(Q(
-                title__icontains=query) | Q(content__icontains=query) | Q(
-                tags__name__icontains=query) | Q(
-                user__username__icontains=query) | Q(
-                categories__title__icontains=query), status="P").distinct()
-
-            context["articles_count"] = context["articles"].count()
+            context['all_article'] = self.get_queryset()
+            context["articles_count"] = context["all_article"].count()
+            context["extra"] = '&query={}'.format(query)
             return context
         return context
 

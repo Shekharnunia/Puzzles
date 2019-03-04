@@ -105,23 +105,28 @@ class TagAssignmentListView(AllAssignmentListView):
 class SearchListView(LoginRequiredMixin, ListView):
     """CBV to contain all the search results"""
     model = Assignment
-    # template_name = "blog/search_results.html"
+    paginate_by = 10
     context_object_name = "assignments"
+
+    def get_queryset(self, *args, **kwargs):
+        if self.request.GET.get("query"):
+            query = self.request.GET.get("query")
+            return Assignment.objects.filter(Q(
+                topic__icontains=query) | Q(description__icontains=query) | Q(
+                tags__name__icontains=query) | Q(
+                uploader__username__icontains=query), draft=False).distinct()
+        else:
+            return Assignment.objects.get_assignment()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['search'] = True
         context["active"] = "all"
         if self.request.GET.get("query"):
-
             query = self.request.GET.get("query")
-
-            context["assignments"] = Assignment.objects.filter(Q(
-                topic__icontains=query) | Q(description__icontains=query) | Q(
-                tags__name__icontains=query) | Q(
-                uploader__username__icontains=query), draft=False).distinct()
-
-            context["assignments_count"] = context["assignments"].count()
+            context["all_assignemt"] = self.get_queryset()
+            context["assignments_count"] = context["all_assignemt"].count()
+            context["extra"] = '&query={}'.format(query)
             return context
         return context
 
