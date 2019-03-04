@@ -18,7 +18,7 @@
 		<h4>Topic: {{ question.title }}</h4><br>
 		<form method="POST">
 			{% csrf_token %}
-			<h2>Are you sure you want to delete the post</h2><br>
+			<h2>Are you sure you want to delete this question</h2><br>
 			<button class="btn btn-outline-danger mr-2" type="submit">Yes, Delete</button>
 			<a class="btn btn-outline-secondary" href="{% url 'qa:question_detail' question.pk question.slug %}">Cancel</a>
 		</form>

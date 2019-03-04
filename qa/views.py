@@ -148,13 +148,13 @@ class CreateQuestionView(LoginRequiredMixin, CreateView):
     message = _("Your question has been created.")
 
     def form_valid(self, form):
-        form.instance.status = 'O'
-        form.instance.user = self.request.user
-        return super().form_valid(form)
-
-    def get_success_url(self):
+        question = form.save(commit=False)
+        question.status = 'O'
+        question.user = self.request.user
+        question.save()
+        form.save_m2m()
         messages.success(self.request, self.message)
-        return reverse("qa:index_noans")
+        return redirect(question.get_absolute_url())
 
 
 # Done
@@ -170,8 +170,9 @@ class EditQuestionView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
+        question = self.get_object()
         messages.success(self.request, self.message)
-        return reverse("qa:index_noans")
+        return question.get_absolute_url()
 
     def test_func(self):
         question = self.get_object()
@@ -252,9 +253,10 @@ class CreateAnswerView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
+        question_id = self.kwargs["question_id"]
+        question = get_object_or_404(Question, pk=question_id)
         messages.success(self.request, self.message)
-        return reverse(
-            "qa:index_all")
+        return question.get_absolute_url()
 
     def test_func(self):
         question_id = self.kwargs["question_id"]
@@ -278,8 +280,10 @@ class EditAnswerView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
+        question_id = self.kwargs["pk"]
+        question = get_object_or_404(Question, pk=question_id)
         messages.success(self.request, self.message)
-        return reverse("qa:question_detail", kwargs={"pk": self.kwargs["pk"], "slug": self.kwargs["slug"]})
+        return question.get_absolute_url()
 
     def test_func(self):
         answer = self.get_object()
@@ -296,8 +300,10 @@ class DeleteAnswerView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     pk_url_kwarg = 'answer_id'
 
     def get_success_url(self):
+        question_id = self.kwargs["pk"]
+        question = get_object_or_404(Question, pk=question_id)
         messages.success(self.request, self.message)
-        return reverse("qa:question_detail", kwargs={"pk": self.kwargs["pk"], "slug": self.kwargs["slug"]})
+        return question.get_absolute_url()
 
     def test_func(self):
         answer = self.get_object()
