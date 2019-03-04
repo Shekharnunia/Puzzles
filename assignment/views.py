@@ -110,10 +110,11 @@ class SearchListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+        context['search'] = True
+        context["active"] = "all"
         if self.request.GET.get("query"):
 
             query = self.request.GET.get("query")
-            context['search'] = True
 
             context["assignments"] = Assignment.objects.filter(Q(
                 topic__icontains=query) | Q(description__icontains=query) | Q(
@@ -121,7 +122,6 @@ class SearchListView(LoginRequiredMixin, ListView):
                 uploader__username__icontains=query), draft=False).distinct()
 
             context["assignments_count"] = context["assignments"].count()
-            context["active"] = "all"
             return context
         return context
 

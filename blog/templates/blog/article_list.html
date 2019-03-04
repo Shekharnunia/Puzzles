@@ -19,11 +19,11 @@
     {% include "snippits/search.html" with query='query' url=search_url %}   
         
     {% if articles_count %}
-      <p class="font-weight-bold">Total no. of articles found : {{ articles_count }}</p>
+      <p class="font-weight-bold col-md-8 offset-md-2">Total no. of articles found : {{ articles_count }}</p>
     {% endif %}
     <div class="row">
       <!-- Blog Entries Column -->
-      <div class="col-md-8">
+      <div class="{% if search %}col-md-8 offset-md-2{% else %}col-md-8{% endif %}">
         {% for article in articles %}
           <!-- Blog Post -->
           <div class="card mb-4">

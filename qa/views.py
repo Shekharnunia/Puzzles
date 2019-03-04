@@ -82,10 +82,11 @@ class SearchListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+        context['search'] = True
+        context["active"] = 'all'
         if self.request.GET.get("query"):
 
             query = self.request.GET.get("query")
-            context['search'] = True
 
             context["questions"] = Question.objects.filter(Q(
                 title__icontains=query) | Q(content__icontains=query) | Q(
@@ -94,7 +95,7 @@ class SearchListView(LoginRequiredMixin, ListView):
                 status="O").distinct()
 
             context["question_count"] = context["questions"].count()
-            context["active"] = 'all'
+
             return context
         return context
 

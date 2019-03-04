@@ -35,5 +35,14 @@
   </div>
 </div>
 {% empty %}
-<h4 class="no-data">There is no published assignment yet <a href="{% url 'assignment:create' %}"> Be the first one to publish one!</a></h4>
+{% if not search %}
+  {% if request.user.is_teacher %}
+    <h4 class="no-data">There is no published assignment yet <a href="{% url 'assignment:create' %}"> Be the first one to publish one!</a></h4>
+  {% elif request.user.is_student %}
+    <h4 class="no-data">There is no published article yet </h4>
+  {% endif %}
+{% else %}
+  <h4 class="no-data">No Assignment matched</h4>
+{% endif %}
+  
 {% endfor %}

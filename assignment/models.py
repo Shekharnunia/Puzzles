@@ -93,6 +93,10 @@ class Assignment(models.Model):
     def __str__(self):
         return self.topic
 
+    class Meta:
+        ordering = ('-timestamp','-pk')
+
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.topic[:50])
