@@ -55,7 +55,8 @@
         
     </div>
     {% if not question_count %}
-      <div class="card col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3 my-4">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
+      <div class="card my-4" style="overflow:auto">
         <h5 class="card-header">{% trans 'Questions by topic' %}</h5>
         <div class="card-body">
           {% for tag, count in popular_tags %}
@@ -63,7 +64,9 @@
           {% endfor %}
         </div>
       </div>
-    {% endif %}
+    </div>
+  {% endif %}
+  
   </div>
 {% endblock content %}
 
