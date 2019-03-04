@@ -1,13 +1,8 @@
 {% extends "control_base.html" %}
 {% block content %}
 <div class="col-sm-9 offset-sm-1 col-md-10 offset-sm-1 main mt-3">
-    <div class = "row">
+  <div class = "row">
     <div class = "col-sm-9">
-	{% if messages %}
-	    {% for message in messages %}
-	    <div {% if message.tags %} class="alert alert-{{ message.tags }}" role="alert"{% endif %}>{{ message }}</div>
-	    {% endfor %}
-	{% endif %}
         <h1 class="page-header">All Newsletters</h1>
     </div>
     <div class = "col-sm-3">
@@ -51,5 +46,6 @@
             {% endfor %}
         </div>
     </div>
+  </div>
 </div>
 {% endblock %}
