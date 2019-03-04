@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render, reverse
@@ -125,7 +126,7 @@ class SearchListView(LoginRequiredMixin, ListView):
         return context
 
 
-class AssignmentDetailView(LoginRequiredMixin, DetailView):
+class AssignmentDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = Assignment
     context_object_name = 'assignment'
 
@@ -137,68 +138,76 @@ class AssignmentDetailView(LoginRequiredMixin, DetailView):
             self.request.session[session_key] = True
         return super().get_context_data(**kwargs)
 
+    def test_func(self):
+        assignment = self.get_object()
+        if self.request.user == assignment.user or blog.draft == False:
+            return True
+        return False
+
 
 @login_required
 def assignment_detail_view(request, pk, slug):
-    form = StudentAssignmentForm(request.POST, request.FILES)
     t_assignment = get_object_or_404(Assignment, pk=pk)
-
-    session_key = 'viewed_assignment_{}'.format(t_assignment.pk)
-    if not request.session.get(session_key, False):
-        t_assignment.assignment_views += 1
-        t_assignment.save()
-        request.session[session_key] = True
-    if request.user.is_student == True:
-        s_assignment = StudentAssignment.objects.filter(assignment=t_assignment).filter(user=request.user).order_by('-timestamp')
-    elif request.user.is_teacher and t_assignment.uploader == request.user:
-        s_assignment = StudentAssignment.objects.filter(assignment=t_assignment).order_by('-timestamp')
-    else:
-        s_assignment = None
-
-    initial_data = {
-        "content_type": t_assignment.get_content_type,
-        "object_id": t_assignment.id
-    }
-
-    if request.method == 'POST':
-        if form.is_valid() and request.user.is_student:
-            s_assignment = form.save(commit=False)
-            s_assignment.assignment = t_assignment
-            s_assignment.user = request.user
-            s_assignment = form.save()
-
-            subject = '{} uploaded an assignment solution'.format(s_assignment.user)
-            email_from = 'settings.EMAIL_HOST_USER'
-            recipient_list = [t_assignment.uploader.email, ]
-
-            current_site = get_current_site(request)
-            context = {
-                'assignment_user': t_assignment.uploader,
-                'solution_uploader_user': request.user,
-                'url': t_assignment.get_absolute_url,
-                'domain': current_site.domain,
-                'title': t_assignment.topic,
-            }
-            context_message = get_template('email/assignment_mail.txt').render(context)
-
-            send_mail(subject, context_message, email_from, recipient_list, fail_silently=True)
-
-            messages.success(request, 'assignment successfully submitted')
-            return redirect(s_assignment.get_absolute_url())
+    if request.user == t_assignment.uploader or t_assignment.draft == False:
+        session_key = 'viewed_assignment_{}'.format(t_assignment.pk)
+        if not request.session.get(session_key, False):
+            t_assignment.assignment_views += 1
+            t_assignment.save()
+            request.session[session_key] = True
+        if request.user.is_student == True:
+            s_assignment = StudentAssignment.objects.filter(assignment=t_assignment).filter(user=request.user).order_by('-timestamp')
+        elif request.user.is_teacher and t_assignment.uploader == request.user:
+            s_assignment = StudentAssignment.objects.filter(assignment=t_assignment).order_by('-timestamp')
         else:
-            messages.warning(request, 'Form containing error')
+            s_assignment = None
 
-    form = StudentAssignmentForm()
-    comment_form = CommentForm(initial=initial_data)
-    comments = t_assignment.comments
-    args = {
-        'assignment': t_assignment,
-        's_form': form,
-        's_assignments': s_assignment,
-        "comments": comments,
-        "comment_form": comment_form,
-    }
-    return render(request, 'assignment/assignment_detail.html', args)
+        initial_data = {
+            "content_type": t_assignment.get_content_type,
+            "object_id": t_assignment.id
+        }
+
+        if request.method == 'POST':
+            form = StudentAssignmentForm(request.POST, request.FILES)
+            if form.is_valid() and request.user.is_student:
+                s_assignment = form.save(commit=False)
+                s_assignment.assignment = t_assignment
+                s_assignment.user = request.user
+                s_assignment = form.save()
+
+                subject = '{} uploaded an assignment solution'.format(s_assignment.user)
+                email_from = 'settings.EMAIL_HOST_USER'
+                recipient_list = [t_assignment.uploader.email, ]
+
+                current_site = get_current_site(request)
+                context = {
+                    'assignment_user': t_assignment.uploader,
+                    'solution_uploader_user': request.user,
+                    'url': t_assignment.get_absolute_url,
+                    'domain': current_site.domain,
+                    'title': t_assignment.topic,
+                }
+                context_message = get_template('email/assignment_mail.txt').render(context)
+
+                send_mail(subject, context_message, email_from, recipient_list, fail_silently=True)
+
+                messages.success(request, 'assignment successfully submitted')
+                return redirect(s_assignment.get_absolute_url())
+            else:
+                messages.warning(request, 'Form containing error')
+
+        form = StudentAssignmentForm()
+        comment_form = CommentForm(initial=initial_data)
+        comments = t_assignment.comments
+        args = {
+            'assignment': t_assignment,
+            's_form': form,
+            's_assignments': s_assignment,
+            "comments": comments,
+            "comment_form": comment_form,
+        }
+        return render(request, 'assignment/assignment_detail.html', args)
+    else:
+        raise PermissionDenied
 
 
 def comment(request, slug, pk):
@@ -300,7 +309,7 @@ class AssignmentCreateView(LoginRequiredMixin, TeacherRequiredMixin, CreateView)
 class AssignmentEditView(LoginRequiredMixin, TeacherRequiredMixin, UpdateView):
     model = Assignment
     context_object_name = 'assignment'
-    fields = ('topic', 'description', 'assignment_file', 'tags',)
+    fields = ('topic', 'description', 'assignment_file', 'draft', 'tags')
     message = ("assignment successfully updated")
 
     def get_success_url(self):

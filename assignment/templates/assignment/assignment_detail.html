@@ -38,8 +38,17 @@
 			</div>
 			{% if request.user == assignment.uploader %}
 			<div class="card-footer">
+				{% for tag in assignment.tags.names %}
+	              <a href="{% url 'blog:tag' tag %}" class="ml-2"><span class="badge badge-info">{{ tag }}</span></a>
+	            {% endfor %}
 				<a class="btn btn-info pull-right btn-sm" href="{% url 'assignment:edit' assignment.slug assignment.pk %}"><i class="far fa-edit mr-1"></i>Edit</a>
 				<a class="btn btn-danger pull-right mr-4 btn-sm" href="{% url 'assignment:delete' assignment.slug assignment.pk %}"><i class="fas fa-trash-alt mr-1"></i>Delete</a>
+            </div>
+            {% else %}
+			<div class="card-footer">
+				{% for tag in assignment.tags.names %}
+	              <a href="{% url 'blog:tag' tag %}" class="ml-2"><span class="badge badge-info">{{ tag }}</span></a>
+	            {% endfor %}
             </div>
             {% endif %}
 		</div>

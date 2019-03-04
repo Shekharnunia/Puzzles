@@ -49,7 +49,8 @@ class AssignmentQuerySet(models.query.QuerySet):
     def get_counted_tags(self):
         """Returns a dict element with tags and its count to show on the UI."""
         tag_dict = {}
-        query = self.all().annotate(tagged=Count('tags')).filter(tags__gt=0)
+        query = self.filter(draft=False).annotate(
+            tagged=Count('tags')).filter(tags__gt=0)
         for obj in query:
             for tag in obj.tags.names():
                 if tag not in tag_dict:
