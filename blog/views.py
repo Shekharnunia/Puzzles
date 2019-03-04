@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect
@@ -96,12 +96,12 @@ class CreateArticleView(LoginRequiredMixin, TeacherRequiredMixin, CreateView):
     template_name = 'blog/article_create.html'
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
-
-    def get_success_url(self):
+        blog = form.save(commit=False)
+        blog.user = self.request.user
+        blog.save()
+        form.save_m2m()
         messages.success(self.request, self.message)
-        return reverse('blog:list')
+        return redirect(blog.get_absolute_url())
 
 
 class EditArticleView(LoginRequiredMixin, AuthorRequiredMixin, UpdateView):
@@ -116,8 +116,9 @@ class EditArticleView(LoginRequiredMixin, AuthorRequiredMixin, UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
+        blog = self.get_object()
         messages.success(self.request, self.message)
-        return reverse('blog:list')
+        return blog.get_absolute_url()
 
 
 class DeleteArticleView(LoginRequiredMixin, AuthorRequiredMixin, DeleteView):
@@ -135,7 +136,7 @@ class DeleteArticleView(LoginRequiredMixin, AuthorRequiredMixin, DeleteView):
         return reverse('blog:list')
 
 
-class DetailArticleView(LoginRequiredMixin, DetailView):
+class DetailArticleView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     """Basic DetailView implementation to call an individual article."""
     model = Article
 
@@ -148,8 +149,14 @@ class DetailArticleView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(*args, **kwargs)
         context['categories'] = Category.objects.all()
         context['is_liked'] = self.object.likes.filter(id=self.request.user.id).exists()
-        context['popular'] = Article.objects.get_popular_post()
+        context['popular'] = Article.objects.get_5_popular_post()
         return context
+
+    def test_func(self):
+        blog = self.get_object()
+        if self.request.user == blog.user or blog.status == 'P':
+            return True
+        return False
 
 
 class TagArticlesListView(ArticlesListView):
