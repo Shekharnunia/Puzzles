@@ -2,19 +2,8 @@
 {% load crispy_forms_tags %}
 {% block content %}
         <h1 class="h2">NewsLetter</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-          </div>
-        </div>
+        
       </div>
-			{% if messages %}
-			    {% for message in messages %}
-			    <div {% if message.tags %} class="alert alert-{{ message.tags }}" role="alert"{% endif %}>{{ message }}</div>
-			    {% endfor %}
-			{% endif %}
-
-
-
 
 	<div class="container"  style="margin-top: 30px;">
 		<form method="POST" novalidate>

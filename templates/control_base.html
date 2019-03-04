@@ -10,70 +10,79 @@
 
 {% block body %}
   <div class="container">
-    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-      <div class="sidebar-sticky">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'control_panel:control_newsletter_list' %}">
-              Newsletter
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'control_panel:control_newsletter' %}">
-              New Newsletter
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'control_panel:control_newsletter_list' %}">
-              Newsletter List
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'Newsletter:newsletter_subscriber_list' %}">
-              Newsletter Subscriber List
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'Newsletter:newsletter_signup' %}">
-              Newsletter Signup
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'Newsletter:newsletter_unsubscribe' %}">
-              Newsletter Unsubscribe
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'qa:index_noans' %}">
-              Q&A
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'blog:list' %}">
-              Blog
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'polls:list' %}">
-              Polls
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'admin:index' %}">
-              Admin
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    {% if request.user.is_staff %}
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="sidebar-sticky">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'control_panel:control_newsletter_list' %}">
+                Newsletter
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'control_panel:control_newsletter' %}">
+                New Newsletter
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'control_panel:control_newsletter_list' %}">
+                Newsletter List
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'Newsletter:newsletter_subscriber_list' %}">
+                Newsletter Subscriber List
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'Newsletter:newsletter_signup' %}">
+                Newsletter Signup
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'Newsletter:newsletter_unsubscribe' %}">
+                Newsletter Unsubscribe
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'qa:index_noans' %}">
+                Q&A
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'blog:list' %}">
+                Blog
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'polls:list' %}">
+                Polls
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'assignment:list' %}">
+                Assignment
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'admin:index' %}">
+                Admin
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    {% endif %}
+    <main role="main" class="{% if not request.user.is_staff %}col-12 text-center{% else %}col-md-9 ml-sm-auto col-lg-10{% endif %}  px-4">
+    {% if request.user.is_staff %}  
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-
-        {% include "includes/messages.html" %}
+    {% endif %}
 
         {% block content %}
         {% endblock %}
+    {% if request.user.is_staff %}        
       </div>
+    {% endif %}
     </main>
-    </div>
+  </div>
 {% endblock %}

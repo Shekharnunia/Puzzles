@@ -74,20 +74,22 @@ def newsletter_unsubscribe(request):
 @staff_member_required
 def control_newsletter(request):
     form = NewsLetterCreationForm(request.POST or None)
-
-    if form.is_valid():
-        instance = form.save()
-        newsletter = NewsLetter.objects.get(id=instance.id)
-        if newsletter.status == "Published":
-            subject = newsletter.subject
-            body = newsletter.body
-            from_email = settings.EMAIL_HOST_USER
-            for email in newsletter.email.all():
-                send_mail(subject=subject, from_email=from_email, recipient_list=[email.email], message=body, fail_silently=True)
-            messages.success(request, 'Newsletter successfully send')
+    if request.method == 'POST':
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.user = request.user
+            instance.save()
+            newsletter = NewsLetter.objects.get(id=instance.id)
+            if newsletter.status == "Published":
+                subject = newsletter.subject
+                body = newsletter.body
+                from_email = settings.EMAIL_HOST_USER
+                for email in newsletter.email.all():
+                    send_mail(subject=subject, from_email=from_email, recipient_list=[email.email], message=body, fail_silently=True)
+                messages.success(request, 'Newsletter successfully send')
+                return redirect('control_panel:control_newsletter_list')
+            messages.success(request, 'Newsletter successfully Saved')
             return redirect('control_panel:control_newsletter_list')
-        messages.success(request, 'Newsletter successfully Saved')
-        return redirect('control_panel:control_newsletter_list')
 
     context = {
         "form": form,
