@@ -210,6 +210,8 @@ class PostLikeToggle(RedirectView):
         if user.is_authenticated:
             if user in obj.likes.all():
                 obj.likes.remove(user)
+                messages.success(self.request, 'you have successfully unliked this post')
             else:
                 obj.likes.add(user)
+                messages.success(self.request, 'you have successfully liked this post')
         return url_
