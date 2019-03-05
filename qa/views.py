@@ -37,6 +37,7 @@ class QuestionsIndexListView(LoginRequiredMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context["active"] = "all"
+        context['nbar'] = 'qa_nav'
         if self.request.GET.get("query"):
             context['search'] = True
             query = self.request.GET.get("query")

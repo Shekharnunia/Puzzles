@@ -36,7 +36,11 @@ class AllAssignmentListView(LoginRequiredMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context["popular_tags"] = Assignment.objects.get_counted_tags()
-        context["active"] = "all"
+        context['nbar'] = 't_assignment_nav'
+        if self.request.user.is_student:
+            context["active"] = "newest"
+        else:
+            context["active"] = "all"
         context['search_url'] = reverse('assignment:results')
         return context
 
@@ -50,7 +54,10 @@ class AssignmentListView(AllAssignmentListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context["active"] = "assignment"
+        if self.request.user.is_student:
+            context["active"] = "newest"
+        else:
+            context["active"] = "assignment"
         return context
 
 
@@ -72,7 +79,7 @@ class AssignmentOldestListView(AllAssignmentListView):
     order which can be seen by students"""
 
     def get_queryset(self):
-        return Assignment.objects.get_oldest_student().order_by('-timestamp')
+        return Assignment.objects.get_oldest_student()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -85,7 +92,7 @@ class AssignmentNewestListView(AllAssignmentListView):
     order which can be seen by students"""
 
     def get_queryset(self):
-        return Assignment.objects.get_newest_student().order_by('-timestamp')
+        return Assignment.objects.get_newest_student()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)

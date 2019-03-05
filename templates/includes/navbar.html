@@ -20,13 +20,13 @@
             <ul class="navbar-nav mr-auto">
               <li class="nav-item {% if request.path == polls %}active{% endif %}"><a class="nav-link" href="{{ polls }}">{% trans 'Poll' %} <span class="sr-only">(current)</span></a></li>
               <li class="nav-item {% if request.path == blog %}active{% endif %}"><a class="nav-link" href="{{ blog }}">{% trans 'Blog' %}</a></li>
-              <li class="nav-item {% if request.path == qa %}active{% endif %}"><a class="nav-link" href="{{ qa }}">{% trans 'Q&A' %}</a></li>
+              <li class="nav-item {% if nbar == 'qa_nav' %}active{% endif %}"><a class="nav-link" href="{{ qa }}">{% trans 'Q&A' %}</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'Newsletter:newsletter_signup' %}">{% trans 'Newsletter' %}</a></li>
               {% if request.user.is_teacher == True %}
-                <li class="nav-item {% if request.path == t_assignment %}active{% endif %}"><a class="nav-link" href="{{ t_assignment }}">{% trans 'Assignments' %}</a></li>
+                <li class="nav-item {% if nbar == 't_assignment_nav' %}active{% endif %}"><a class="nav-link" href="{{ t_assignment }}">{% trans 'Assignments' %}</a></li>
                 <li class="nav-item {% if request.path == users %}active{% endif %}"><a class="nav-link" href="{{ users }}">{% trans 'Users' %}</a></li>
               {% elif request.user.is_student == True %}
-                <li class="nav-item {% if request.path == s_assignment %}active{% endif %}"><a class="nav-link" href="{{ s_assignment }}">{% trans 'Assignments' %}</a></li>
+                <li class="nav-item {% if nbar == 't_assignment_nav' %}active{% endif %}"><a class="nav-link" href="{{ s_assignment }}">{% trans 'Assignments' %}</a></li>
                 <li class="nav-item {% if request.path == users %}active{% endif %}"><a class="nav-link" href="{{ users }}">{% trans 'Users' %}</a></li>
               {% endif %}
             </ul>
