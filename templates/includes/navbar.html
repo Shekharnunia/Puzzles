@@ -43,6 +43,7 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" href="{% url 'users:detail' request.user.username  %}"><i class="far fa-user fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile' %}</a>
                   <a class="dropdown-item" href="{% url 'users:update'  %}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile Settings' %}</a>
+                  <a class="dropdown-item" href="{% url 'contact_form' %}"><i class="fas fa-envelope" aria-hidden="true"></i> &nbsp; {% trans "Contact us" %}</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="{% url 'account_logout' %}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>&nbsp; {% trans "Log Out" %}</a>
                 </div>
@@ -69,13 +70,16 @@
             </ul>
             <ul class="navbar-nav ">
               <li class="nav-item">
-                <a class="nav-link" href="{{ register_url }}"><i class="fas fa-user-plus"> Sign-Up</i></a>
+                <a class="nav-link" href="{{ register_url }}"><i class="fas fa-user-plus"> {% trans "Sign-Up" %}</i></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ login_url }}"><i class="fas fa-user"> Log-In</i></a>
+                <a class="nav-link" href="{{ login_url }}"><i class="fas fa-user"> {% trans "Log-In" %}</i></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'account_reset_password' %}">Reset Password</a>
+                <a class="nav-link" href="{% url 'account_reset_password' %}">{% trans "Reset Password" %}</a>
+              </li>
+              <li class="nav-item">
+                <a class="dropdown-item" href="{% url 'contact_form' %}"><i class="fas fa-envelope" aria-hidden="true"></i> &nbsp; {% trans "Contact us" %}</a>
               </li>
             </ul>                
           </div>

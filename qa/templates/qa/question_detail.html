@@ -62,16 +62,16 @@
     </div>
     <p>
       {% if request.user == question.user %}
-      <a href="{% url 'qa:edit_question' pk=question.pk slug=question.slug %}"><small class="text-muted">edit</small></a>
-      <a href="{% url 'qa:delete_question' pk=question.pk slug=question.slug %}"><small class="text-muted">delete</small></a>
+      <a href="{% url 'qa:edit_question' pk=question.pk slug=question.slug %}"><small class="text-muted">{% trans "edit" %}</small></a>
+      <a href="{% url 'qa:delete_question' pk=question.pk slug=question.slug %}"><small class="text-muted">{% trans "delete" %}</small></a>
       {% endif %}
       {% if request.user.is_teacher == True and question.status == 'O' %}
-      <a href="{% url 'qa:question_close' pk=question.pk slug=question.slug %}"><small class="text-muted">close</small></a>
+      <a href="{% url 'qa:question_close' pk=question.pk slug=question.slug %}"><small class="text-muted">{% trans "close" %}</small></a>
       {% endif %}
-      <a href="{% url 'qa:flag_question' question.pk question.slug %}"><small class="text-muted">flag</small></a>
+      <a href="{% url 'qa:flag_question' question.pk question.slug %}"><small class="text-muted">{% trans "flag" %}</small></a>
     </p>
     {% if question.status == 'C' %}
-      <div class="card"><div class="card-footer"><b>closed</b> as {{ question.close_question_reason }} by <a href="{% url 'users:detail' question.close_question_user.username  %}">{{ question.close_question_user.username|title }}</a> {{ question.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ question.timestamp|date:"G:i" }}</div></div>
+      <div class="card"><div class="card-footer"><b>{% trans "closed" %}</b> as "{{ question.close_question_reason }}" {% trans "by" %} <a href="{% url 'users:detail' question.close_question_user.username  %}">{{ question.close_question_user.username|title }}</a> {{ question.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ question.timestamp|date:"G:i" }} {% trans "if the post owner have any problem regarding this then" %} <a href="{% url 'contact_form' %}">{% trans "Contact us" %}</a> {% trans "and raise an issue" %}</div></div>
     {% endif %}
   </div>
   <div class="col-12 col-sm-12 col-md-2 col-lg-3" style="font-size: 15px; font-width: 15px;">
