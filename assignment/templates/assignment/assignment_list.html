@@ -19,8 +19,8 @@
 </div>
     {% include "snippits/search.html" with query='query' url=search_url %}   
         
-    {% if assignments_count %}
-      <p class="font-weight-bold col-md-10 offset-md-1">Total no. of assignment found : {{ assignments_count }}</p>
+    {% if assignments.count > 0 and search == True %}
+      <p class="font-weight-bold col-md-10 offset-md-1">Total no. of assignment found : {{ assignments.count }}</p>
     {% endif %}
 <div class="row">
 	<div class="{% if search %}col-md-10 offset-md-1{% else %}col-md-9{% endif %}">

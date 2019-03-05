@@ -18,8 +18,8 @@
 
     {% include "snippits/search.html" with query='query' url=search_url %}   
         
-    {% if articles_count %}
-      <p class="font-weight-bold col-md-8 offset-md-2">Total no. of articles found : {{ articles_count }}</p>
+    {% if articles.count > 0 and search == True %}
+      <p class="font-weight-bold col-md-8 offset-md-2">Total no. of articles found : {{ articles.count }}</p>
     {% endif %}
     <div class="row">
       <!-- Blog Entries Column -->
