@@ -9,9 +9,10 @@
 {% endblock %}
 
 {% block body %}
+{% include "includes/navbar.html" %}
   <div class="container">
     {% if request.user.is_staff %}
-      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <nav class="col-md-2 mt-5 d-none d-md-block bg-light sidebar">
         <div class="sidebar-sticky">
           <ul class="nav flex-column">
             <li class="nav-item">
@@ -84,4 +85,6 @@
     {% endif %}
     </main>
   </div>
+
+  {% include "includes/javascript.html" %}
 {% endblock %}
