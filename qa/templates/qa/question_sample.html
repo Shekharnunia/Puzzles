@@ -12,7 +12,7 @@
         <small class="text-secondary answer-size">{% trans 'Votes' %}</small>
       </div>
     </div>
-    <div class="col-10 offset-1 col-sm-10 offset-sm-1 col-md-10 ml-md-3 col-lg-10 ml-lg-3">
+    <div class="col-8 offset-2 col-sm-9 offset-sm-1 col-md-9 offset-md-1 col-lg-10 offset-lg-1">
       <div>
         <h4 class="card-title">
           <a href="{% url 'qa:question_detail' question.pk question.slug %}">{% if question.status == 'C' %}
@@ -21,6 +21,13 @@
         </h4>
         <p>{{ question.get_markdown|safe|truncatechars:100 }}</p>
       </div>
+      {% if question.tags.names %}
+          <p style="inline position: absolute; bottom: 0;">
+            {% for tag in question.tags.names %}
+              <a href="{% url 'qa:tag' tag %}"><span class="badge badge-primary">{{ tag }}</span></a>
+            {% endfor %}
+          </p>
+        {% endif %}
         <div class="question-user pull-right">
             <div class="card">
               <small><span class="text-secondary">{% trans 'asked' %} {{ question.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ question.timestamp|date:"G:i" }}</span></small>
@@ -36,13 +43,6 @@
               </div>
             </div>
         </div>
-        {% if question.tags.names %}
-          <p style="inline position: absolute; bottom: 0;">
-            {% for tag in question.tags.names %}
-              <a href="{% url 'qa:tag' tag %}"><span class="badge badge-primary">{{ tag }}</span></a>
-            {% endfor %}
-          </p>
-        {% endif %}
     </div>
   </div>
 </div>
