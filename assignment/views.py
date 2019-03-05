@@ -125,6 +125,8 @@ class SearchListView(LoginRequiredMixin, ListView):
         if self.request.GET.get("query"):
             query = self.request.GET.get("query")
             context["extra"] = '&query={}'.format(query)
+            assignment = self.object_list
+            context['assignment_count'] = assignment.count()
             return context
         return context
 

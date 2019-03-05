@@ -98,6 +98,8 @@ class SearchListView(LoginRequiredMixin, ListView):
         context["active"] = 'all'
         if self.request.GET.get("query"):
             query = self.request.GET.get("query")
+            question = self.object_list
+            context['question_count'] = question.count()
             context["extra"] = '&query={}'.format(query)
             return context
         return context

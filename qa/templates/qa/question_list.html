@@ -23,8 +23,8 @@
     <h1>{% trans "Questions" %}</h1>
   </div>
   {% include "snippits/search.html" with query='query' url=search_url %}   
-  {% if questions.count > 0 and search == True %}
-      <p class="font-weight-bold col-md-10 offset-md-1">Total no. of Question found : {{ questions.count }}</p>
+  {% if question_count %}
+      <p class="font-weight-bold col-md-10 offset-md-1">Total no. of Question found : {{ question_count }}</p>
     {% endif %}
   <div class="row">
     <div class="{% if search %}col-md-10 offset-md-1{% else %}col-md-9col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9{% endif %}">
