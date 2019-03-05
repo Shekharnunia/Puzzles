@@ -27,14 +27,25 @@ class QuestionsIndexListView(LoginRequiredMixin, ListView):
     paginate_by = 10
     context_object_name = "questions"
 
-    def get_queryset(self, **kwargs):
-        return Question.objects.all()
+    def get_queryset(self, *args, **kwargs):
+        if self.request.GET.get("query"):
+            query = self.request.GET.get("query")
+            return Question.objects.search(query)
+        else:
+            return Question.objects.all()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context["popular_tags"] = Question.objects.get_counted_tags()
-        context["search_url"] = reverse('qa:results')
         context["active"] = "all"
+        if self.request.GET.get("query"):
+            context['search'] = True
+            query = self.request.GET.get("query")
+            context["extra"] = '&query={}'.format(query)
+            question = self.object_list
+            context['question_count'] = question.count()
+            return context
+        context["popular_tags"] = Question.objects.get_counted_tags()
+        context["search_url"] = reverse('qa:index_all')
         return context
 
 
@@ -53,7 +64,11 @@ class QuestionAnsListView(QuestionsIndexListView):
     marked as answered."""
 
     def get_queryset(self, **kwargs):
-        return Question.objects.get_answered()
+        if self.request.GET.get("query"):
+            query = self.request.GET.get("query")
+            return Question.objects.get_answered().search(query)
+        else:
+            return Question.objects.get_answered()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -67,41 +82,15 @@ class QuestionListView(QuestionsIndexListView):
     as answered."""
 
     def get_queryset(self, **kwargs):
-        return Question.objects.get_unanswered()
+        if self.request.GET.get("query"):
+            query = self.request.GET.get("query")
+            return Question.objects.get_unanswered().search(query)
+        else:
+            return Question.objects.get_unanswered()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context["active"] = "unanswered"
-        return context
-
-
-class SearchListView(LoginRequiredMixin, ListView):
-    """CBV to contain all the search results"""
-    model = Question
-    paginate_by = 10
-    context_object_name = "questions"
-
-    def get_queryset(self, *args, **kwargs):
-        if self.request.GET.get("query"):
-            query = self.request.GET.get("query")
-            return Question.objects.filter(Q(
-                title__icontains=query) | Q(content__icontains=query) | Q(
-                tags__name__icontains=query) | Q(
-                user__username__icontains=query),
-                status="O").distinct()
-        else:
-            return Question.objects.all()
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['search'] = True
-        context["active"] = 'all'
-        if self.request.GET.get("query"):
-            query = self.request.GET.get("query")
-            question = self.object_list
-            context['question_count'] = question.count()
-            context["extra"] = '&query={}'.format(query)
-            return context
         return context
 
 

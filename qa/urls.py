@@ -72,8 +72,4 @@ urlpatterns = [
     url(r'^tag/(?P<tag_name>.+)/$',
         views.TagQuestionListView.as_view(),
         name='tag'),
-
-    url(r'^search/$',
-        views.SearchListView.as_view(),
-        name='results'),
 ]

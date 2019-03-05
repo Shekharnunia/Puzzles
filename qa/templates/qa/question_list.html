@@ -30,17 +30,17 @@
     <div class="{% if search %}col-md-10 offset-md-1{% else %}col-md-9col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9{% endif %}">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link{% if active == 'unanswered' %} active{% endif %}" href="{% url 'qa:index_noans' %}">
+            <a class="nav-link{% if active == 'unanswered' %} active{% endif %}" href="{% url 'qa:index_noans' %}{% if request.GET.query %}?query={{ request.GET.query }}{% endif %}">
               {% trans "Unanswered" %}
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link{% if active == 'answered' %} active{% endif %}" href="{% url 'qa:index_ans' %}">
+            <a class="nav-link{% if active == 'answered' %} active{% endif %}" href="{% url 'qa:index_ans' %}{% if request.GET.query %}?query={{ request.GET.query }}{% endif %}">
               {% trans "Answered" %}
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link{% if active == 'all' %} active{% endif %}" href="{% url 'qa:index_all' %}">
+            <a class="nav-link{% if active == 'all' %} active{% endif %}" href="{% url 'qa:index_all' %}{% if request.GET.query %}?query={{ request.GET.query }}{% endif %}">
               {% trans "All Questions" %}
             </a>
           </li>

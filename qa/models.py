@@ -6,7 +6,7 @@ from django.contrib.contenttypes.fields import (GenericForeignKey,
                                                 GenericRelation)
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.urls import reverse
 from django.utils.html import mark_safe
 from django.utils.text import slugify
@@ -50,6 +50,13 @@ class QuestionQuerySet(models.query.QuerySet):
         """Returns only items which has not been marked as answered in the
         current queryset"""
         return self.filter(has_answer=False)
+
+    def search(self, query):
+        return self.filter(Q(
+            title__icontains=query) | Q(content__icontains=query) | Q(
+            tags__name__icontains=query) | Q(
+            user__username__icontains=query),
+            status="O").distinct()
 
     def get_counted_tags(self):
         """Returns a dict element with tags and its count to show on the UI."""
@@ -95,7 +102,7 @@ class Question(models.Model):
     flag = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='flag_question', blank=True)
 
     class Meta:
-        ordering = ["total_votes", "-timestamp"]
+        ordering = ["-total_votes", "-timestamp"]
         verbose_name = _("Question")
         verbose_name_plural = _("Questions")
 
