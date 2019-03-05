@@ -1,4 +1,4 @@
 Welcome to our website
 Thanks for Joining
-To unsubscribe click the this link http://127.0.0.1:8000/newsletter/unsubscribe/
+To unsubscribe click the this link {{ domain }}/newsletter/unsubscribe/
 

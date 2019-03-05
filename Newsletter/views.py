@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMultiAlternatives, send_mail
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import get_object_or_404, redirect, render
@@ -17,6 +18,7 @@ from .models import NewsLetter, NewsLetterUser
 def newsletter_signup(request):
     if request.method == 'POST':
         form = NewsLetterUserSignupForm(request.POST or None)
+        current_site = get_current_site(request)
         if form.is_valid():
             instance = form.save(commit=False)
             if NewsLetterUser.objects.filter(email=instance.email).exists():
@@ -32,9 +34,9 @@ def newsletter_signup(request):
                 #    signup_message = f.read()
                 signup_message = '''Welcome to our website
                 Thanks for Joining
-                To unsubscribe click the this link http://127.0.0.1:8000/newsletter/unsubscribe/'''
+                To unsubscribe click the this link {}/newsletter/unsubscribe/'''.format(current_site.domain)
                 message = EmailMultiAlternatives(subject=subject, body=signup_message, from_email=from_email, to=to_email)
-                html_template = get_template("newsletter/sign_up_email.html").render()
+                html_template = get_template("newsletter/sign_up_email.html").render({'domain': current_site.domain, })
                 message.attach_alternative(html_template, "text/html")
                 message.send()
     form = NewsLetterUserSignupForm()
@@ -47,6 +49,7 @@ def newsletter_signup(request):
 def newsletter_unsubscribe(request):
     form = NewsLetterUserSignupForm(request.POST or None)
     if request.method == 'POST':
+        current_site = get_current_site(request)
         if form.is_valid():
             instance = form.save(commit=False)
             if NewsLetterUser.objects.filter(email=instance.email).exists():
@@ -59,10 +62,10 @@ def newsletter_unsubscribe(request):
                 #    signup_message = f.read()
                 signup_message = '''Welcome to our website
                 Thanks for Joining
-                To unsubscribe click the this link http://127.0.0.1:8000/newsletter/unsubscribe/'''
+                To unsubscribe click the this link {}/newsletter/unsubscribe/'''.format(current_site.domain)
 
                 message = EmailMultiAlternatives(subject=subject, body=signup_message, from_email=from_email, to=to_email)
-                html_template = get_template("newsletter/unsubscribe_email.html").render()
+                html_template = get_template("newsletter/unsubscribe_email.html").render({'domain': current_site.domain, })
                 message.attach_alternative(html_template, "text/html")
                 message.send()
             else:
