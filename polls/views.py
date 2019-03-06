@@ -38,10 +38,14 @@ def polls_list(request):
         polls = polls.filter(Q(text__icontains=search_term) | Q(
             owner__username__icontains=search_term)).distinct()
 
-    paginator = Paginator(polls, 10)
-
     page = request.GET.get('page')
-    polls = paginator.get_page(page)
+    paginator = Paginator(polls, 10)
+    try:
+        polls = paginator.page(page)
+    except PageNotAnInteger:
+        polls = paginator.page(1)
+    except EmptyPage:
+        polls = paginator.page(paginator.num_pages)
 
     get_dict_copy = request.GET.copy()
     params = get_dict_copy.pop('page', True) and get_dict_copy.urlencode()
