@@ -27,17 +27,17 @@
 		{% if request.user.is_teacher == True %}
 		<ul class="nav nav-tabs">
 			<li class="nav-item">
-				<a class="nav-link{% if active == 'assignment' %} active{% endif %}" href="{% url 'assignment:list' %}">
+				<a class="nav-link{% if active == 'assignment' %} active{% endif %}" href="{% url 'assignment:list' %}{% if request.GET.query %}?query={{ request.GET.query }}{% endif %}">
 					{% trans "Assignment" %}
 				</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link{% if active == 'draft' %} active{% endif %}" href="{% url 'assignment:draft_list' %}">
+				<a class="nav-link{% if active == 'draft' %} active{% endif %}" href="{% url 'assignment:draft_list' %}{% if request.GET.query %}?query={{ request.GET.query }}{% endif %}">
 					{% trans "Draft" %}
 				</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link{% if active == 'all' %} active{% endif %}" href="{% url 'assignment:all_list' %}">
+				<a class="nav-link{% if active == 'all' %} active{% endif %}" href="{% url 'assignment:all_list' %}{% if request.GET.query %}?query={{ request.GET.query }}{% endif %}">
 					{% trans "All assignment" %}
 				</a>
 			</li>
@@ -45,12 +45,12 @@
 		{% elif request.user.is_student == True %}
 		<ul class="nav nav-tabs">
 			<li class="nav-item">
-				<a class="nav-link{% if active == 'oldest' %} active{% endif %}" href="{% url 'assignment:old_list' %}">
+				<a class="nav-link{% if active == 'oldest' %} active{% endif %}" href="{% url 'assignment:old_list' %}{% if request.GET.query %}?query={{ request.GET.query }}{% endif %}">
 					{% trans "Oldest" %}
 				</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link{% if active == 'newest' %} active{% endif %}" href="{% url 'assignment:new_list' %}">
+				<a class="nav-link{% if active == 'newest' %} active{% endif %}" href="{% url 'assignment:new_list' %}{% if request.GET.query %}?query={{ request.GET.query }}{% endif %}">
 					{% trans "Newest" %}
 				</a>
 			</li>

@@ -28,20 +28,31 @@ class AllAssignmentListView(LoginRequiredMixin, ListView):
     context_object_name = 'assignments'
 
     def get_queryset(self):
-        assignemt = Assignment.objects.get_assignment()
-        all_assignemt = Assignment.objects.all().filter(uploader=self.request.user)
-        union = all_assignemt.union(assignemt).order_by('-timestamp')
-        return union
+        if self.request.GET.get("query"):
+            query = self.request.GET.get("query")
+            return Assignment.objects.search(query)
+        else:
+            assignemt = Assignment.objects.get_assignment()
+            all_assignemt = Assignment.objects.filter(uploader=self.request.user)
+            union = all_assignemt.union(assignemt).order_by('-timestamp')
+            return union
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context["popular_tags"] = Assignment.objects.get_counted_tags()
-        context['nbar'] = 't_assignment_nav'
         if self.request.user.is_student:
             context["active"] = "newest"
         else:
             context["active"] = "all"
-        context['search_url'] = reverse('assignment:results')
+        context['nbar'] = 't_assignment_nav'
+        if self.request.GET.get("query"):
+            context['search'] = True
+            query = self.request.GET.get("query")
+            context["extra"] = '&query={}'.format(query)
+            anssignment = self.object_list
+            context['assignment_count'] = anssignment.count()
+            return context
+        context["popular_tags"] = Assignment.objects.get_counted_tags()
+        context['search_url'] = reverse('assignment:all_list')
         return context
 
 
@@ -50,7 +61,11 @@ class AssignmentListView(AllAssignmentListView):
     user which are not in draft or open to see"""
 
     def get_queryset(self):
-        return Assignment.objects.get_assignment().order_by('-timestamp')
+        if self.request.GET.get("query"):
+            query = self.request.GET.get("query")
+            return Assignment.objects.get_assignment().search(query)
+        else:
+            return Assignment.objects.get_assignment().order_by('-timestamp')
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -66,7 +81,13 @@ class AssignmentDraftListView(TeacherRequiredMixin, AllAssignmentListView):
     user which are in draft"""
 
     def get_queryset(self):
-        return Assignment.objects.get_draft_assignment().filter(uploader=self.request.user).order_by('-timestamp')
+        if self.request.GET.get("query"):
+            query = self.request.GET.get("query")
+            request = self.request
+            return Assignment.objects.draft_search(query, request)
+        else:
+            request = self.request
+            return Assignment.objects.get_draft_assignment(request)
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -79,7 +100,11 @@ class AssignmentOldestListView(AllAssignmentListView):
     order which can be seen by students"""
 
     def get_queryset(self):
-        return Assignment.objects.get_oldest_student()
+        if self.request.GET.get("query"):
+            query = self.request.GET.get("query")
+            return Assignment.objects.get_oldest_student().search(query)
+        else:
+            return Assignment.objects.get_oldest_student()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -92,7 +117,11 @@ class AssignmentNewestListView(AllAssignmentListView):
     order which can be seen by students"""
 
     def get_queryset(self):
-        return Assignment.objects.get_newest_student()
+        if self.request.GET.get("query"):
+            query = self.request.GET.get("query")
+            return Assignment.objects.search(query)
+        else:
+            return Assignment.objects.get_newest_student()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -105,37 +134,8 @@ class TagAssignmentListView(AllAssignmentListView):
     list."""
 
     def get_queryset(self, **kwargs):
-        return Assignment.objects.filter(
+        return Assignment.objects.filter(draft=False).filter(
             tags__name=self.kwargs['tag_name']).order_by('-timestamp')
-
-
-class SearchListView(LoginRequiredMixin, ListView):
-    """CBV to contain all the search results"""
-    model = Assignment
-    paginate_by = 10
-    context_object_name = "assignments"
-
-    def get_queryset(self, *args, **kwargs):
-        if self.request.GET.get("query"):
-            query = self.request.GET.get("query")
-            return Assignment.objects.filter(Q(
-                topic__icontains=query) | Q(description__icontains=query) | Q(
-                tags__name__icontains=query) | Q(
-                uploader__username__icontains=query), draft=False).distinct()
-        else:
-            return Assignment.objects.get_assignment()
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['search'] = True
-        context["active"] = "all"
-        if self.request.GET.get("query"):
-            query = self.request.GET.get("query")
-            context["extra"] = '&query={}'.format(query)
-            assignment = self.object_list
-            context['assignment_count'] = assignment.count()
-            return context
-        return context
 
 
 class AssignmentDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):

@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.urls import reverse
 from django.utils.html import mark_safe
 from django.utils.text import slugify
@@ -26,10 +26,10 @@ class AssignmentQuerySet(models.query.QuerySet):
         queryset"""
         return self.filter(draft=False)
 
-    def get_draft_assignment(self):
+    def get_draft_assignment(self, request):
         """Returns only items which has not been marked as draft in the
         current queryset"""
-        return self.filter(draft=True)
+        return self.filter(draft=True).filter(uploader=request.user).order_by('-timestamp')
 
     def get_assignment_of_a_teacher(self):
         """Returns only items which has not been marked as draft in the current
@@ -60,6 +60,18 @@ class AssignmentQuerySet(models.query.QuerySet):
                     tag_dict[tag] += 1
 
         return tag_dict.items()
+
+    def search(self, query):
+        return self.filter(Q(
+            topic__icontains=query) | Q(description__icontains=query) | Q(
+            tags__name__iexact=query) | Q(
+            uploader__username__iexact=query), draft=False).distinct()
+
+    def draft_search(self, query, request):
+        return self.filter(Q(
+            topic__icontains=query) | Q(description__icontains=query) | Q(
+            tags__name__iexact=query) | Q(
+            uploader__username__iexact=query), draft=True, uploader=request.user).distinct()
 
 
 def student_assignment_upload_path(instance, filename):
@@ -94,8 +106,7 @@ class Assignment(models.Model):
         return self.topic
 
     class Meta:
-        ordering = ('-timestamp','-pk')
-
+        ordering = ('-timestamp', '-pk')
 
     def save(self, *args, **kwargs):
         if not self.slug:
