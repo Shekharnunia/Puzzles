@@ -24,7 +24,7 @@
     <link href="{% static 'css/creative.css' %}" rel="stylesheet">
   </head>
   <body id="page-top">
-
+  
     <header class="masthead text-center text-white d-flex">
       <div class="container my-auto">
         <div class="row">
@@ -32,10 +32,25 @@
             <h1 class="text-uppercase"><strong>{% trans 'Welcome to Puzzles' %}</strong></h1>
             <hr>
           </div>
-          <div class="col-lg-4 mx-auto">
-            <p class="text-faded mb-5">{% trans 'Your University oriented social network.' %}</p>
-            <a class="btn btn-primary btn-xl" href="{% url 'account_login' %}">{% trans 'Start Session' %}</a>
-          </div>
+          {% if request.user.is_authenticated %}
+            <div class="col-xl-12 mx-auto">
+              <p class="text-faded mb-5">{% trans 'Your University oriented social network.' %}</p>
+              <a class="btn btn-primary btn-xl mb-3 mr-auto ml-auto" href="{% url 'blog:list' %}">{% trans 'Blog' %}</a>
+              <a class="btn btn-primary btn-xl mb-3 mr-auto ml-auto" href="{% url 'Newsletter:newsletter_signup' %}">{% trans 'Newsletter' %}</a>
+              {% if request.user.is_teacher %}
+                <a class="btn btn-primary btn-xl mb-3 mr-auto ml-auto" href="{% url 'assignment:list' %}">{% trans 'Assignments' %}</a>
+              {% else %}
+                <a class="btn btn-primary btn-xl mb-3 mr-auto ml-auto" href="{% url 'assignment:new_list' %}">{% trans 'Assignments' %}</a>  
+              {% endif %}
+              <a class="btn btn-primary btn-xl mb-3 mr-auto ml-auto" href="{% url 'qa:index_noans' %}">{% trans 'Q&A' %}</a>
+              <a class="btn btn-primary btn-xl mb-3 mr-auto ml-auto" href="{% url 'polls:list' %}">{% trans 'Polls' %}</a>
+            </div>
+          {% else %}
+            <div class="col-lg-4 mx-auto">
+              <p class="text-faded mb-5">{% trans 'Your University oriented social network.' %}</p>
+              <a class="btn btn-primary btn-xl" href="{% url 'account_login' %}">{% trans 'Start Session' %}</a>
+            </div>
+          {% endif %}
         </div>
       </div>
     </header>
