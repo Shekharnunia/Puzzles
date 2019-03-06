@@ -34,8 +34,8 @@ class AllAssignmentListView(LoginRequiredMixin, ListView):
         else:
             assignemt = Assignment.objects.get_assignment()
             all_assignemt = Assignment.objects.filter(uploader=self.request.user)
-            union = all_assignemt.union(assignemt).order_by('-timestamp')
-            return union
+            union = all_assignemt.union(assignemt)
+            return union.order_by('-timestamp')
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
