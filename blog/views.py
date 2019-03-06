@@ -9,6 +9,9 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   RedirectView, UpdateView)
+from django.http import JsonResponse
+
+from django.template.loader import render_to_string
 from taggit.models import Tag
 
 from decorators import ajax_required
@@ -201,17 +204,20 @@ def comment(request):
         return HttpResponseBadRequest()
 
 
-class PostLikeToggle(RedirectView):
-    def get_redirect_url(self, *args, **kwargs):
-        pk = self.kwargs.get("pk")
-        obj = get_object_or_404(Article, pk=pk)
-        url_ = obj.get_absolute_url()
-        user = self.request.user
-        if user.is_authenticated:
-            if user in obj.likes.all():
-                obj.likes.remove(user)
-                messages.success(self.request, 'you have successfully unliked this post')
-            else:
-                obj.likes.add(user)
-                messages.success(self.request, 'you have successfully liked this post')
-        return url_
+def like_post(request):
+    article = get_object_or_404(Article, id=request.POST.get('id'))
+    is_liked = False
+    if article.likes.filter(id=request.user.id).exists():
+        article.likes.remove(request.user)
+        is_liked = False
+    else:
+        article.likes.add(request.user)
+        is_liked = True
+    context = {
+        'article': article,
+        'is_liked': is_liked,
+        'total_likes': article.likes.count(),
+    }
+    if request.is_ajax():
+        html = render_to_string('blog/like_section.html', context, request=request)
+        return JsonResponse({'form': html})

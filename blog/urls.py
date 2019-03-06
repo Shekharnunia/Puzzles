@@ -45,10 +45,6 @@ urlpatterns = [
         views.DeleteArticleView.as_view(),
         name='delete_article'),
 
-    url(r'^(?P<pk>\d+)/like/$',
-        views.PostLikeToggle.as_view(),
-        name='like-toggle'),
-
     url(r'^(?P<year>[0-9]{4})/(?P<month>[0-9]{2})/(?P<day>[0-9]{2})/(?P<slug>[-\w]+)/$',
         views.DetailArticleView.as_view(),
         name='article'),
@@ -56,4 +52,9 @@ urlpatterns = [
     url(r'^tag/(?P<tag_name>.+)/$',
         views.TagArticlesListView.as_view(),
         name='tag'),
+
+    url(r'^likes/',
+        views.like_post,
+        name="like_post"),
+
 ]

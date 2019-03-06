@@ -18,6 +18,25 @@
 
       }
     </style>
+    <script type="text/javascript">
+      $(document).on('click', '#like', function(event){
+          event.preventDefault();
+          var pk = $(this).attr('value');
+          $.ajax({
+            type: 'POST',
+            url: '{% url "blog:like_post" %}',
+            data: {'id':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+            dataType: 'json',
+            success: function(response){
+              $('#like-section').html(response['form'])
+              console.log($('#like-section').html(response['form']));
+            },
+            error: function(rs, e){
+              console.log(rs.responseText);
+            },
+          });
+        });
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -58,21 +77,14 @@
           <img class="img-fluid rounded" src="{% static 'img/avatar.svg' %}" alt="Card Image">
         {% endthumbnail %}
         <!-- <img src="{{ MEDIA_URL }}{{ article.image }}" lt="{% trans 'Featured Image' %}" class="card-img-top"> -->
-            {% if is_liked %}
               <div class="card-body mt-2 mb-2">
                 <p class="card-text">{{ article.get_message_as_markdown|safe }}</p><hr>
                 <p>
-                  <i class="far fa-thumbs-up"></i><a href="{{ article.get_like_url }}"> {{ article.likes.count }} Unlike</a>
+                <div id="like-section">
+                  {% include 'blog/like_section.html' with total_likes=article.likes.count %}  
+                </div>
                 </p>
               </div>
-            {% else %}
-              <div class="card-body mt-2 mb-2">
-                <p class="card-text">{{ article.get_message_as_markdown|safe }}</p><hr>
-                <p>
-                  <i class="far fa-thumbs-up"></i><a href="{{ article.get_like_url }}"> {{ article.likes.count }} Like</a>
-                </p>
-              </div>
-            {% endif %}
             <div class="card-footer text-muted">
               {% for tag in article.tags.names %}
                 <a href="{% url 'blog:tag' tag %}" class="ml-2"><span class="badge badge-info">{{ tag }}</span></a>
