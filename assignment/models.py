@@ -24,7 +24,7 @@ class AssignmentQuerySet(models.query.QuerySet):
     def get_assignment(self):
         """Returns only items which has not been marked as draft in the current
         queryset"""
-        return self.filter(draft=False)
+        return self.filter(draft=False).order_by('-timestamp')
 
     def get_draft_assignment(self, request):
         """Returns only items which has not been marked as draft in the
@@ -34,7 +34,7 @@ class AssignmentQuerySet(models.query.QuerySet):
     def get_assignment_of_a_teacher(self):
         """Returns only items which has not been marked as draft in the current
         queryset"""
-        return self.filter(draft=False).filter(uploader=self.uploader)
+        return self.filter(draft=False).filter(uploader=self.uploader).order_by('-timestamp')
 
     def get_oldest_student(self):
         """Returns only items which has been posted oldest and are not draft
@@ -105,8 +105,8 @@ class Assignment(models.Model):
     def __str__(self):
         return self.topic
 
-    class Meta:
-        ordering = ('-timestamp', '-pk')
+    # class Meta:
+        # ordering = ('-timestamp', '-pk')
 
     def save(self, *args, **kwargs):
         if not self.slug:

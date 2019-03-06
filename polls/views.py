@@ -21,7 +21,7 @@ def polls_list(request):
     Renders the polls_list.html template which lists all the
     currently available polls
     """
-    polls = Poll.objects.all()
+    polls = Poll.objects.all().order_by('-id')
     search_term = ''
 
     if 'text' in request.GET:

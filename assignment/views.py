@@ -30,7 +30,7 @@ class AllAssignmentListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         if self.request.GET.get("query"):
             query = self.request.GET.get("query")
-            return Assignment.objects.search(query)
+            return Assignment.objects.search(query).order_by('-timestamp')
         else:
             assignemt = Assignment.objects.get_assignment()
             all_assignemt = Assignment.objects.filter(uploader=self.request.user)
@@ -63,7 +63,7 @@ class AssignmentListView(AllAssignmentListView):
     def get_queryset(self):
         if self.request.GET.get("query"):
             query = self.request.GET.get("query")
-            return Assignment.objects.get_assignment().search(query)
+            return Assignment.objects.get_assignment().search(query).order_by('-timestamp')
         else:
             return Assignment.objects.get_assignment().order_by('-timestamp')
 
@@ -84,7 +84,7 @@ class AssignmentDraftListView(TeacherRequiredMixin, AllAssignmentListView):
         if self.request.GET.get("query"):
             query = self.request.GET.get("query")
             request = self.request
-            return Assignment.objects.draft_search(query, request)
+            return Assignment.objects.draft_search(query, request).order_by('-timestamp')
         else:
             request = self.request
             return Assignment.objects.get_draft_assignment(request)
@@ -119,7 +119,7 @@ class AssignmentNewestListView(AllAssignmentListView):
     def get_queryset(self):
         if self.request.GET.get("query"):
             query = self.request.GET.get("query")
-            return Assignment.objects.search(query)
+            return Assignment.objects.search(query).order_by('-timestamp')
         else:
             return Assignment.objects.get_newest_student()
 
