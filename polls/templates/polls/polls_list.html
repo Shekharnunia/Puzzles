@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mb-5">
@@ -6,34 +7,47 @@
   <div class="row">
     <div class="col-12 col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
 
-      <a
-          href="?text=True"
-          class="btn btn-{% if 'text' in request.GET %}warning{% else %}primary{% endif %}"
-          style="margin-bottom: 5px">Text
-      </a>
-      <a
-          href="?pub_date=True"
-          class="btn btn-{% if 'pub_date' in request.GET %}warning{% else %}primary{% endif %}"
-          style="margin-bottom: 5px">Pub_date
-      </a>
-      <a
-          href="?num_votes=True"
-          class="btn btn-{% if 'num_votes' in request.GET %}warning{% else %}primary{% endif %}"
-          style="margin-bottom: 5px">Num_votes
-      </a>
-      <a href="{% url 'polls:add' %}" class="btn btn-primary" style="margin-bottom: 5px">Add <i class="fas fa-plus"></i> </a>
-
-      <form class="form-inline my-2 my-lg-1">
-        <input
-            class="form-control mr-sm-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-            name='search'
-            value="{{search_term}}">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
-
+      <div class="row">
+        <div class="col">
+          <a href="{% url 'polls:add' %}" class="btn btn-primary" style="margin-bottom: 5px">{% trans "Add new Poll" %} <i class="fas fa-plus"></i> </a>
+          <div class="dropdown row pull-right">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Sort
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+              <a
+                  class="dropdown-item {% if 'text' in request.GET %}active{% else %}primary{% endif %}" href="?text=True"
+                  class="btn btn-"
+                  style="margin-bottom: 5px">Text
+              </a>
+              <a
+                  class="dropdown-item {% if 'pub_date' in request.GET %}active{% else %}primary{% endif %}" href="?pub_date=True"
+                  class="btn btn-"
+                  style="margin-bottom: 5px">Publish date
+              </a>
+              <a
+                  class="dropdown-item {% if 'num_votes' in request.GET %}active{% else %}primary{% endif %}" href="?num_votes=True"
+                  class="btn btn-"
+                  style="margin-bottom: 5px">Number of votes
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+            <form class="form-inline my-2 my-lg-1">
+              <input
+                  class="form-control mr-sm-2"
+                  type="search"
+                  placeholder="Search"
+                  aria-label="Search"
+                  name='search'
+                  value="{{search_term}}">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+      </div>
       <ul class="list-group">
         {% for poll in polls %}
         <li class="list-group-item">

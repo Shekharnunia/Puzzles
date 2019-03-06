@@ -40,7 +40,7 @@
                   {% endthumbnail %}
                   {{ request.user.username|title }}
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" href="{% url 'users:detail' request.user.username  %}"><i class="far fa-user fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile' %}</a>
                   <a class="dropdown-item" href="{% url 'users:update'  %}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>&nbsp; {% trans 'Profile Settings' %}</a>
                   <a class="dropdown-item" href="{% url 'contact_form' %}"><i class="fas fa-envelope" aria-hidden="true"></i> &nbsp; {% trans "Contact us" %}</a>
