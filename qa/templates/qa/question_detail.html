@@ -26,7 +26,7 @@
 </div>
 <hr>
 <div class="row question" question-id="{{ question.id }}">
-  <div class="col-1 col-sm-1  col-md-1  col-lg-1">
+  <div class="col-md-1">
     <div class="question-info options">
       <h3 class="{% if question.has_answer %}bg-success text-white{% endif %}">{{ question.count_answers }}</h3>
       <small class="text-secondary">{% trans 'Answers' %}</small>
@@ -36,7 +36,7 @@
       <small class="text-secondary">{% trans 'Votes' %}</small>
     </div>
   </div>
-  <div class="col-9 offset-2 col-sm-10 offset-sm-1 col-md-8 offset-md-1 col-lg-8 offset-lg-0">
+  <div class="col-md-9 offset-md-1 col-lg-8 offset-lg-0">
     <p>{{ question.get_markdown|safe }}</p>
     {% if question.tags.names %}
     <p>
@@ -44,6 +44,10 @@
       <a href="{% url 'qa:tag' tag %}"><span class="badge badge-primary">{{ tag }}</span></a>
       {% endfor %}
     </p>
+    {% endif %}
+    {% if question.status == 'C' %}
+    <p>
+      <div class="card"><div class="card-footer"><b>{% trans "closed" %}</b> as "{{ question.close_question_reason }}" {% trans "by" %} <a href="{% url 'users:detail' question.close_question_user.username  %}">{{ question.close_question_user.username|title }}</a> {{ question.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ question.timestamp|date:"G:i" }} {% trans "if the post owner have any problem regarding this then" %} <a href="{% url 'contact_form' %}">{% trans "Contact us" %}</a> {% trans "and raise an issue" %}</div></div></p>
     {% endif %}
     <div class="question-user pull-right ml-5">
       <div class="card">
@@ -70,11 +74,8 @@
       {% endif %}
       <a href="{% url 'qa:flag_question' question.pk question.slug %}"><small class="text-muted">{% trans "flag" %}</small></a>
     </p>
-    {% if question.status == 'C' %}
-      <div class="card"><div class="card-footer"><b>{% trans "closed" %}</b> as "{{ question.close_question_reason }}" {% trans "by" %} <a href="{% url 'users:detail' question.close_question_user.username  %}">{{ question.close_question_user.username|title }}</a> {{ question.timestamp|date:"M d 'y" }} {% trans 'at ' %}{{ question.timestamp|date:"G:i" }} {% trans "if the post owner have any problem regarding this then" %} <a href="{% url 'contact_form' %}">{% trans "Contact us" %}</a> {% trans "and raise an issue" %}</div></div>
-    {% endif %}
   </div>
-  <div class="col-12 col-sm-12 col-md-2 col-lg-3" style="font-size: 15px; font-width: 15px;">
+  <div class="col-md-12 col-lg-3" style="font-size: 15px; font-width: 15px;">
     <p><span class="text-muted mr-2">{% trans 'asked' %} </span>{{ question.timestamp|naturaltime }}</p>
     <p><span class="text-muted mr-2">{% trans 'views' %} </span>{{ question.question_views }}</p>
   </div>
