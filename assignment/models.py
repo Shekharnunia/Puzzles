@@ -99,8 +99,8 @@ class Assignment(models.Model):
     tags = TaggableManager()
     objects = AssignmentQuerySet.as_manager()
 
-    # class Meta:
-    #     ordering = ['-timestamp', ]
+    class Meta:
+        ordering = ['-timestamp', ]
 
     def __str__(self):
         return self.topic
