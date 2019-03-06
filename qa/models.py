@@ -54,9 +54,8 @@ class QuestionQuerySet(models.query.QuerySet):
     def search(self, query):
         return self.filter(Q(
             title__icontains=query) | Q(content__icontains=query) | Q(
-            tags__name__icontains=query) | Q(
-            user__username__icontains=query),
-            status="O").distinct()
+            tags__name__iexact=query) | Q(
+            user__username__iexact=query)).distinct()
 
     def get_counted_tags(self):
         """Returns a dict element with tags and its count to show on the UI."""

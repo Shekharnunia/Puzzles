@@ -25,36 +25,36 @@
   {% include "snippits/search.html" with query='query' url=search_url %}   
   {% if question_count %}
       <p class="font-weight-bold col-md-10 offset-md-1">Total no. of Question found : {{ question_count }}</p>
-    {% endif %}
+  {% endif %}
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link{% if active == 'unanswered' %} active{% endif %}" href="{% url 'qa:index_noans' %}{% if request.GET.query %}?query={{ request.GET.query }}{% endif %}">
+        {% trans "Unanswered" %}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link{% if active == 'answered' %} active{% endif %}" href="{% url 'qa:index_ans' %}{% if request.GET.query %}?query={{ request.GET.query }}{% endif %}">
+        {% trans "Answered" %}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link{% if active == 'all' %} active{% endif %}" href="{% url 'qa:index_all' %}{% if request.GET.query %}?query={{ request.GET.query }}{% endif %}">
+        {% trans "All Questions" %}
+      </a>
+    </li>
+  </ul>
   <div class="row">
-    <div class="{% if search %}col-md-10 offset-md-1{% else %}col-md-9col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9{% endif %}">
-        <ul class="nav nav-tabs">
-          <li class="nav-item">
-            <a class="nav-link{% if active == 'unanswered' %} active{% endif %}" href="{% url 'qa:index_noans' %}{% if request.GET.query %}?query={{ request.GET.query }}{% endif %}">
-              {% trans "Unanswered" %}
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link{% if active == 'answered' %} active{% endif %}" href="{% url 'qa:index_ans' %}{% if request.GET.query %}?query={{ request.GET.query }}{% endif %}">
-              {% trans "Answered" %}
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link{% if active == 'all' %} active{% endif %}" href="{% url 'qa:index_all' %}{% if request.GET.query %}?query={{ request.GET.query }}{% endif %}">
-              {% trans "All Questions" %}
-            </a>
-          </li>
-        </ul>
-        {% for question in questions %}
-          {% include 'qa/question_sample.html' with question=question %}
-        {% empty %}
-          <h4 class="no-data">{% trans "No question to display" %}</h4>
-        {% endfor %}
+  <div class="{% if search %}col-md-10 offset-md-1{% else %}col-md-9col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9{% endif %}">
+    {% for question in questions %}
+      {% include 'qa/question_sample.html' with question=question %}
+    {% empty %}
+      <h4 class="no-data">{% trans "No question to display" %}</h4>
+    {% endfor %}
+  </div>
 
-        {% include "includes/pagination.html" with extra=extra %}
+  {% include "includes/pagination.html" with extra=extra %}
         
-    </div>
-    {% if not search %}
+  {% if not search %}
     <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
       <div class="card my-4" style="overflow:auto">
         <h5 class="card-header">{% trans 'Questions by topic' %}</h5>
@@ -66,8 +66,7 @@
       </div>
     </div>
   {% endif %}
-  
-  </div>
+</div>
 {% endblock content %}
 
 

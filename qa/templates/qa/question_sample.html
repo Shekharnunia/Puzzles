@@ -1,8 +1,7 @@
 {% load humanize i18n static humanize %}
 {% load thumbnail %}
 <div class="card questions">
-  <div class="card-body row">
-    <div class="col-1 col-sm-1  col-md-1  col-lg-1">
+  <div class="card-body">
       <div class="question-info pull-left text-center">
         <div class="{% if question.has_answer %}bg-success text-white{% endif %} answer-size">
           <h4>{{ question.count_answers }}</h4>
@@ -11,8 +10,6 @@
         <h3>{{ question.total_votes }}</h3>
         <small class="text-secondary answer-size">{% trans 'Votes' %}</small>
       </div>
-    </div>
-    <div class="col-8 offset-2 col-sm-9 offset-sm-1 col-md-9 offset-md-1 col-lg-10 offset-lg-1">
       <div>
         <h4 class="card-title">
           <a href="{% url 'qa:question_detail' question.pk question.slug %}">{% if question.status == 'C' %}
@@ -41,8 +38,7 @@
                   <h5 class="mt-0"><a href="{% url 'users:detail' question.user.username  %}">{{ question.user.username|title }}</a></h5>
                 </div>
               </div>
-            </div>
+            </div>      
         </div>
-    </div>
   </div>
 </div>
