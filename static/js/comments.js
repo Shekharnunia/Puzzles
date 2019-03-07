@@ -1,13 +1,13 @@
 
-  // $("#comment").focus(function () {
-  //   $(this).attr("rows", "3");
-  //   $("#comment-helper").fadeIn();
-  // });
+  $("#comment").focus(function () {
+    $(this).attr("rows", "1");
+    $("#comment-helper").fadeIn();
+  });
 
-  // $("#comment").blur(function () {
-  //   $(this).attr("rows", "1");
-  //   $("#comment-helper").fadeOut();
-  // });
+  $("#comment").blur(function () {
+    $(this).attr("rows", "1");
+    $("#comment-helper").fadeOut();
+  });
 
   $("#comment").keydown(function (evt) {
     var keyCode = evt.which?evt.which:evt.keyCode;
