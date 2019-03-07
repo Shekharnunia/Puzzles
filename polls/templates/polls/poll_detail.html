@@ -17,7 +17,7 @@
   <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
     <div class="card">
       <div class="card-header">
-        <p><b>Question : </b>{{ poll|capfirst }}{% if not user_can_vote %} - {{poll.num_votes}} votes{% endif %}</p>
+        <p><b>Question : </b>{{ poll.get_polls_as_markdown|capfirst }}{% if not user_can_vote %} - {{poll.num_votes}} votes{% endif %}</p>
       </div>
       <form action="{% url 'polls:vote' poll.id %}" method="post">
         <div class="card-body">

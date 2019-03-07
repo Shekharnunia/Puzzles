@@ -1,6 +1,9 @@
 from django.db import models
+from django.utils.html import mark_safe
 
 from users.models import User
+
+from markdown import markdown
 
 # Create your models here.
 
@@ -50,6 +53,9 @@ class Poll(models.Model):
                 d['percentage'] = choice.num_votes / self.num_votes * 100
             res.append(d)
         return res
+
+    def get_polls_as_markdown(self):
+        return mark_safe(markdown(self.text, safe_mode='escape'))
 
 
 class Choice(models.Model):
