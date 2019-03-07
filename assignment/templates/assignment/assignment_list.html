@@ -22,8 +22,7 @@
     {% if assignment_count %}
       <p class="font-weight-bold col-md-10 offset-md-1">Total no. of assignment found : {{ assignment_count }}</p>
     {% endif %}
-<div class="row">
-	<div class="{% if search %}col-md-10 offset-md-1{% else %}col-md-9{% endif %}">
+
 		{% if request.user.is_teacher == True %}
 		<ul class="nav nav-tabs">
 			<li class="nav-item">
@@ -56,7 +55,8 @@
 			</li>
 		</ul>
 		{% endif %}
-	
+<div class="row">
+	<div class="{% if search %}col-md-10 offset-md-1{% else %}col-md-9{% endif %}">
 		{% include 'assignment/get_partial_assignments.html' with assignment=assignment %}
 
 		{% include "includes/pagination.html" with extra=extra %}
