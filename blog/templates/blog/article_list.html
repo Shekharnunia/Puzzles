@@ -48,7 +48,7 @@
               <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
             {% endthumbnail %}
             <div class="card-body">
-              <p class="card-text">{{ article.get_summary }}</p>
+              <p class="card-text">{{ article.get_message_as_markdown|truncatechars:300 }}</p>
               <a href="{{ article.get_absolute_url }}" class="btn btn-primary"> {% trans 'Read More' %} &rarr;</a>
             </div>
 

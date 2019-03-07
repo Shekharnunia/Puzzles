@@ -16,7 +16,7 @@
           {{ '[CLOSED]' }}     
           {% endif %}{{ question.title }}</a>
         </h4>
-        <p>{{ question.get_markdown|safe|truncatechars:100 }}</p>
+        <p>{{ question.get_markdown|truncatechars:100 }}</p>
       </div>
       {% if question.tags.names %}
           <p style="inline position: absolute; bottom: 0;">
