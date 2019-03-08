@@ -78,6 +78,23 @@
   <div class="col-md-12 col-lg-3" style="font-size: 15px; font-width: 15px;">
     <p><span class="text-muted mr-2">{% trans 'asked' %} </span>{{ question.timestamp|naturaltime }}</p>
     <p><span class="text-muted mr-2">{% trans 'views' %} </span>{{ question.question_views }}</p>
+    {% if not request.user == question.user %}
+    <p><span class="text-muted mr-2">{% trans "Receive Emails" %}</span></p>
+      {% if request.user in question.other_user_receive_email.all %}
+        <form action="{% url 'qa:receive_answer_email' question_id=question.id %}" method="POST">
+          {% csrf_token %}
+          <button class="btn btn-block bg-white"><b>{% trans "UnSubscribe" %}</b></button>
+        </form>
+          <p><span class="text-muted mr-2">{% blocktrans %}You’re receiving notifications because you authored the thread.{% endblocktrans %}  </span></p>
+      {% else %}
+        <form action="{% url 'qa:receive_answer_email' question_id=question.id %}" method="POST">
+          {% csrf_token %}
+          <button class="btn btn-block bg-white"><b>{% trans "Subscribe" %}</b></button>
+        </form>
+        <p><span class="text-muted mr-2">{% blocktrans %}You’re ignoring this thread.{% endblocktrans %}</span></p>
+      {% endif %}
+    {% endif %}
+    
   </div>
 </div>
 <hr>

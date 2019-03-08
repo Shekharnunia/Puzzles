@@ -99,6 +99,8 @@ class Question(models.Model):
     close_question_date = models.DateTimeField(blank=True, null=True)
     close_question_reason = models.CharField(blank=True, null=True, max_length=50)
     flag = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='flag_question', blank=True)
+    receive_email = models.BooleanField(default=True)
+    other_user_receive_email = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='answer_email')
 
     class Meta:
         ordering = ["-total_votes", "-timestamp"]

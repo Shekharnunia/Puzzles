@@ -210,7 +210,7 @@ class CreateAnswerView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         question = get_object_or_404(Question, pk=form.instance.question_id)
         current_site = get_current_site(self.request)
 
-        if not question.user == form.instance.user:
+        if not question.user == form.instance.user and question.receive_email == True:
             subject = '{}'.format(question.title)
             email_from = 'settings.EMAIL_HOST_USER'
             recipient_list = [question.user.email, ]
@@ -266,6 +266,21 @@ class CreateAnswerView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         if not question.status == 'C':
             return True
         return False
+
+
+def receive_answer_email(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+    if request.method == 'POST':
+        if request.user in question.other_user_receive_email.all():
+            question.other_user_receive_email.remove(request.user)
+            messages.success(request, 'you will not going to receive any mails regarding this question')
+            return redirect(question.get_absolute_url())
+        else:
+            question.other_user_receive_email.add(request.user)
+            messages.success(request, 'you will going to receive mails regarding this question')
+            return redirect(question.get_absolute_url())
+    messages.warning(request, 'Some error regarding this task')
+    return redirect(question.get_absolute_url())
 
 
 # Done

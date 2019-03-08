@@ -10,7 +10,7 @@ class QuestionForm(forms.ModelForm):
 
     class Meta:
         model = Question
-        fields = ["title", "content", "tags", "status"]
+        fields = ["title", "content", 'receive_email', "tags", "status", ]
 
 
 class QuestionCloseForm(forms.ModelForm):
