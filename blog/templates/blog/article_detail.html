@@ -66,7 +66,7 @@
                 <i class="lead fa fa-user ml-3 mr-1"></i>
                 <a href="{% url 'users:detail' article.user.username %}"> {{ article.user|title }}</a>
                 <i class="fa fa-clock-o ml-3 mr-2"></i>{{ article.get_readtime }}
-                <i class="fas fa-comments ml-3 mr-2"></i><span class="comment-count">{{ article.get_comments.count }}</span> {% trans 'comments' %}
+                <i class="fas fa-comments ml-3 mr-2"></i><span class="comment-count">{{ user_comments.count }}</span> {% trans 'comments' %}
                 <i class="far fa-eye ml-3 mr-2"></i>{% trans 'views' %}
                 {{ article.views }}
               </div>
@@ -104,7 +104,17 @@
           </div>
       
 		 <!-- Comments Form -->
-  {% include 'blog/partial_article_comments.html' with article=article %}
+    {% if not article.comment_allow and article.user == request.user %}
+      <hr>
+      <h4>Right now comments are disabled</h4>
+    {% endif %}
+    {% if comment_show %}
+      {% include 'blog/partial_article_comments.html' with article=article %}
+    {% else %}
+      <hr>
+      <h3>{% trans "Comments" %}</h3>
+      <p class="text-center">{% blocktrans %}<i class="fas fa-comment-slash"></i> Comments are disabled on this post{% endblocktrans %}</p>
+    {% endif %}
       </div>
 
 

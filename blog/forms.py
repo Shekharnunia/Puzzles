@@ -12,7 +12,15 @@ class ArticleForm(forms.ModelForm):
 
     class Meta:
         model = Article
-        fields = ["title", "categories", "thumbnail", "content", "tags", "status", "edited", ]
+        fields = ["title", 
+        "categories", 
+        "thumbnail", 
+        "content", 
+        "allow_comments",
+        "show_comments_publically",
+        "tags", 
+        "status", 
+        "edited", ]
 
 
 class ArticleCommentForm(forms.ModelForm):

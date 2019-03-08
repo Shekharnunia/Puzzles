@@ -36,7 +36,9 @@
                 <i class="lead fa fa-user ml-3 mr-1"></i>
                 <a href="{% url 'users:detail' article.user.username %}"> {{ article.user|title }}</a>
                 <i class="fa fa-clock-o ml-3 mr-2"></i>{{ article.get_readtime }}
-                <i class="fas fa-comments ml-3 mr-2"></i><a href="{{ article.get_absolute_url }}#comments-link">{{ article.get_comments.count }} {% trans 'comments' %}</a>
+                {% if article.allow_comments and article.show_comments_publically or article.user == request.user %}
+                  <i class="fas fa-comments ml-3 mr-2"></i><a href="{{ article.get_absolute_url }}#comments-link">{{ article.get_comments.count }} {% trans 'comments' %}</a>
+                {% endif %}
                 <i class="far fa-eye ml-3 mr-2"></i>{% trans 'views' %}
                 {{ article.views }}
               </div>

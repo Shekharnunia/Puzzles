@@ -1,7 +1,7 @@
 {% load i18n static %}
 <hr>
 <span class="pull-right text-muted" id="comment-helper" style="display: none"><small>{% trans 'Press Enter to post' %}</small></span>
-<h4><span class="comment-count">{{ article.get_comments.count }}</span> {% trans 'Comments' %}</h4>
+<h4><span class="comment-count">{{ user_comments.count }}</span> {% trans 'Comments' %}</h4>
 <div class="post-comment clearfix" id='comments-link'>
   <form role="form" id="comment-form">
     {% csrf_token %}
@@ -21,7 +21,7 @@
   </form>
 </div>
 <div class="well well-sm" id="comment-list">
-  {% for comment in article.get_comments %}
+  {% for comment in user_comments %}
     {% include 'blog/partial_article_comment.html' with comment=comment %}
   {% empty %}
     <div style="padding: .6em 0">{% trans 'Be the first one to comment!' %}</div>

@@ -158,6 +158,17 @@ class DetailArticleView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         context['categories'] = Category.objects.all()
         context['is_liked'] = self.object.likes.filter(id=self.request.user.id).exists()
         context['popular'] = Article.objects.get_5_popular_post()
+        if self.object.allow_comments == True or self.object.user == self.request.user:
+            context['comment_show'] = True
+            if self.object.show_comments_publically == True or self.object.user == self.request.user:
+                context['user_comments'] = self.object.get_comments()
+            else:
+                context['user_comments'] = self.object.get_comments().filter(
+                    Q(user=self.request.user) |
+                    Q(user=self.object.user)
+                )
+        else:
+            context['comment_show'] = False
         return context
 
     def test_func(self):
@@ -190,7 +201,15 @@ def comment(request):
                                                  comment=comment)
                 article_comment.save()
             html = ''
-            for comment in article.get_comments():
+
+            if article.show_comments_publically == True or article.user == request.user:
+                user_comments = article.get_comments()
+            else:
+                user_comments = article.get_comments().filter(
+                    Q(user=request.user) |
+                    Q(user=article.user)
+                )
+            for comment in user_comments:
                 html = '{0}{1}'.format(html, render_to_string(
                     'blog/partial_article_comment.html',
                     {'comment': comment}))

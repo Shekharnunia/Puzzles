@@ -93,6 +93,8 @@ class Article(models.Model):
     categories = models.ForeignKey(Category, on_delete=models.CASCADE)
     views = models.PositiveIntegerField(default=0)
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='likes')
+    allow_comments = models.BooleanField(default=True)
+    show_comments_publically = models.BooleanField(default=True)
 
     objects = ArticleQuerySet.as_manager()
 
