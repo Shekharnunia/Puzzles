@@ -4,7 +4,7 @@ Their is a answer posted for {{ title }}.
 
 Question Description:{{ content }}
 
-You receive this email because you have posted a solution for this question.
+You receive this email because you have subscribed email notification for this question. If you would like to contribute anything for this question you can go to this question page.
 To directly jump onto this question visit {{ domain }}{{ url }}
 
 Thanks and Regards,

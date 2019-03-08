@@ -233,9 +233,9 @@ class CreateAnswerView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         email_from = 'settings.EMAIL_HOST_USER'
 
         a = set()
-        for x in question.answer_set.all():
-            if not x.user == question.user:
-                a.add(x.user.email)
+        for x in question.other_user_receive_email.all():
+            if not x == question.user and not self.request.user == x:
+                a.add(x.email)
 
         recipient_list = []
         for i in a:
@@ -268,6 +268,7 @@ class CreateAnswerView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return False
 
 
+@login_required
 def receive_answer_email(request, question_id):
     question = get_object_or_404(Question, id=question_id)
     if request.method == 'POST':
@@ -329,6 +330,7 @@ class DeleteAnswerView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
 
 
+@login_required
 def q_flag(request, pk, slug):
     question = get_object_or_404(Question, pk=pk)
     if request.method == 'GET':
@@ -357,6 +359,7 @@ def q_flag(request, pk, slug):
         return redirect(question.get_absolute_url())
 
 
+@login_required
 def a_flag(request, pk, slug, answer_id):
     question = get_object_or_404(Question, pk=pk)
     answer = Answer.objects.get(uuid_id=answer_id)
