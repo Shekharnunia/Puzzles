@@ -207,6 +207,7 @@ class CreateAnswerView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         form.instance.user = self.request.user
         form.instance.question_id = self.kwargs["question_id"]
         question = get_object_or_404(Question, pk=form.instance.question_id)
+        question.other_user_receive_email.add(self.request.user)
         current_site = get_current_site(self.request)
 
         if not question.user == form.instance.user and question.receive_email == True:
