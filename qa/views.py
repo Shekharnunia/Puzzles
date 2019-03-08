@@ -129,7 +129,7 @@ class QuestionDetaiCloseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView
 
     def test_func(self):
         question = self.get_object()
-        if self.request.user.is_teacher and question.status == 'O':
+        if (self.request.user.is_teacher and question.status == 'O') or self.request.user == question.user:
             return True
         return False
 
