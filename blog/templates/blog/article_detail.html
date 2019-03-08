@@ -104,7 +104,7 @@
           </div>
       
 		 <!-- Comments Form -->
-    {% if not article.comment_allow and article.user == request.user %}
+    {% if not article.allow_comments and article.user == request.user %}
       <hr>
       <h4>Right now comments are disabled</h4>
     {% endif %}
