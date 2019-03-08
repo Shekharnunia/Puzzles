@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django.db.models import Q
 from django.db.utils import IntegrityError
 from django.http import HttpResponseBadRequest, JsonResponse
@@ -208,44 +208,50 @@ class CreateAnswerView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         form.instance.user = self.request.user
         form.instance.question_id = self.kwargs["question_id"]
         question = get_object_or_404(Question, pk=form.instance.question_id)
-        subject = '{}'.format(question.title)
-        email_from = 'settings.EMAIL_HOST_USER'
-        recipient_list = [question.user.email, ]
-        message = "heloo"
-
         current_site = get_current_site(self.request)
-        context = {
-            'question_user': question.user,
-            'answer_user': self.request.user,
-            'url': question.get_absolute_url,
-            'domain': current_site.domain,
-            'title': question.title,
-            'content': question.content,
-        }
-        context_message = get_template('email/answer_mail.txt').render(context)
 
-        send_mail(subject, context_message, email_from, recipient_list, fail_silently=True)
+        if not question.user == form.instance.user:
+            subject = '{}'.format(question.title)
+            email_from = 'settings.EMAIL_HOST_USER'
+            recipient_list = [question.user.email, ]
+            current_site = get_current_site(self.request)
+            context = {
+                'question_user': question.user,
+                'answer_user': self.request.user,
+                'url': question.get_absolute_url,
+                'domain': current_site.domain,
+                'title': question.title,
+                'content': question.get_markdown(),
+            }
+            context_message = get_template('email/answer_mail.txt').render(context)
+            message = EmailMultiAlternatives(subject=subject, body=context_message, from_email=email_from, to=recipient_list)
+            html_template = get_template('email/answer_mail.html').render(context)
+            message.attach_alternative(html_template, "text/html")
+            message.send()
 
         subject = '{}'.format(question.title)
         email_from = 'settings.EMAIL_HOST_USER'
 
         a = set()
         for x in question.answer_set.all():
-            a.add(x.user.email)
+            if not x.user == question.user:
+                a.add(x.user.email)
 
         recipient_list = []
         for i in a:
             recipient_list.append(i)
-        message = "heloo"
         context = {
             'url': question.get_absolute_url,
             'title': question.title,
             'domain': current_site.domain,
-            'content': question.content,
+            'content': question.get_markdown(),
         }
 
         context_message = get_template('email/answer_uploader_mail.txt').render(context)
-        send_mail(subject, context_message, email_from, recipient_list, fail_silently=True)
+        message = EmailMultiAlternatives(subject=subject, body=context_message, from_email=email_from, to=recipient_list)
+        html_template = get_template('email/answer_uploader_mail.html').render(context)
+        message.attach_alternative(html_template, "text/html")
+        message.send()
         return super().form_valid(form)
 
     def get_success_url(self):

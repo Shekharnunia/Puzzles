@@ -2,9 +2,9 @@ Hello,
 
 Their is a answer posted for {{ title }}.
 
-Content:{{ content }}
+Question Description:{{ content }}
 
-You receive this email because you were posted a solution for this question.
+You receive this email because you have posted a solution for this question.
 To directly jump onto this question visit {{ domain }}{{ url }}
 
 Thanks and Regards,

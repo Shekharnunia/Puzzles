@@ -4,7 +4,7 @@ Hello {{ question_user }},
 
 Title:{{ title }}
 
-Content:{{ content }}
+Question Description:{{ content }}
 
 Hopefully you got your Answer.
 To directly jump onto your question visit {{ domain }}{{ url }}
