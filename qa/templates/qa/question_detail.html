@@ -80,19 +80,14 @@
     <p><span class="text-muted mr-2">{% trans 'views' %} </span>{{ question.question_views }}</p>
     {% if not request.user == question.user %}
     <p><span class="text-muted mr-2">{% trans "Receive Emails" %}</span></p>
-      {% if request.user in question.other_user_receive_email.all %}
-        <form action="{% url 'qa:receive_answer_email' question_id=question.id %}" method="POST">
-          {% csrf_token %}
-          <button class="btn btn-block bg-white"><b>{% trans "UnSubscribe" %}</b></button>
-        </form>
-          <p><span class="text-muted mr-2">{% blocktrans %}You’re receiving notifications because you authored the thread.{% endblocktrans %}  </span></p>
-      {% else %}
-        <form action="{% url 'qa:receive_answer_email' question_id=question.id %}" method="POST">
-          {% csrf_token %}
-          <button class="btn btn-block bg-white"><b>{% trans "Subscribe" %}</b></button>
-        </form>
-        <p><span class="text-muted mr-2">{% blocktrans %}You’re ignoring this thread.{% endblocktrans %}</span></p>
-      {% endif %}
+      <div id="email-section">
+        {% if request.user in question.other_user_receive_email.all %}
+          {% include 'qa/subscribe_section.html' with is_subscribed=True %}  
+        {% else %}
+          {% include 'qa/subscribe_section.html' with is_subscribed=False %}  
+        {% endif %}
+      </div>
+      
     {% endif %}
     
   </div>
@@ -121,4 +116,21 @@
 
 {% block modal %}
 <script src="{% static 'js/qa.js' %}"></script>
+    <script type="text/javascript">
+      $(document).on('click', '#email', function(event){
+          event.preventDefault();
+          var pk = $(this).attr('value');
+          $.ajax({
+            type: 'POST',
+            url: '{% url "qa:question_email" %}',
+            data: {'id':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+            dataType: 'json',
+            success: function(response){
+              $('#email-section').html(response['form'])
+            },
+            error: function(rs, e){
+            },
+          });
+        });
+    </script>
 {% endblock modal %}

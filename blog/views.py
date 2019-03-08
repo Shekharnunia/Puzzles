@@ -223,6 +223,7 @@ def comment(request):
         return HttpResponseBadRequest()
 
 
+@login_required
 def like_post(request):
     article = get_object_or_404(Article, id=request.POST.get('id'))
     is_liked = False

@@ -4,11 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail, EmailMultiAlternatives
-from django.db.models import Q
 from django.db.utils import IntegrityError
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.template.loader import get_template
+from django.template.loader import get_template, render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext as _
@@ -282,6 +281,25 @@ def receive_answer_email(request, question_id):
             return redirect(question.get_absolute_url())
     messages.warning(request, 'Some error regarding this task')
     return redirect(question.get_absolute_url())
+
+
+@login_required
+def receive_answer_email_2(request):
+    question = get_object_or_404(Question, id=request.POST.get('id'))
+    is_subscribed = False
+    if question.other_user_receive_email.filter(id=request.user.id).exists():
+        question.other_user_receive_email.remove(request.user)
+        is_subscribed = False
+    else:
+        question.other_user_receive_email.add(request.user)
+        is_subscribed = True
+    context = {
+        'question': question,
+        'is_subscribed': is_subscribed,
+    }
+    if request.is_ajax():
+        html = render_to_string('qa/subscribe_section.html', context, request=request)
+        return JsonResponse({'form': html})
 
 
 # Done
