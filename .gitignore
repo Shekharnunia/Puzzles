@@ -101,4 +101,4 @@ user_friends.html
 
 my_project.dot
 
-my_project/settings.py
+storage_backends.py
