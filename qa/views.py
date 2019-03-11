@@ -68,7 +68,7 @@ class QuestionAnsListView(QuestionsIndexListView):
             query = self.request.GET.get("query")
             return Question.objects.get_answered().search(query)
         else:
-            return Question.objects.get_answered()
+            return Question.objects.get_answered().order_by('-pk')
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -86,7 +86,7 @@ class QuestionListView(QuestionsIndexListView):
             query = self.request.GET.get("query")
             return Question.objects.get_unanswered().search(query)
         else:
-            return Question.objects.get_unanswered()
+            return Question.objects.get_unanswered().order_by('-pk')
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
