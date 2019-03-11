@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.html import mark_safe
+from django.urls import reverse
 
 from users.models import User
 
@@ -56,6 +57,9 @@ class Poll(models.Model):
 
     def get_polls_as_markdown(self):
         return mark_safe(markdown(self.text, safe_mode='escape'))
+
+    def get_absolute_url(self):
+        return reverse("polls:detail", kwargs={"poll_id": self.pk})
 
 
 class Choice(models.Model):

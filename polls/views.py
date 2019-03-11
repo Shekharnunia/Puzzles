@@ -1,18 +1,14 @@
 import datetime
 
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Count, Q
-from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
 from .forms import ChoiceForm, EditPollForm, PollForm
 from .models import Choice, Poll, Vote
-
-# Create your views here.
 
 
 @login_required
@@ -80,7 +76,7 @@ def add_poll(request):
                 'Poll and Choices added!',
                 extra_tags='alert alert-success alert-dismissible fade show'
             )
-            return redirect('polls:list')
+            return redirect(new_poll.get_absolute_url())
     else:
         form = PollForm()
     context = {'form': form}
@@ -120,7 +116,7 @@ def edit_poll(request, poll_id):
                 'Poll Edit Successfully',
                 extra_tags='alert alert-success alert-dismissible fade show'
             )
-            return redirect('polls:list')
+            return redirect(poll.get_absolute_url())
     else:
         form = EditPollForm(instance=poll)
 
@@ -144,7 +140,8 @@ def add_choice(request, poll_id):
                 'Choice Added Successfully',
                 extra_tags='alert alert-success alert-dismissible fade show'
             )
-            return redirect('polls:list')
+            # return redirect('polls:list')
+            return redirect(reverse('polls:edit_poll', kwargs={'poll_id': new_choice.poll.id}))
     else:
         form = ChoiceForm()
     return render(request, 'polls/add_choice.html', {'form': form})
@@ -160,13 +157,14 @@ def edit_choice(request, choice_id):
     if request.method == "POST":
         form = ChoiceForm(request.POST, instance=choice)
         if form.is_valid():
-            form.save()
+            choice = form.save(commit=False)
+
             messages.success(
                 request,
                 'Choice Edited Successfully',
                 extra_tags='alert alert-success alert-dismissible fade show'
             )
-            return redirect('polls:list')
+            return redirect(reverse('polls:edit_poll', kwargs={'poll_id': choice.poll.id}))
     else:
         form = ChoiceForm(instance=choice)
     return render(request, 'polls/add_choice.html', {'form': form, 'edit_mode': True, 'choice': choice})
