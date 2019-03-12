@@ -39,6 +39,8 @@ def newsletter_signup(request):
                 html_template = get_template("newsletter/sign_up_email.html").render({'domain': current_site.domain, })
                 message.attach_alternative(html_template, "text/html")
                 message.send()
+        else:
+            messages.warning(request, 'form invalid')
     form = NewsLetterUserSignupForm()
     context = {
         'form': form,

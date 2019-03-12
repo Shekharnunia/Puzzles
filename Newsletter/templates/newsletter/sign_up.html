@@ -3,8 +3,8 @@
 
 {% block content_base %}
       <div class="row justify-content-center">
-        {% include "includes/messages.html" %}
         <div class="{% if not request.user.is_staff %}col-lg-6 col-md-10 col-sm-12{% else %}col-lg-10 col-md-12 col-sm-12{% endif %}">
+        {% include "includes/messages.html" %}
           <h1 class="text-center logo my-4">
             <a href="{% url 'home' %}">Puzzles</a>
           </h1>
