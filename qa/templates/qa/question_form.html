@@ -3,7 +3,13 @@
 {% load crispy_forms_tags %}
 
 {% block title %}{% trans 'Ask a question' %}{% endblock %}
-
+{% block head %}
+  <style>
+    .wmd-panel{
+        width: 75% !important; 
+    }
+  </style>
+{% endblock head %}
 {% block content %}
 
   <nav aria-label="breadcrumb">

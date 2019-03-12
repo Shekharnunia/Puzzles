@@ -2,6 +2,15 @@
 {% load static 	i18n %}
 {% load crispy_forms_tags %}
 
+{% block title %}{% trans 'Write Article' %}{% endblock %}
+{% block head %}
+  <style>
+    .wmd-panel{
+        width: 65% !important; 
+    }
+  </style>
+{% endblock head %}
+
 {% block content %}
 <div class="container mb-4">
   <form action="{% url 'blog:write_new' %}" enctype="multipart/form-data"  id="article-form" method="POST" role="form">

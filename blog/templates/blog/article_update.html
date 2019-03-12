@@ -1,6 +1,14 @@
 {% extends 'qa_base.html' %}
-{% load static i18n %}
-{% load crispy_forms_tags %}
+{% load static i18n crispy_forms_tags %}
+
+{% block title %}{% trans 'Update Article' %}{% endblock %}
+{% block head %}
+  <style>
+    .wmd-panel{
+        width: 65% !important; 
+    }
+  </style>
+{% endblock head %}
 
 {% block content %}
 <div class="container">

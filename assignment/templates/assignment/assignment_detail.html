@@ -2,6 +2,8 @@
 
 {% load i18n crispy_forms_tags humanize thumbnail static %}
 
+{% block title %}{{ assignment.topic|title}} {% endblock %}
+
 {% block head %}
 	<link href="{% static 'css/articles.css' %}" rel="stylesheet">
 	<style>
@@ -15,8 +17,8 @@
 <div class="mb-4">
 	<div>
 		<ol class="breadcrumb my-4">
-			<li class="breadcrumb-item"><a href="#">Home</a></li>
-			<li class="breadcrumb-item"><a href="{% url 'assignment:list' %}">Assignment</a></li>
+			<li class="breadcrumb-item"><a href="#">{% trans "Home" %}</a></li>
+			<li class="breadcrumb-item"><a href="{% url 'assignment:list' %}">{% trans "Assignment" %}</a></li>
 			<li class="breadcrumb-item active" aria-current="page">{{ assignment.topic|title }}</li>
 		</ol>
 	</div>

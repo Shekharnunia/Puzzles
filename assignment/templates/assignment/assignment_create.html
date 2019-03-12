@@ -3,6 +3,14 @@
 
 {% block title %}{% trans 'Create an assignment' %}{% endblock %}
 
+{% block head %}
+  <style>
+    .wmd-panel{
+        width: 75% !important; 
+    }
+  </style>
+{% endblock head %}
+
 {% block content %}
 	<a class="btn btn-info mb-4 pull-right" href="{% url 'assignment:create' %}">Create new assignment</a> <br>
 	<form action="" class="mb-4" method="POST" enctype="multipart/form-data" novalidate>
