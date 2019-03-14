@@ -53,7 +53,7 @@
       <ul class="list-group">
         {% for poll in polls %}
         <li class="list-group-item">
-          <a href="{% url 'polls:detail' poll.id %}">{{ poll.get_polls_as_markdown|capfirst|truncatechars:82 }}</a> - via <a href="{% url 'users:detail' poll.owner %}">{{ poll.owner }}</a>
+          <a href="{% url 'polls:detail' poll.id %}">{{ poll.get_polls_as_markdown|capfirst|truncatechars_html:80 }}</a> - via <a href="{% url 'users:detail' poll.owner %}">{{ poll.owner }}</a>
           {% if request.user == poll.owner %}
             <a href="{% url 'polls:edit_poll' poll.id %}" class='float-right'><i class="fas fa-pencil-alt"></i></a>
           {% endif %}

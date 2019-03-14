@@ -39,7 +39,7 @@
                 {% endthumbnail %}
                 <div class="card-body">
                   <h2 class="card-title">{{ article.title|title }}</h2>
-                  <p class="card-text">{{ article.get_message_as_markdown|truncatechars:250 }}</p>
+                  <p class="card-text">{{ article.get_message_as_markdown|truncatechars_html:250 }}</p>
                 </div>
               </div>
             {% empty %}

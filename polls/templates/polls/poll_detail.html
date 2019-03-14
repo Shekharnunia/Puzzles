@@ -39,7 +39,7 @@
               {% for choice_dict in results %}
                 <div class="row">
                     <div class="col">
-                    {{choice_dict.text|capfirst}} ({{choice_dict.percentage}}%;)
+                    {{choice_dict.text|capfirst}} ({{choice_dict.percentage|truncatechars:8}}%)
                     <div class="progress mb-1">
                       <div class="progress-bar {% if forloop.counter|divisibleby:2 %}
                         bg-success
