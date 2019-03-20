@@ -269,23 +269,8 @@ class CreateAnswerView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
 
 @login_required
-def receive_answer_email(request, question_id):
-    question = get_object_or_404(Question, id=question_id)
-    if request.method == 'POST':
-        if request.user in question.other_user_receive_email.all():
-            question.other_user_receive_email.remove(request.user)
-            messages.success(request, 'you will not going to receive any mails regarding this question')
-            return redirect(question.get_absolute_url())
-        else:
-            question.other_user_receive_email.add(request.user)
-            messages.success(request, 'you will going to receive mails regarding this question')
-            return redirect(question.get_absolute_url())
-    messages.warning(request, 'Some error regarding this task')
-    return redirect(question.get_absolute_url())
-
-
-@login_required
-def receive_answer_email_2(request):
+@ajax_required
+def receive_answer_email(request):
     question = get_object_or_404(Question, id=request.POST.get('id'))
     is_subscribed = False
     if question.other_user_receive_email.filter(id=request.user.id).exists():

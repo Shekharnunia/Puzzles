@@ -73,12 +73,8 @@ urlpatterns = [
         views.TagQuestionListView.as_view(),
         name='tag'),
 
-    path('<int:question_id>/',
+    path('email/',
          views.receive_answer_email,
-         name='receive_answer_email'),
-
-    url(r'^email/',
-        views.receive_answer_email_2,
-        name="question_email"),
+         name="question_email"),
 
 ]
