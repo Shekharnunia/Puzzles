@@ -11,7 +11,6 @@ from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   RedirectView, UpdateView)
 from django.http import JsonResponse
 
-from django.template.loader import render_to_string
 from taggit.models import Tag
 
 from decorators import ajax_required
