@@ -55,7 +55,7 @@ class TagQuestionListView(QuestionsIndexListView):
     list."""
 
     def get_queryset(self, **kwargs):
-        return Question.objects.filter(tags__name=self.kwargs['tag_name']).exclude(status='D').order_by('-total_votes')
+        return Question.objects.select_related("user").prefetch_related("tagged_items__tag", "answer_set").filter(tags__name=self.kwargs['tag_name']).exclude(status='D').order_by('-total_votes')
 
 
 # Done
@@ -66,9 +66,9 @@ class QuestionAnsListView(QuestionsIndexListView):
     def get_queryset(self, **kwargs):
         if self.request.GET.get("query"):
             query = self.request.GET.get("query")
-            return Question.objects.get_answered().search(query)
+            return Question.objects.select_related("user").prefetch_related("tagged_items__tag", "answer_set").get_answered().search(query)
         else:
-            return Question.objects.get_answered().order_by('-pk')
+            return Question.objects.select_related("user").order_by("-timestamp").prefetch_related("tagged_items__tag", "answer_set").get_answered()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -84,9 +84,9 @@ class QuestionListView(QuestionsIndexListView):
     def get_queryset(self, **kwargs):
         if self.request.GET.get("query"):
             query = self.request.GET.get("query")
-            return Question.objects.get_unanswered().search(query)
+            return Question.objects.select_related("user").prefetch_related("tagged_items__tag", "answer_set").get_unanswered().search(query)
         else:
-            return Question.objects.get_unanswered().order_by('-pk')
+            return Question.objects.select_related("user").prefetch_related("tagged_items__tag", "answer_set").get_unanswered().order_by('-pk')
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
