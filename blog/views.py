@@ -143,7 +143,8 @@ class DeleteArticleView(LoginRequiredMixin, AuthorRequiredMixin, DeleteView):
 
 class DetailArticleView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     """Basic DetailView implementation to call an individual article."""
-    model = Article
+    # model = Article
+    queryset = Article.objects.prefetch_related("articlecomment_set", "articlecomment_set__user", "tags").select_related("user", "categories")
 
     def get_context_data(self, *args, **kwargs):
         session_key = 'viewed_article_{}'.format(self.object.pk)
@@ -158,9 +159,9 @@ class DetailArticleView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         if self.object.allow_comments == True or self.object.user == self.request.user:
             context['comment_show'] = True
             if self.object.show_comments_publically == True or self.object.user == self.request.user:
-                context['user_comments'] = self.object.get_comments()
+                context['user_comments'] = self.object.articlecomment_set.all()
             else:
-                context['user_comments'] = self.object.get_comments().filter(
+                context['user_comments'] = self.object.articlecomment_set.filter(
                     Q(user=self.request.user) |
                     Q(user=self.object.user)
                 )

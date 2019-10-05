@@ -1,6 +1,6 @@
 {% extends 'qa_base.html' %}
 {% load static i18n %}
-{% load crispy_forms_tags thumbnail humanize %}
+{% load crispy_forms_tags humanize %}
 
 {% block title %}{{ article.title|title }}{% endblock %}
 
@@ -71,11 +71,11 @@
                 {{ article.views }}
               </div>
             </div>
-        {% thumbnail article.thumbnail "900x300" as im %}
-          <img src="{{ im.url }}" alt="{% trans 'Thumbnail Image' %}" class="card-img-top img-thumbnail">
-        {% empty %}
+        {% if article.thumbnail %}
+          <img src="{{ article.thumbnail.url }}" alt="{% trans 'Thumbnail Image' %}" class="card-img-top img-thumbnail">
+        {% else %}
           <img class="img-fluid rounded" src="{% static 'img/avatar.svg' %}" alt="Card Image">
-        {% endthumbnail %}
+        {% endif %}
         <!-- <img src="{{ MEDIA_URL }}{{ article.image }}" lt="{% trans 'Featured Image' %}" class="card-img-top"> -->
               <div class="card-body mt-2 mb-2">
                 <p class="card-text">{{ article.get_message_as_markdown|safe }}</p><hr>
