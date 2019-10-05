@@ -47,7 +47,7 @@ class ArticlesListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self, **kwargs):
-        return Article.objects.get_published()
+        return Article.objects.select_related("user", "categories").prefetch_related("articlecomment_set", "tagged_items__tag").get_published()
 
 
 class DraftsListView(ArticlesListView):

@@ -37,26 +37,26 @@
                 <a href="{% url 'users:detail' article.user.username %}"> {{ article.user|title }}</a>
                 <i class="fa fa-clock-o ml-3 mr-2"></i>{{ article.get_readtime }}
                 {% if article.allow_comments and article.show_comments_publically or article.user == request.user %}
-                  <i class="fas fa-comments ml-3 mr-2"></i><a href="{{ article.get_absolute_url }}#comments-link">{{ article.get_comments.count }} {% trans 'comments' %}</a>
+                  <i class="fas fa-comments ml-3 mr-2"></i><a href="{{ article.get_absolute_url }}#comments-link">{{ article.articlecomment_set.all.count }} {% trans 'comments' %}</a>
                 {% endif %}
                 <i class="far fa-eye ml-3 mr-2"></i>{% trans 'views' %}
                 {{ article.views }}
               </div>
 
             </div>
-            {% thumbnail article.thumbnail "750x300" as im %}
-              <img src="{{ im.url }}" alt="{% trans 'Thumbnail Image' %}" class="card-img-top img-thumbnail">
-            {% empty %}
+            {% if article.thumbnail %}
+              <img src="{{ article.thumbnail.url }}" alt="{% trans 'Thumbnail Image' %}" class="card-img-top img-thumbnail">
+            {% else %}
               <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
-            {% endthumbnail %}
+            {% endif %}
             <div class="card-body">
               <p class="card-text">{{ article.get_message_as_markdown|truncatechars_html:150 }}</p>
               <a href="{{ article.get_absolute_url }}" class="btn btn-primary"> {% trans 'Read More' %} &rarr;</a>
             </div>
 
             <div class="card-footer text-muted">
-              {% for tag in article.tags.names %}
-                <a href="#" class="ml-2"><span class="badge badge-info">{{ tag }}</span></a>
+              {% for tag in article.tagged_items.all %}
+                <a href="#" class="ml-2"><span class="badge badge-info">{{ tag.tag }}</span></a>
               {% endfor %}
             </div>
           </div>
