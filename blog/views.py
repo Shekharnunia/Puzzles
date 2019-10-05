@@ -55,7 +55,7 @@ class DraftsListView(ArticlesListView):
     list."""
 
     def get_queryset(self, **kwargs):
-        return Article.objects.get_drafts()
+        return Article.objects.select_related("user", "categories").prefetch_related("articlecomment_set", "tagged_items__tag").get_drafts()
 
 
 class PopularListView(ArticlesListView):
@@ -63,7 +63,7 @@ class PopularListView(ArticlesListView):
     list."""
 
     def get_queryset(self, **kwargs):
-        return Article.objects.get_popular_post()
+        return Article.objects.select_related("user", "categories").prefetch_related("articlecomment_set", "tagged_items__tag").get_popular_post()
 
 
 class SearchListView(LoginRequiredMixin, ListView):
@@ -79,9 +79,9 @@ class SearchListView(LoginRequiredMixin, ListView):
                 title__icontains=query) | Q(content__icontains=query) | Q(
                 tags__name__icontains=query) | Q(
                 user__username__icontains=query) | Q(
-                categories__title__icontains=query), status="P").distinct()
+                categories__title__icontains=query), status="P").select_related("user", "categories").prefetch_related("articlecomment_set", "tagged_items__tag").distinct()
         else:
-            return Article.objects.get_published()
+            return Article.objects.select_related("user", "categories").prefetch_related("articlecomment_set", "tagged_items__tag").get_published()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -89,8 +89,6 @@ class SearchListView(LoginRequiredMixin, ListView):
         if self.request.GET.get("query"):
             query = self.request.GET.get("query")
             context["extra"] = '&query={}'.format(query)
-            article = self.object_list
-            context['article_count'] = article.count()
             return context
         return context
 
