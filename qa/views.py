@@ -31,7 +31,7 @@ class QuestionsIndexListView(LoginRequiredMixin, ListView):
             query = self.request.GET.get("query")
             return Question.objects.search(query)
         else:
-            return Question.objects.all().order_by('-timestamp')
+            return Question.objects.all().select_related("user").order_by("-timestamp").prefetch_related("tagged_items__tag", "answer_set")
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)

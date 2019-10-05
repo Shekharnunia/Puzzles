@@ -4,7 +4,7 @@
   <div class="card-body">
       <div class="question-info pull-left text-center">
         <div class="{% if question.has_answer %}bg-success text-white{% endif %} answer-size">
-          <h4>{{ question.count_answers }}</h4>
+          <h4>{{ question.answer_set.all.count }}</h4>
           <small style="font-size: 12px;">{% trans 'answers' %}</small>
         </div>
         <h3>{{ question.total_votes }}</h3>
@@ -18,10 +18,10 @@
         </h4>
         <p>{{ question.get_markdown|truncatechars_html:100 }}</p>
       </div>
-      {% if question.tags.names %}
+      {% if question.tags %}
           <p style="inline position: absolute; bottom: 0;">
-            {% for tag in question.tags.names %}
-              <a href="{% url 'qa:tag' tag %}"><span class="badge badge-primary">{{ tag }}</span></a>
+            {% for tag in question.tagged_items.all %}
+              <a href="{% url 'qa:tag' tag.tag %}"><span class="badge badge-primary">{{ tag.tag }}</span></a>
             {% endfor %}
           </p>
         {% endif %}
