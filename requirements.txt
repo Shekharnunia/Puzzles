@@ -7,7 +7,7 @@ chardet==3.0.4
 cssselect==1.0.3
 defusedxml==0.5.0
 dj-database-url==0.5.0
-Django==2.2.10
+Django==2.2.13
 django-allauth==0.38.0
 django-appconf==1.0.2
 django-contact-form==1.6
