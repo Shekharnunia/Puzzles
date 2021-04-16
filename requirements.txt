@@ -12,7 +12,7 @@ django-allauth==0.38.0
 django-appconf==1.0.2
 django-contact-form==1.6
 django-crispy-forms==1.7.2
-django-debug-toolbar==1.11
+django-debug-toolbar==1.11.1
 django-extensions==2.1.5
 django-model-utils==3.1.2
 django-pagedown==1.0.6
